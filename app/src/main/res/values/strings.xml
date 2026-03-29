@@ -4,7 +4,7 @@
     <string name="textButtonSearch">Поиск</string>
     <string name="textButtonMedia">Медиатека</string>
     <string name="textButtonSetting">Настройки</string>
-    <string name="setScreen_darkTheme">Темная тема</string>
+    <string name="setScreen_darkTheme">Тёмная тема</string>
     <string name="setScreen_shareApp">Поделиться приложением</string>
     <string name="setScreen_writeSupport">Написать в поддержку</string>
     <string name="setScreen_userAgreement">Пользовательсвое соглашение</string>
