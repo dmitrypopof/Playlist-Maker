@@ -44,6 +44,7 @@
             app:iconTint="@color/black" />
 
         <Button
+            android:id="@+id/media_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="25"
@@ -63,6 +64,7 @@
             app:iconTint="@color/black" />
 
         <Button
+            android:id="@+id/setting_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="25"

@@ -19,5 +19,15 @@ class MainActivity : AppCompatActivity() {
             }
         }
         searchBut.setOnClickListener (buttonClickListener)
+
+        val mediaBut = findViewById<Button>(R.id.media_button)
+        mediaBut.setOnClickListener {
+            Toast.makeText(this@MainActivity,"Нажали на кнопку медиатеки!", Toast.LENGTH_SHORT).show()
+        }
+
+        val settingBut = findViewById<Button>(R.id.setting_button)
+        settingBut.setOnClickListener {
+            Toast.makeText(this@MainActivity,"Нажали на кнопку настройки!", Toast.LENGTH_SHORT).show()
+        }
     }
 }
