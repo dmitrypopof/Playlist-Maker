@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -12,22 +13,38 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val searchBut = findViewById<Button>(R.id.search_button)
+        val mediaBut = findViewById<Button>(R.id.media_button)
+        val settingBut = findViewById<Button>(R.id.setting_button)
+
+
+
+
 
         val buttonClickListener: View.OnClickListener = object : View.OnClickListener{
             override fun onClick(v: View?) {
-                Toast.makeText(this@MainActivity, "Нажали на кнопку поиска!", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this@MainActivity, "Нажали на кнопку поиска!", Toast.LENGTH_SHORT).show()
+                val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
+                startActivity(searchIntent)
             }
         }
         searchBut.setOnClickListener (buttonClickListener)
 
-        val mediaBut = findViewById<Button>(R.id.media_button)
+
         mediaBut.setOnClickListener {
-            Toast.makeText(this@MainActivity,"Нажали на кнопку медиатеки!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity,"Нажали на кнопку медиатеки!", Toast.LENGTH_SHORT).show()
+            val mediaIntent = Intent(this, MediaActivity::class.java)
+            startActivity(mediaIntent)
         }
 
-        val settingBut = findViewById<Button>(R.id.setting_button)
+
         settingBut.setOnClickListener {
-            Toast.makeText(this@MainActivity,"Нажали на кнопку настройки!", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this@MainActivity,"Нажали на кнопку настройки!", Toast.LENGTH_SHORT).show()
+            val setIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(setIntent)
         }
+
+
+
+
     }
 }
