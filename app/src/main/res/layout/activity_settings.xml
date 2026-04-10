@@ -25,44 +25,25 @@
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:layout_marginTop="24dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/ButtonSetting"
             android:checked="true"
             android:gravity="center_vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="20dp"
-            android:text="@string/setScreen_darkTheme"
-            android:textSize="16sp" />
+            android:text="@string/setScreen_darkTheme" />
     </FrameLayout>
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ButtonSetting"
         android:drawableEnd="@drawable/ic_button_share"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
-        android:text="@string/setScreen_shareApp"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:text="@string/setScreen_shareApp" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ButtonSetting"
         android:drawableEnd="@drawable/ic_button_write_support"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
-        android:text="@string/setScreen_writeSupport"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:text="@string/setScreen_writeSupport" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        style="@style/ButtonSetting"
         android:drawableEnd="@drawable/ic_button_arrow_forward"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
-        android:text="@string/setScreen_userAgreement"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:text="@string/setScreen_userAgreement" />
 
 </LinearLayout>

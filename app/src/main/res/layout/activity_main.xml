@@ -19,64 +19,22 @@
         app:titleTextColor="@color/white" />
 
     <Button
-        android:id="@+id/search_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_marginTop="24dp"
-        android:layout_weight="25"
-
-        android:backgroundTint="@color/white"
+        style="@style/ButtonMain"
+        android:id="@+id/search_button"
         android:text="@string/textButtonSearch"
-
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="normal"
-
-        app:cornerRadius="16dp"
-        app:icon="@drawable/ic_button_search"
-        app:iconGravity="textStart"
-        app:iconPadding="10dp"
-        app:iconTint="@color/black" />
+        app:icon="@drawable/ic_button_search" />
 
     <Button
+        style="@style/ButtonMain"
         android:id="@+id/media_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="25"
-
-        android:backgroundTint="@color/white"
         android:text="@string/textButtonMedia"
-
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="normal"
-
-        app:cornerRadius="16dp"
-        app:icon="@drawable/ic_button_media"
-        app:iconGravity="textStart"
-        app:iconPadding="10dp"
-        app:iconTint="@color/black" />
+        app:icon="@drawable/ic_button_media" />
 
     <Button
+        style="@style/ButtonMain"
         android:id="@+id/setting_button"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="25"
-
-        android:backgroundTint="@color/white"
         android:text="@string/textButtonSetting"
-
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:textStyle="normal"
-        app:cornerRadius="16dp"
-
-        app:icon="@drawable/ic_button_setting"
-        app:iconGravity="textStart"
-        app:iconPadding="10dp"
-        app:iconTint="@color/black" />
+        app:icon="@drawable/ic_button_setting" />
 
 </LinearLayout>
