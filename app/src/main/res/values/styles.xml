@@ -22,4 +22,19 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
     </style>
+    <style name="ButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">25</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">10dp</item>
+        <item name="iconTint">@color/black</item>
+        <item name="elevation">0dp</item>
+    </style>
 </resources>

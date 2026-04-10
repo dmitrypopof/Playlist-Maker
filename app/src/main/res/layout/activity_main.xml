@@ -18,21 +18,21 @@
         app:title="@string/app_name"
         app:titleTextColor="@color/white" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:layout_marginTop="24dp"
-        style="@style/ButtonMain"
+        style="@style/ButtonStyle"
         android:id="@+id/search_button"
         android:text="@string/textButtonSearch"
         app:icon="@drawable/ic_button_search" />
 
-    <Button
-        style="@style/ButtonMain"
+    <com.google.android.material.button.MaterialButton
+        style="@style/ButtonStyle"
         android:id="@+id/media_button"
         android:text="@string/textButtonMedia"
         app:icon="@drawable/ic_button_media" />
 
-    <Button
-        style="@style/ButtonMain"
+    <com.google.android.material.button.MaterialButton
+        style="@style/ButtonStyle"
         android:id="@+id/setting_button"
         android:text="@string/textButtonSetting"
         app:icon="@drawable/ic_button_setting" />
