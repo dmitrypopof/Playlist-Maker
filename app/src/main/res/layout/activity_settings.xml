@@ -9,7 +9,6 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/back_button"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="start"
@@ -17,7 +16,8 @@
         app:iconGravity="textStart"
         app:iconTint="@color/black"
         app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/textButtonSetting" />
+        app:title="@string/textButtonSetting"
+        />
 
     <FrameLayout
         android:layout_width="match_parent"
