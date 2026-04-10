@@ -20,19 +20,19 @@
 
     <com.google.android.material.button.MaterialButton
         android:layout_marginTop="24dp"
-        style="@style/ButtonStyle"
+        style="@style/ButtonMain"
         android:id="@+id/search_button"
         android:text="@string/textButtonSearch"
         app:icon="@drawable/ic_button_search" />
 
     <com.google.android.material.button.MaterialButton
-        style="@style/ButtonStyle"
+        style="@style/ButtonMain"
         android:id="@+id/media_button"
         android:text="@string/textButtonMedia"
         app:icon="@drawable/ic_button_media" />
 
     <com.google.android.material.button.MaterialButton
-        style="@style/ButtonStyle"
+        style="@style/ButtonMain"
         android:id="@+id/setting_button"
         android:text="@string/textButtonSetting"
         app:icon="@drawable/ic_button_setting" />
