@@ -4,20 +4,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    style="@style/SettingScreen">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/back_button"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:gravity="start"
-        android:textColor="@color/black"
         app:iconGravity="textStart"
-        app:iconTint="@color/black"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/textButtonSetting"
+
         app:titleTextAppearance="@style/CustomTitleTextAppearance"
+        style="@style/My_Toolbar.Toolbar"
         />
 
     <FrameLayout
@@ -29,7 +29,8 @@
             style="@style/ButtonSetting"
             android:checked="true"
             android:gravity="center_vertical"
-            android:text="@string/setScreen_darkTheme" />
+            android:text="@string/setScreen_darkTheme"
+            />
     </FrameLayout>
 
     <com.google.android.material.textview.MaterialTextView
