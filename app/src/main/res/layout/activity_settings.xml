@@ -17,6 +17,7 @@
         app:iconTint="@color/black"
         app:navigationIcon="@drawable/ic_arrow_back"
         app:title="@string/textButtonSetting"
+        app:titleTextAppearance="@style/CustomTitleTextAppearance"
         />
 
     <FrameLayout

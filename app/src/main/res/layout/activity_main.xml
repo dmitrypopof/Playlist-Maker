@@ -13,10 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:gravity="start"
-        android:textSize="22sp"
-        android:textStyle="normal"
         app:title="@string/app_name"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white"
+        app:titleTextAppearance="@style/CustomTitleTextAppearance"/>
 
     <com.google.android.material.button.MaterialButton
         android:layout_marginTop="24dp"
