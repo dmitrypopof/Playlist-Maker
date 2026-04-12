@@ -3,6 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blue_cornflower">#3772E7</color>
+    <color name="blue_cornflower_dark">#9FBBF3</color>
     <color name="black_liquorice">#1A1B22</color>
     <color name="gray_aluminium_snow">#AEAFB4</color>
+    <color name="azure">#00D6C3</color>
+    <color name="azure_dark">#76EAE0</color>
 </resources>

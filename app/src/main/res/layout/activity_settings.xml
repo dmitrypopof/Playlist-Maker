@@ -4,21 +4,33 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="top"
+    style="@style/ActivityScreenMain.Background.Setting">
 
 
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/ActivityScreenSetting"
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="42dp"
+    android:orientation="horizontal">
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/back_button"
-        android:layout_width="match_parent"
+        android:layout_width="48dp"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/ic_arrow_back"
-        android:drawablePadding="16dp"
-        android:fontFamily="@font/ys_display_medium"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="20dp"
+        app:icon="@drawable/ic_arrow_back"
+        style="@style/DarkLightIcon"
+        />
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/textButtonSetting"
-        android:textSize="16sp" />
+        android:fontFamily="@font/ys_display_medium"
+        style="@style/ActivityScreenSetting"
+        android:layout_gravity="center"
+        android:textSize="22sp"
+        />
+</LinearLayout>
+
 
     <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
@@ -30,9 +42,9 @@
         android:paddingVertical="20dp"
         android:text="@string/setScreen_darkTheme"
         android:textSize="16sp"
-
+        android:fontFamily="@font/ys_display_regular"
+        style="@style/DarkLightSwitch"
         />
-
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
@@ -41,7 +53,6 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="20dp"
         android:text="@string/setScreen_shareApp"
-        android:textSize="16sp"
         style="@style/ActivityScreenSetting"/>
 
     <com.google.android.material.textview.MaterialTextView
