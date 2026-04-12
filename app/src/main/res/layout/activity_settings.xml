@@ -4,48 +4,65 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/SettingScreen">
+    android:orientation="vertical">
 
-    <com.google.android.material.appbar.MaterialToolbar
+
+    <com.google.android.material.textview.MaterialTextView
+        style="@style/ActivityScreenSetting"
         android:id="@+id/back_button"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:gravity="start"
-        app:iconGravity="textStart"
-        app:navigationIcon="@drawable/ic_arrow_back"
-        app:title="@string/textButtonSetting"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_arrow_back"
+        android:drawablePadding="16dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/textButtonSetting"
+        android:textSize="16sp" />
 
-        app:titleTextAppearance="@style/CustomTitleTextAppearance"
-        style="@style/My_Toolbar.Toolbar"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:checked="true"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/setScreen_darkTheme"
+        android:textSize="16sp"
+
         />
 
-    <FrameLayout
+
+    <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:layout_marginTop="24dp"
-            style="@style/ButtonSetting"
-            android:checked="true"
-            android:gravity="center_vertical"
-            android:text="@string/setScreen_darkTheme"
-            />
-    </FrameLayout>
-
-    <com.google.android.material.textview.MaterialTextView
-        style="@style/ButtonSetting"
+        android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_button_share"
-        android:text="@string/setScreen_shareApp" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/setScreen_shareApp"
+        android:textSize="16sp"
+        style="@style/ActivityScreenSetting"/>
 
     <com.google.android.material.textview.MaterialTextView
-        style="@style/ButtonSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_button_write_support"
-        android:text="@string/setScreen_writeSupport" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/setScreen_writeSupport"
+        android:textSize="16sp"
+        style="@style/ActivityScreenSetting"
+        />
 
     <com.google.android.material.textview.MaterialTextView
-        style="@style/ButtonSetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_button_arrow_forward"
-        android:text="@string/setScreen_userAgreement" />
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="20dp"
+        android:text="@string/setScreen_userAgreement"
+        android:textSize="16sp"
+        style="@style/ActivityScreenSetting"/>
 
 </LinearLayout>
