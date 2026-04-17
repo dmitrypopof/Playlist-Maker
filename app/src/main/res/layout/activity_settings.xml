@@ -47,6 +47,7 @@
         />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/shareApp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_button_share"
@@ -56,6 +57,7 @@
         style="@style/ActivityScreenSetting"/>
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/writeSupport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_button_write_support"
@@ -67,6 +69,7 @@
         />
 
     <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/userAgreement"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableEnd="@drawable/ic_button_arrow_forward"

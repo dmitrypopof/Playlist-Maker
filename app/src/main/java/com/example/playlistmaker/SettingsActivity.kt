@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,6 +20,10 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val backButton = findViewById<MaterialButton>(R.id.back_button)
+        val shareButton = findViewById<MaterialTextView>(R.id.shareApp)
+        val supButton = findViewById<MaterialTextView>(R.id.writeSupport)
+        val agreementButton = findViewById<MaterialTextView>(R.id.userAgreement)
+
 
         backButton.setOnClickListener {
             finish()
