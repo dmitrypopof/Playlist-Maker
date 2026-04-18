@@ -34,30 +34,40 @@ class SettingsActivity : AppCompatActivity() {
         shareButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/android-developer/")
-            startActivity(Intent.createChooser(intent, "Поделиться приложением"))
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.link_androidDeveloper))
+            startActivity(
+                Intent.createChooser(
+                    intent,
+                    getString(R.string.textBottomSheet_shareApp)
+                )
+            )
         }
 
         supButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = "mailto:".toUri()
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("dmitrypopof@mail.ru"))
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.sendMail)))
             intent.putExtra(
                 Intent.EXTRA_SUBJECT,
-                "Сообщение разработчикам и разработчицам приложения Playlist Maker"
+                getString(R.string.subjectMail)
             )
             intent.putExtra(
                 Intent.EXTRA_TEXT,
-                "Спасибо разработчикам и разработчицам за крутое приложение!"
+                getString(R.string.textMail)
             )
-            startActivity(Intent.createChooser(intent, "Отправить письмо"))
+            startActivity(Intent.createChooser(intent, getString(R.string.textBottomSheet_support)))
 
         }
 
         agreementButton.setOnClickListener {
             val intent =
-                Intent(Intent.ACTION_VIEW, "https://yandex.ru/legal/practicum_offer/ru/".toUri())
-            startActivity(Intent.createChooser(intent, "Выберите браузер"))
+                Intent(Intent.ACTION_VIEW, getString(R.string.linkPracticumOffer).toUri())
+            startActivity(
+                Intent.createChooser(
+                    intent,
+                    getString(R.string.textBottomSheet_agreement)
+                )
+            )
         }
 
 
