@@ -1,5 +1,6 @@
 package com.example.playlistmaker
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -28,5 +29,22 @@ class SettingsActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             finish()
         }
+
+        shareButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, "https://practicum.yandex.ru/android-developer")
+            startActivity(Intent.createChooser(intent, "Поделиться приложением"))
+        }
+
+        supButton.setOnClickListener {
+
+        }
+
+        agreementButton.setOnClickListener {
+
+        }
+
+
     }
 }
