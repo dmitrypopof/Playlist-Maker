@@ -8,4 +8,6 @@
     <color name="gray_aluminium_snow">#AEAFB4</color>
     <color name="azure">#00D6C3</color>
     <color name="azure_dark">#76EAE0</color>
+    <color name="yp_light_gray">#E6E8EB</color>
+    <color name="YP_Text_Gray">#AEAFB4</color>
 </resources>

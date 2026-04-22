@@ -16,4 +16,5 @@
     <string name="textBottomSheet_support">Отправить письмо</string>
     <string name="linkPracticumOffer">https://yandex.ru/legal/practicum_offer/ru/</string>
     <string name="textBottomSheet_agreement">Выберите браузер</string>
+    <string name="textSearch">Поиск</string>
 </resources>
