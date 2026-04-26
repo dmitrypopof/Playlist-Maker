@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -37,6 +38,10 @@ class SearchActivity : AppCompatActivity() {
         clearButton.setOnClickListener {
             inputEditText.setText("")
             bufferValue = ""
+
+            inputEditText.clearFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
         }
 
         val simpleTextWatcher = object : TextWatcher {
