@@ -45,4 +45,18 @@
         <item name="iconTint">@color/black_liquorice</item>
     </style>
 
+    <!--    Экран Поиск:-->
+    <style name="ActivitySearchHead" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="android:textColor">@color/black_liquorice</item>
+    <item name="android:textSize">22sp</item>
+    <item name="fontFamily">@font/ys_display_medium</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:gravity">center_vertical</item>
+    </style>>
+
+    <style name="SearchEditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="android:drawableTint">@color/YP_Text_Gray</item>
+        <item name="android:textColorHint">@color/YP_Text_Gray</item>
+    </style>
+
 </resources>

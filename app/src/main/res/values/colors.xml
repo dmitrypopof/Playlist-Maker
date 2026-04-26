@@ -10,4 +10,5 @@
     <color name="azure_dark">#76EAE0</color>
     <color name="yp_light_gray">#E6E8EB</color>
     <color name="YP_Text_Gray">#AEAFB4</color>
+    <color name="YP_Black">#1A1B22</color>
 </resources>

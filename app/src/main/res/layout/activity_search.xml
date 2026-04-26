@@ -25,28 +25,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/textSearch"
-            android:fontFamily="@font/ys_display_medium"
-            style="@style/ActivityScreenSetting"
+            style="@style/ActivitySearchHead"
             android:layout_gravity="center"
-            android:textSize="22sp"
             />
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputEditText
+    <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/search_field"
-        android:layout_marginTop="24dp"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:autofillHints=""
-        android:hint="@string/textSearch"
-        android:backgroundTint="@color/yp_light_gray"
-        android:background="@color/yp_light_gray"
-        android:textColorHint="@color/YP_Text_Gray"
-        android:inputType="text"
-        android:lines="1"
-        android:maxLength="15"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/edittext_background"
         android:drawableStart="@drawable/ic_button_search"
-        android:drawableTint="@color/YP_Text_Gray"
-        android:drawablePadding="8dp"
-        />
+        android:drawableEnd="@drawable/ic_button_clear"
+        android:textCursorDrawable="@drawable/search_urs"
+        android:drawablePadding="12dp"
+        android:gravity="center_vertical"
+        android:hint="@string/textSearch"
+        android:inputType="text"
+        android:maxLength="15"
+        android:paddingVertical="12dp"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        style="@style/SearchEditTextStyle"/>
+
 </LinearLayout>
