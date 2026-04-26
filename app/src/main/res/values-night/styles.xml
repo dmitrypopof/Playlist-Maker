@@ -50,5 +50,10 @@
     <style name="SearchEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:tint">@color/white</item>
         <item name="android:textColorHint">@color/YP_Black</item>
+        <item name="android:textColor">@color/YP_Black</item>
+        <item name="drawableTint">@color/YP_Black</item>
+    </style>
+    <style name="ClearIconStyle">
+        <item name="tint">@color/YP_Black</item>
     </style>
 </resources>

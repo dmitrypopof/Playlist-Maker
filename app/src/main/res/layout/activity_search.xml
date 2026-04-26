@@ -50,6 +50,7 @@
             android:paddingVertical="12dp"
             android:paddingStart="12dp"
             android:paddingEnd="48dp"
+            tools:text="dgbdgngnd"
             android:textCursorDrawable="@drawable/search_urs"/>
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -59,6 +60,8 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_button_clear"
-            android:visibility="gone" />
+            android:visibility="gone"
+            style="@style/ClearIconStyle"
+            />
     </FrameLayout>
 </LinearLayout>
