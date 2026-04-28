@@ -6,6 +6,15 @@
     <string name="textButtonSetting">Настройки</string>
     <string name="setScreen_darkTheme">Тёмная тема</string>
     <string name="setScreen_shareApp">Поделиться приложением</string>
+    <string name="textBottomSheet_shareApp">Поделиться приложением</string>
     <string name="setScreen_writeSupport">Написать в поддержку</string>
     <string name="setScreen_userAgreement">Пользовательсвое соглашение</string>
+    <string name="link_androidDeveloper">https://practicum.yandex.ru/android-developer/</string>
+    <string name="sendMail">dmitrypopof@mail.ru</string>
+    <string name="subjectMail">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="textMail">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="textBottomSheet_support">Отправить письмо</string>
+    <string name="linkPracticumOffer">https://yandex.ru/legal/practicum_offer/ru/</string>
+    <string name="textBottomSheet_agreement">Выберите браузер</string>
+    <string name="textSearch">Поиск</string>
 </resources>

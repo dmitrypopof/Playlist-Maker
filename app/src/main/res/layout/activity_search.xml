@@ -1,10 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    style="@style/ActivityScreenMain.Background.Setting"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="top"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/back_button"
+            style="@style/DarkLightIcon"
+            android:layout_width="48dp"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_arrow_back" />
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/ActivitySearchHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/textSearch" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/search_field"
+            style="@style/SearchEditTextStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_background"
+            android:drawableStart="@drawable/ic_button_search"
+            android:drawablePadding="12dp"
+            android:gravity="center_vertical"
+            android:hint="@string/textSearch"
+            android:inputType="text"
+            android:maxLength="15"
+            android:paddingVertical="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="48dp"
+            tools:text="dgbdgngnd"
+            android:textCursorDrawable="@drawable/search_urs"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/ic_button_clear"
+            android:visibility="gone"
+            style="@style/ClearIconStyle"
+            />
+    </FrameLayout>
+</LinearLayout>
