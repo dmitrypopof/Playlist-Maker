@@ -11,11 +11,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 
 class SearchActivity : AppCompatActivity() {
 
     private var bufferValue: String = TEXT_DEF
+    private val imageUrl = "https://st1.chatovod.ru/a/2016/03_30/8/2376011_b1459327738834.jpg"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,6 +65,10 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.addTextChangedListener(simpleTextWatcher)
         clearButton.visibility = clearButtonVisibility(inputEditText.text)
         //inputEditText.requestFocus()
+
+
+        val image = findViewById<ImageView>(R.id.image)
+        Glide.with(applicationContext).load(imageUrl).into(image)
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
