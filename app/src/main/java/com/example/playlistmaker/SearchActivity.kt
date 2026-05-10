@@ -66,14 +66,6 @@ class SearchActivity : AppCompatActivity() {
         clearButton.visibility = clearButtonVisibility(inputEditText.text)
         //inputEditText.requestFocus()
 
-
-        val image = findViewById<ImageView>(R.id.image)
-        Glide.with(applicationContext)
-            .load(imageUrl)
-            .placeholder(R.drawable.ic_placeholder_no_dowload)
-            .error(R.drawable.ic_placeholder_no_dowload)
-            .into(image)
-
         val tracks = listOf(
             Track(
                 trackName = "Smells Like Teen Spirit",
