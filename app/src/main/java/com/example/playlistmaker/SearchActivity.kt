@@ -68,7 +68,11 @@ class SearchActivity : AppCompatActivity() {
 
 
         val image = findViewById<ImageView>(R.id.image)
-        Glide.with(applicationContext).load(imageUrl).into(image)
+        Glide.with(applicationContext)
+            .load(imageUrl)
+            .placeholder(R.drawable.ic_placeholder_no_dowload)
+            .error(R.drawable.ic_placeholder_no_dowload)
+            .into(image)
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
