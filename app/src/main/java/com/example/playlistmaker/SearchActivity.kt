@@ -11,13 +11,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.adapters.TrackAdapter
 import com.google.android.material.button.MaterialButton
 
 class SearchActivity : AppCompatActivity() {
 
     private var bufferValue: String = TEXT_DEF
-    private val imageUrl = "https://st1.chatovod.ru/a/2016/03_30/8/2376011_b1459327738834.jpg"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +68,7 @@ class SearchActivity : AppCompatActivity() {
         clearButton.visibility = clearButtonVisibility(inputEditText.text)
         //inputEditText.requestFocus()
 
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val tracks = listOf(
             Track(
                 trackName = "Smells Like Teen Spirit",
@@ -98,6 +101,9 @@ class SearchActivity : AppCompatActivity() {
                 artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
             )
         )
+        val adapter = TrackAdapter(tracks)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

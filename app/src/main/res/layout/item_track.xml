@@ -37,11 +37,7 @@
             android:id="@+id/track_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/YP_Black"
-            android:fontFamily="@font/ys_display_regular"
-            android:textSize="16sp"
-            android:maxLines="1"
-            android:ellipsize="end"
+            style="@style/TrackNameStyle"
             tools:text="Smells Like Teen Spirit"/>
 
         <LinearLayout
@@ -54,18 +50,14 @@
                 android:id="@+id/artist_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/ys_display_regular"
-                android:textSize="11sp"
-                android:textColor="@color/YP_Text_Gray"
-                android:maxLines="1"
-                android:ellipsize="end"
+                style="@style/TrackDetailsStyle"
                 tools:text="Nirvana"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="•"
-                android:textColor="@color/YP_Text_Gray"
+                android:text="@string/point_separator"
+                style="@style/TrackSeparatorStyle"
                 android:layout_marginStart="4dp"
                 android:layout_marginEnd="4dp" />
 
@@ -73,8 +65,7 @@
                 android:id="@+id/track_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="11sp"
-                android:textColor="@color/YP_Text_Gray"
+                style="@style/TrackDetailsStyle"
                 tools:text="5:01"/>
         </LinearLayout>
     </LinearLayout>
@@ -84,6 +75,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_button_arrow_forward"
-        app:tint="@color/YP_Text_Gray"
+        style="@style/ForwardButtonStyle"
         android:paddingHorizontal="12dp" />
 </LinearLayout>
