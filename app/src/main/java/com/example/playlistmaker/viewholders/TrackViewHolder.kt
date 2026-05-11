@@ -8,18 +8,11 @@ import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.Track
 
-class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    private val trackNameView: TextView
-    private val artistNameView: TextView
-    private val trackTimeView: TextView
-    private val imageView: ImageView
-
-    init {
-        trackNameView = itemView.findViewById(R.id.track_name)
-        artistNameView = itemView.findViewById(R.id.artist_name)
-        trackTimeView = itemView.findViewById(R.id.track_time)
-        imageView = itemView.findViewById(R.id.image)
-    }
+class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
+    private val trackNameView: TextView by lazy { itemView.findViewById(R.id.track_name) }
+    private val artistNameView: TextView by lazy { itemView.findViewById(R.id.artist_name) }
+    private val trackTimeView: TextView by lazy { itemView.findViewById(R.id.track_time) }
+    private val imageView: ImageView by lazy { itemView.findViewById(R.id.image) }
 
     fun bind(model: Track){
         trackNameView.text = model.trackName
@@ -28,8 +21,8 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         Glide.with(imageView.context)
             .load(model.artworkUrl100)
-            .placeholder(R.drawable.ic_placeholder_no_dowload)
-            .error(R.drawable.ic_placeholder_no_dowload)
+            .placeholder(R.drawable.ic_placeholder_no_download)
+            .error(R.drawable.ic_placeholder_no_download)
             .centerCrop()
             .into(imageView)
     }

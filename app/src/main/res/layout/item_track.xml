@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="13dp">
+
+    <!-- Обложка -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:cardCornerRadius="2dp"
+        app:cardElevation="0dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_placeholder_no_download"/>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Контейнер для текстовой информации -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/track_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/YP_Black"
+            android:fontFamily="@font/ys_display_regular"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            tools:text="Smells Like Teen Spirit"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="1dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/artist_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/ys_display_regular"
+                android:textSize="11sp"
+                android:textColor="@color/YP_Text_Gray"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Nirvana"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="•"
+                android:textColor="@color/YP_Text_Gray"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="4dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/track_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="11sp"
+                android:textColor="@color/YP_Text_Gray"
+                tools:text="5:01"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Иконка стрелки вправо -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_button_arrow_forward"
+        app:tint="@color/YP_Text_Gray"
+        android:paddingHorizontal="12dp" />
+</LinearLayout>
