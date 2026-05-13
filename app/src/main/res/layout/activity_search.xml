@@ -10,10 +10,11 @@
     android:orientation="vertical"
     tools:context=".SearchActivity">
 
+    <!-- Название экрана поиск -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="42dp"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/back_button"
@@ -30,6 +31,7 @@
             android:text="@string/textSearch" />
     </LinearLayout>
 
+    <!-- Поле ввода Поиск -->
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,18 +52,27 @@
             android:paddingVertical="12dp"
             android:paddingStart="12dp"
             android:paddingEnd="48dp"
-            tools:text="dgbdgngnd"
-            android:textCursorDrawable="@drawable/search_urs"/>
+            android:textCursorDrawable="@drawable/search_urs"
+            tools:text="Nirvana Smells" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/clearIcon"
+            style="@style/ClearIconStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_button_clear"
-            android:visibility="gone"
-            style="@style/ClearIconStyle"
-            />
+            android:visibility="gone" />
     </FrameLayout>
+
+    <!-- RecyclerView для списка треков -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/item_track"/>
+
+
 </LinearLayout>
