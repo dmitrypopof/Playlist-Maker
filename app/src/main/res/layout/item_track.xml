@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_placeholder_no_download"/>
+            tools:src="@drawable/ic_placeholder_no_download_45x45"/>
     </androidx.cardview.widget.CardView>
 
     <!-- Контейнер для текстовой информации -->
