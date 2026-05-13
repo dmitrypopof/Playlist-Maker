@@ -51,15 +51,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TrackDetailsStyle"
-                tools:text="Nirvana"/>
+                tools:text="Nirvana" />
 
-            <com.google.android.material.textview.MaterialTextView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/point_separator"
+                android:src="@drawable/ic_separator_point"
                 style="@style/TrackSeparatorStyle"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="4dp" />
+                />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/track_time"
