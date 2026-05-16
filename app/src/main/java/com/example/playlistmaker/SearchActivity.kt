@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.adapters.TrackAdapter
+import com.example.playlistmaker.models.Track
 import com.google.android.material.button.MaterialButton
 
 class SearchActivity : AppCompatActivity() {
