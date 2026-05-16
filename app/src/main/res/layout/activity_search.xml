@@ -53,6 +53,8 @@
             android:paddingStart="12dp"
             android:paddingEnd="48dp"
             android:textCursorDrawable="@drawable/search_urs"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             tools:text="Nirvana Smells" />
 
         <androidx.appcompat.widget.AppCompatImageView
