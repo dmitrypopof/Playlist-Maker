@@ -16,6 +16,9 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
 
     fun bind(model: Track){
         trackNameView.text = model.displayTrackName
+        trackNameView.maxLines = 1
+        trackNameView.ellipsize = android.text.TextUtils.TruncateAt.END
+
         artistNameView.text = model.displayArtistName
         trackTimeView.text = model.formattedTime
 

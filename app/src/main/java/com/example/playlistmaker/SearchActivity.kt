@@ -29,12 +29,12 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var adapter: TrackAdapter
     private lateinit var inputEditText: AppCompatEditText
 
-    // В начало класса SearchActivity, после объявления bufferValue
+
     private val searchRunnable = Runnable {
         performSearch(bufferValue)
     }
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
-    private val searchDelayMs = 2000L // Задержка 2 секунды после последнего ввода
+    private val searchDelayMs = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +102,14 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.visibility = View.GONE
         placeholderSearch.visibility = View.GONE
         stubNoResult.visibility = View.GONE
+
+        // обработка кнопки обновить
+        val updateButton = findViewById<MaterialButton>(R.id.update_button)
+        updateButton.setOnClickListener {
+            if (bufferValue.isNotEmpty()) {
+                performSearch(bufferValue)
+            }
+        }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -140,17 +148,51 @@ class SearchActivity : AppCompatActivity() {
                 call: retrofit2.Call<TrackResponse>,
                 response: retrofit2.Response<TrackResponse>
             ) {
-                // Обработка ответа будет на Этапе 3
-                android.util.Log.d("SearchActivity", "Ответ получен. Код: ${response.code()}")
+                if (response.isSuccessful) {
+                    val trackResponse = response.body()
+                    val tracks = trackResponse?.results ?: emptyList()
+
+                    if (tracks.isEmpty()) {
+                        // Ничего не нашлось
+                        showNoResult()
+                    } else {
+                        // Есть результаты
+                        showTracks(tracks)
+                    }
+                } else {
+                    // Ошибка сервера (например, 500)
+                    showNetworkError()
+                }
             }
 
             override fun onFailure(
                 call: retrofit2.Call<TrackResponse>,
                 t: Throwable
             ) {
-                // Обработка ошибки будет на Этапе 3
-                android.util.Log.e("SearchActivity", "Ошибка сети: ${t.message}")
+                // Ошибка сети
+                showNetworkError()
             }
         })
+    }
+
+    private fun showTracks(tracks: List<Track>) {
+        recyclerView.visibility = View.VISIBLE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.GONE
+
+        adapter = TrackAdapter(tracks)
+        recyclerView.adapter = adapter
+    }
+
+    private fun showNoResult() {
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.VISIBLE
+    }
+
+    private fun showNetworkError() {
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.VISIBLE
+        stubNoResult.visibility = View.GONE
     }
 }
