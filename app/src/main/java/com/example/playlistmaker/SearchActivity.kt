@@ -22,7 +22,7 @@ import com.google.android.material.button.MaterialButton
 
 class SearchActivity : AppCompatActivity() {
 
-    private var bufferValue: String = TEXT_DEF
+    private var inputValue: String = TEXT_DEF
     private lateinit var recyclerView: RecyclerView
     private lateinit var placeholderSearch: LinearLayout
     private lateinit var stubNoResult: LinearLayout
@@ -31,7 +31,7 @@ class SearchActivity : AppCompatActivity() {
 
 
     private val searchRunnable = Runnable {
-        performSearch(bufferValue)
+        performSearch(inputValue)
     }
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
     private val searchDelayMs = 2000L
@@ -59,11 +59,23 @@ class SearchActivity : AppCompatActivity() {
         }
         clearButton.setOnClickListener {
             inputEditText.setText("")
-            bufferValue = ""
+            inputValue = ""
+
+            // Очищаем список треков
+            adapter = TrackAdapter(emptyList())
+            recyclerView.adapter = adapter
+
+            // Скрываем RecyclerView и заглушки
+            recyclerView.visibility = View.GONE
+            placeholderSearch.visibility = View.GONE
+            stubNoResult.visibility = View.GONE
 
             inputEditText.clearFocus()
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+
+            // Отменяем отложенный поиск
+            handler.removeCallbacks(searchRunnable)
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -76,14 +88,14 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                bufferValue = s?.toString() ?: ""
+                inputValue = s?.toString() ?: ""
                 clearButton.visibility = clearButtonVisibility(s)
 
                 // Отменяем предыдущий запрос на поиск
                 handler.removeCallbacks(searchRunnable)
 
                 // Если текст не пустой - запускаем отложенный поиск
-                if (bufferValue.isNotEmpty()) {
+                if (inputValue.isNotEmpty()) {
                     handler.postDelayed(searchRunnable, searchDelayMs)
                 }
             }
@@ -106,19 +118,19 @@ class SearchActivity : AppCompatActivity() {
         // обработка кнопки обновить
         val updateButton = findViewById<MaterialButton>(R.id.update_button)
         updateButton.setOnClickListener {
-            if (bufferValue.isNotEmpty()) {
-                performSearch(bufferValue)
+            if (inputValue.isNotEmpty()) {
+                performSearch(inputValue)
             }
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, bufferValue)
+        outState.putString(INPUT_TEXT, inputValue)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        bufferValue = savedInstanceState.getString(INPUT_TEXT, TEXT_DEF)
+        inputValue = savedInstanceState.getString(INPUT_TEXT, TEXT_DEF)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
