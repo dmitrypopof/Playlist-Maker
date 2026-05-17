@@ -34,7 +34,6 @@ class SearchActivity : AppCompatActivity() {
         performSearch(inputValue)
     }
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
-    private val searchDelayMs = 2000L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +95,7 @@ class SearchActivity : AppCompatActivity() {
 
                 // Если текст не пустой - запускаем отложенный поиск
                 if (inputValue.isNotEmpty()) {
-                    handler.postDelayed(searchRunnable, searchDelayMs)
+                    handler.postDelayed(searchRunnable, SEARCH_DELAY_MS)
                 }
             }
 
@@ -144,6 +143,7 @@ class SearchActivity : AppCompatActivity() {
     companion object{
         const val INPUT_TEXT = "INPUT_TEXT"
         const val TEXT_DEF = ""
+        const val SEARCH_DELAY_MS = 2000L
     }
 
     private fun performSearch(query: String) {
