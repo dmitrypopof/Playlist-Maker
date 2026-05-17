@@ -10,12 +10,13 @@ import com.example.playlistmaker.viewholders.TrackViewHolder
 class TrackAdapter(
     private val tracks: List<Track>
 ) : RecyclerView.Adapter<TrackViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): TrackViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_track, parent,false)
+            .inflate(R.layout.item_track, parent, false)
         return TrackViewHolder(view)
     }
 

@@ -21,6 +21,13 @@ class SearchActivity : AppCompatActivity() {
 
     private var bufferValue: String = TEXT_DEF
 
+    // В начало класса SearchActivity, после объявления bufferValue
+    private val searchRunnable = Runnable {
+        performSearch(bufferValue)
+    }
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
+    private val searchDelayMs = 2000L // Задержка 2 секунды после последнего ввода
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -60,6 +67,14 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 bufferValue = s?.toString() ?: ""
                 clearButton.visibility = clearButtonVisibility(s)
+
+                // Отменяем предыдущий запрос на поиск
+                handler.removeCallbacks(searchRunnable)
+
+                // Если текст не пустой - запускаем отложенный поиск
+                if (bufferValue.isNotEmpty()) {
+                    handler.postDelayed(searchRunnable, searchDelayMs)
+                }
             }
 
         }
@@ -126,5 +141,10 @@ class SearchActivity : AppCompatActivity() {
     companion object{
         const val INPUT_TEXT = "INPUT_TEXT"
         const val TEXT_DEF = ""
+    }
+
+    private fun performSearch(query: String) {
+        android.util.Log.d("SearchActivity", "Поисковой запрос: $query")
+        // Здесь будет логика отправки запроса (Этап 2)
     }
 }

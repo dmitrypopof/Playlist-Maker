@@ -15,9 +15,9 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
     private val imageView: ImageView by lazy { itemView.findViewById(R.id.image) }
 
     fun bind(model: Track){
-        trackNameView.text = model.trackName
-        artistNameView.text = model.artistName
-        trackTimeView.text = model.trackTime
+        trackNameView.text = model.displayTrackName
+        artistNameView.text = model.displayArtistName
+        trackTimeView.text = model.formattedTime
 
         Glide.with(imageView.context)
             .load(model.artworkUrl100)
