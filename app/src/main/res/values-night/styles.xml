@@ -17,7 +17,7 @@
     </style>
 
     <style name="ActivityScreenMain.Background.Setting">
-        <item name="android:background">@color/black_liquorice</item>
+        <item name="android:background">@color/YP_Black</item>
     </style>
 
     <style name="ActivityScreenMain.Background.Setting.Toolbar" parent="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -86,6 +86,10 @@
         <item name="tint">@color/white</item>
     </style>
 
+    <!--  Стиль для обложки трека  -->
+    <style name="TrackImageStyle">
+        <item name="android:background">@color/YP_Black</item>
+    </style>
     <!-- Экран заглушки при поиске  -->
         <!--  Заглушка  -->
     <style name="ImageStubStyle">

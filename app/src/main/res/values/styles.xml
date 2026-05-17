@@ -93,6 +93,11 @@
         <item name="tint">@color/YP_Text_Gray</item>
     </style>
 
+    <!--  Стиль для обложки трека  -->
+    <style name="TrackImageStyle">
+        <item name="android:background">@color/white</item>
+    </style>
+
     <!-- Экран заглушки при поиске  -->
             <!--  Заглушка  -->
     <style name="ImageStubStyle">
