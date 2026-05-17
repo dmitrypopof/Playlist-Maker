@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -14,11 +15,25 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.adapters.TrackAdapter
+import com.example.playlistmaker.helpers.RetrofitHelper
+import com.example.playlistmaker.models.Track
+import com.example.playlistmaker.models.TrackResponse
 import com.google.android.material.button.MaterialButton
 
 class SearchActivity : AppCompatActivity() {
 
-    private var bufferValue: String = TEXT_DEF
+    private var inputValue: String = TEXT_DEF
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var placeholderSearch: LinearLayout
+    private lateinit var stubNoResult: LinearLayout
+    private lateinit var adapter: TrackAdapter
+    private lateinit var inputEditText: AppCompatEditText
+
+
+    private val searchRunnable = Runnable {
+        performSearch(inputValue)
+    }
+    private val handler = android.os.Handler(android.os.Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +46,11 @@ class SearchActivity : AppCompatActivity() {
         }
 
         val backButton = findViewById<MaterialButton>(R.id.back_button)
-        val inputEditText = findViewById<AppCompatEditText>(R.id.search_field)
-        inputEditText.setText(bufferValue)
+
+        recyclerView = findViewById(R.id.recyclerView)
+        placeholderSearch = findViewById(R.id.placeholder_search)
+        stubNoResult = findViewById(R.id.stub_no_result)
+        inputEditText = findViewById(R.id.search_field)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
 
         backButton.setOnClickListener {
@@ -40,11 +58,23 @@ class SearchActivity : AppCompatActivity() {
         }
         clearButton.setOnClickListener {
             inputEditText.setText("")
-            bufferValue = ""
+            inputValue = ""
+
+            // Очищаем список треков
+            adapter = TrackAdapter(emptyList())
+            recyclerView.adapter = adapter
+
+            // Скрываем RecyclerView и заглушки
+            recyclerView.visibility = View.GONE
+            placeholderSearch.visibility = View.GONE
+            stubNoResult.visibility = View.GONE
 
             inputEditText.clearFocus()
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+
+            // Отменяем отложенный поиск
+            handler.removeCallbacks(searchRunnable)
         }
 
         val simpleTextWatcher = object : TextWatcher {
@@ -57,8 +87,16 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                bufferValue = s?.toString() ?: ""
+                inputValue = s?.toString() ?: ""
                 clearButton.visibility = clearButtonVisibility(s)
+
+                // Отменяем предыдущий запрос на поиск
+                handler.removeCallbacks(searchRunnable)
+
+                // Если текст не пустой - запускаем отложенный поиск
+                if (inputValue.isNotEmpty()) {
+                    handler.postDelayed(searchRunnable, SEARCH_DELAY_MS)
+                }
             }
 
         }
@@ -67,51 +105,31 @@ class SearchActivity : AppCompatActivity() {
         clearButton.visibility = clearButtonVisibility(inputEditText.text)
         //inputEditText.requestFocus()
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val tracks = listOf(
-            Track(
-                trackName = "Smells Like Teen Spirit",
-                artistName = "Nirvana",
-                trackTime = "5:01",
-                artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-            ),
-            Track(
-                trackName = "Billie Jean",
-                artistName = "Michael Jackson",
-                trackTime = "4:35",
-                artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
-            ),
-            Track(
-                trackName = "Stayin' Alive",
-                artistName = "Bee Gees",
-                trackTime = "4:10",
-                artworkUrl100 = "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
-            ),
-            Track(
-                trackName = "Whole Lotta Love",
-                artistName = "Led Zeppelin",
-                trackTime = "5:33",
-                artworkUrl100 = "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
-            ),
-            Track(
-                trackName = "Sweet Child O'Mine",
-                artistName = "Guns N' Roses",
-                trackTime = "5:03",
-                artworkUrl100 = "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
-            )
-        )
-        val adapter = TrackAdapter(tracks)
+        adapter = TrackAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+
+        // При старте скрываем все (пустой экран)
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.GONE
+
+        // обработка кнопки обновить
+        val updateButton = findViewById<MaterialButton>(R.id.update_button)
+        updateButton.setOnClickListener {
+            if (inputValue.isNotEmpty()) {
+                performSearch(inputValue)
+            }
+        }
     }
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(INPUT_TEXT, bufferValue)
+        outState.putString(INPUT_TEXT, inputValue)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        bufferValue = savedInstanceState.getString(INPUT_TEXT, TEXT_DEF)
+        inputValue = savedInstanceState.getString(INPUT_TEXT, TEXT_DEF)
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -125,5 +143,68 @@ class SearchActivity : AppCompatActivity() {
     companion object{
         const val INPUT_TEXT = "INPUT_TEXT"
         const val TEXT_DEF = ""
+        const val SEARCH_DELAY_MS = 2000L
+    }
+
+    private fun performSearch(query: String) {
+        android.util.Log.d("SearchActivity", "Поисковой запрос: $query")
+        // Показываем RecyclerView, скрываем заглушки
+        recyclerView.visibility = View.VISIBLE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.GONE
+
+        // Выполняем запрос
+        val call = RetrofitHelper.apiService.search(query)
+        call.enqueue(object : retrofit2.Callback<TrackResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<TrackResponse>,
+                response: retrofit2.Response<TrackResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val trackResponse = response.body()
+                    val tracks = trackResponse?.results ?: emptyList()
+
+                    if (tracks.isEmpty()) {
+                        // Ничего не нашлось
+                        showNoResult()
+                    } else {
+                        // Есть результаты
+                        showTracks(tracks)
+                    }
+                } else {
+                    // Ошибка сервера (например, 500)
+                    showNetworkError()
+                }
+            }
+
+            override fun onFailure(
+                call: retrofit2.Call<TrackResponse>,
+                t: Throwable
+            ) {
+                // Ошибка сети
+                showNetworkError()
+            }
+        })
+    }
+
+    private fun showTracks(tracks: List<Track>) {
+        recyclerView.visibility = View.VISIBLE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.GONE
+
+        adapter = TrackAdapter(tracks)
+        recyclerView.adapter = adapter
+    }
+
+    private fun showNoResult() {
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.VISIBLE
+    }
+
+    private fun showNetworkError() {
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.VISIBLE
+        stubNoResult.visibility = View.GONE
     }
 }

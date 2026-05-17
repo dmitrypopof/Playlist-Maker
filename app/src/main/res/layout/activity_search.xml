@@ -53,6 +53,8 @@
             android:paddingStart="12dp"
             android:paddingEnd="48dp"
             android:textCursorDrawable="@drawable/search_urs"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             tools:text="Nirvana Smells" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -72,7 +74,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
-        tools:listitem="@layout/item_track"/>
+        android:visibility="gone"
+        tools:listitem="@layout/item_track" />
 
+    <!-- Заглушка - Проблемы со связью-->
+    <LinearLayout
+        android:id="@+id/placeholder_search"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/placeholder_image"
+            style="@style/ImageStubStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/placeholder_text"
+            style="@style/TextStubStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/problem_internet"
+            android:textAlignment="center" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/update_button"
+            style="@style/UpdateButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/update" />
+
+    </LinearLayout>
+
+    <!-- Заглушка - Ничего не нашлось-->
+    <LinearLayout
+        android:id="@+id/stub_no_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:visibility="gone">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/image_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/ImageStubStyleNoResult"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/text_no_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_result"
+            style="@style/TextStubStyle"
+            />
+    </LinearLayout>
 
 </LinearLayout>

@@ -7,7 +7,8 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingVertical="8dp"
-    android:paddingHorizontal="13dp">
+    android:paddingHorizontal="13dp"
+    android:background="@color/YP_Black">
 
     <!-- Обложка -->
     <androidx.cardview.widget.CardView
@@ -21,7 +22,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            tools:src="@drawable/ic_placeholder_no_download_45x45"/>
+            tools:src="@drawable/ic_placeholder_no_download_45x45"
+            style="@style/TrackImageStyle"
+            />
     </androidx.cardview.widget.CardView>
 
     <!-- Контейнер для текстовой информации -->

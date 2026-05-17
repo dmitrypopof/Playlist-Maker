@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.Track
+import com.example.playlistmaker.models.Track
 
 class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
     private val trackNameView: TextView by lazy { itemView.findViewById(R.id.track_name) }
@@ -15,9 +15,12 @@ class TrackViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)  {
     private val imageView: ImageView by lazy { itemView.findViewById(R.id.image) }
 
     fun bind(model: Track){
-        trackNameView.text = model.trackName
-        artistNameView.text = model.artistName
-        trackTimeView.text = model.trackTime
+        trackNameView.text = model.displayTrackName
+        trackNameView.maxLines = 1
+        trackNameView.ellipsize = android.text.TextUtils.TruncateAt.END
+
+        artistNameView.text = model.displayArtistName
+        trackTimeView.text = model.formattedTime
 
         Glide.with(imageView.context)
             .load(model.artworkUrl100)
