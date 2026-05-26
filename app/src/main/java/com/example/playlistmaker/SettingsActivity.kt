@@ -8,6 +8,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.textview.MaterialTextView
 
 class SettingsActivity : AppCompatActivity() {
@@ -25,11 +26,14 @@ class SettingsActivity : AppCompatActivity() {
         val shareButton = findViewById<MaterialTextView>(R.id.shareApp)
         val supButton = findViewById<MaterialTextView>(R.id.writeSupport)
         val agreementButton = findViewById<MaterialTextView>(R.id.userAgreement)
+        val themeSwitcher = findViewById<MaterialSwitch>(R.id.themeSwitcher)
 
 
         backButton.setOnClickListener {
             finish()
         }
+
+        //themeSwitcher.setOnClickListener { switcher,  checked -> }
 
         shareButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
