@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.materialswitch.MaterialSwitch
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textview.MaterialTextView
 
 class SettingsActivity : AppCompatActivity() {
@@ -16,6 +16,10 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        themeSwitcher.setChecked((applicationContext as App).darkTheme)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -26,14 +30,15 @@ class SettingsActivity : AppCompatActivity() {
         val shareButton = findViewById<MaterialTextView>(R.id.shareApp)
         val supButton = findViewById<MaterialTextView>(R.id.writeSupport)
         val agreementButton = findViewById<MaterialTextView>(R.id.userAgreement)
-        val themeSwitcher = findViewById<MaterialSwitch>(R.id.themeSwitcher)
 
 
         backButton.setOnClickListener {
             finish()
         }
 
-        //themeSwitcher.setOnClickListener { switcher,  checked -> }
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked  ->
+            (applicationContext as App).switchTheme(checked)
+        }
 
         shareButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
