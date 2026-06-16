@@ -5,10 +5,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -21,6 +19,7 @@ import com.example.playlistmaker.helpers.RetrofitHelper
 import com.example.playlistmaker.models.Track
 import com.example.playlistmaker.models.TrackResponse
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
 
 class SearchActivity : AppCompatActivity() {
 
@@ -30,7 +29,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var stubNoResult: LinearLayout
     private lateinit var adapter: TrackAdapter
     private lateinit var searchField: AppCompatEditText
-    private lateinit var hintMessage: TextView
+    private lateinit var hintMessage: MaterialTextView
 
 
     private val searchRunnable = Runnable {
@@ -54,11 +53,14 @@ class SearchActivity : AppCompatActivity() {
         placeholderSearch = findViewById(R.id.placeholder_search)
         stubNoResult = findViewById(R.id.stub_no_result)
         searchField = findViewById(R.id.search_field)
+        hintMessage = findViewById(R.id.searchHint)
+
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
 
         backButton.setOnClickListener {
             finish()
         }
+
         clearButton.setOnClickListener {
             searchField.setText("")
             inputValue = ""
@@ -79,6 +81,8 @@ class SearchActivity : AppCompatActivity() {
             // Отменяем отложенный поиск
             handler.removeCallbacks(searchRunnable)
         }
+
+
 
         val simpleTextWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -104,9 +108,15 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
+        searchField.setOnFocusChangeListener {view, hasFocus ->
+            hintMessage.visibility =
+                if (hasFocus && searchField.text.toString().isEmpty())
+                View.VISIBLE else View.GONE
+        }
+
         searchField.addTextChangedListener(simpleTextWatcher)
         clearButton.visibility = clearButtonVisibility(searchField.text)
-        //inputEditText.requestFocus()
+        //searchField.requestFocus()
 
         adapter = TrackAdapter(emptyList())
         recyclerView.layoutManager = LinearLayoutManager(this)
