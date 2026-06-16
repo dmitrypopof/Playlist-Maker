@@ -5,8 +5,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -28,6 +30,8 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var stubNoResult: LinearLayout
     private lateinit var adapter: TrackAdapter
     private lateinit var inputEditText: AppCompatEditText
+    private lateinit var searchField: EditText
+    private lateinit var hintMessage: TextView
 
 
     private val searchRunnable = Runnable {

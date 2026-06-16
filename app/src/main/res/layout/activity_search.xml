@@ -68,6 +68,20 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <!-- Фокус на поле ввода -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/searchHint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@color/white"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:text="Вводите название фильма на английском языке. Можно указать год для более точного поиска"
+        android:visibility="gone"/>
+
     <!-- RecyclerView для списка треков -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
