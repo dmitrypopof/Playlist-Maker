@@ -29,8 +29,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var placeholderSearch: LinearLayout
     private lateinit var stubNoResult: LinearLayout
     private lateinit var adapter: TrackAdapter
-    private lateinit var inputEditText: AppCompatEditText
-    private lateinit var searchField: EditText
+    private lateinit var searchField: AppCompatEditText
     private lateinit var hintMessage: TextView
 
 
@@ -54,14 +53,14 @@ class SearchActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         placeholderSearch = findViewById(R.id.placeholder_search)
         stubNoResult = findViewById(R.id.stub_no_result)
-        inputEditText = findViewById(R.id.search_field)
+        searchField = findViewById(R.id.search_field)
         val clearButton = findViewById<ImageView>(R.id.clearIcon)
 
         backButton.setOnClickListener {
             finish()
         }
         clearButton.setOnClickListener {
-            inputEditText.setText("")
+            searchField.setText("")
             inputValue = ""
 
             // Очищаем список треков
@@ -73,9 +72,9 @@ class SearchActivity : AppCompatActivity() {
             placeholderSearch.visibility = View.GONE
             stubNoResult.visibility = View.GONE
 
-            inputEditText.clearFocus()
+            searchField.clearFocus()
             val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(inputEditText.windowToken, 0)
+            imm.hideSoftInputFromWindow(searchField.windowToken, 0)
 
             // Отменяем отложенный поиск
             handler.removeCallbacks(searchRunnable)
@@ -105,8 +104,8 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
-        inputEditText.addTextChangedListener(simpleTextWatcher)
-        clearButton.visibility = clearButtonVisibility(inputEditText.text)
+        searchField.addTextChangedListener(simpleTextWatcher)
+        clearButton.visibility = clearButtonVisibility(searchField.text)
         //inputEditText.requestFocus()
 
         adapter = TrackAdapter(emptyList())
