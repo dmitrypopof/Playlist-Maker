@@ -108,11 +108,23 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
+        //логика отображения хинта в поле поиска:
         searchField.setOnFocusChangeListener {view, hasFocus ->
             hintMessage.visibility =
                 if (hasFocus && searchField.text.toString().isEmpty())
                 View.VISIBLE else View.GONE
         }
+        searchField.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                hintMessage.visibility = if (searchField.hasFocus() && p0?.isEmpty() == true) View.VISIBLE else View.GONE
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+        })
 
         searchField.addTextChangedListener(simpleTextWatcher)
         clearButton.visibility = clearButtonVisibility(searchField.text)
