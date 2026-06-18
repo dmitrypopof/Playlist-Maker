@@ -119,8 +119,9 @@ class SearchActivity : AppCompatActivity() {
                     showHistoryOrHint()
                     handler.removeCallbacks(searchRunnable)
                 } else {
-                    // Скрываем историю при вводе текста
+                    // Скрываем историю и хинт при вводе текста
                     searchHistoryContainer.visibility = View.GONE
+                    hintMessage.visibility = View.GONE
                     // Отменяем предыдущий запрос на поиск
                     handler.removeCallbacks(searchRunnable)
                     // Запускаем отложенный поиск
