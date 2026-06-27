@@ -8,7 +8,7 @@
     android:orientation="horizontal"
     android:paddingVertical="8dp"
     android:paddingHorizontal="13dp"
-    android:background="@color/YP_Black">
+    >
 
     <!-- Обложка -->
     <androidx.cardview.widget.CardView

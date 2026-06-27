@@ -21,4 +21,7 @@
     <string name="problem_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
     <string name="update">Обновить</string>
     <string name="no_result">Ничего не нашлось</string>
+    <string name="search_hint">Вводите название трека или артиста</string>
+    <string name="you_searched">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
 </resources>

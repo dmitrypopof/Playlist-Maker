@@ -8,7 +8,8 @@ import com.example.playlistmaker.models.Track
 import com.example.playlistmaker.viewholders.TrackViewHolder
 
 class TrackAdapter(
-    private val tracks: List<Track>
+    private val tracks: List<Track>,
+    private val onTrackClick: ((Track) -> Unit)? = null  // Добавляем слушатель кликов
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -24,7 +25,14 @@ class TrackAdapter(
         holder: TrackViewHolder,
         position: Int
     ) {
-        holder.bind(tracks[position])
+
+        val track = tracks[position]
+        holder.bind(track)
+
+        // Добавляем обработчик клика
+        holder.itemView.setOnClickListener {
+            onTrackClick?.invoke(track)
+        }
     }
 
     override fun getItemCount(): Int {
