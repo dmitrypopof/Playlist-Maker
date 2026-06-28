@@ -8,7 +8,11 @@ data class Track(
     @SerializedName("trackName") val trackName: String?,
     @SerializedName("artistName") val artistName: String?,
     @SerializedName("trackTimeMillis") val trackTime: Long?,
-    @SerializedName("artworkUrl100") val artworkUrl100: String?
+    @SerializedName("artworkUrl100") val artworkUrl100: String?,
+    @SerializedName("collectionName") val collectionName: String? = null,
+    @SerializedName("releaseDate") val releaseDate: String? = null,
+    @SerializedName("primaryGenreName") val primaryGenreName: String? = null,
+    @SerializedName("country") val country: String? = null
 ) {
     val formattedTime: String
         get() = trackTime?.let { millis ->
@@ -21,4 +25,16 @@ data class Track(
 
     val displayArtistName: String
         get() = artistName ?: "Unknown Artist"
+
+    val displayCollectionName: String
+        get() = collectionName ?: "Unknown Album"
+
+    val displayYear: String
+        get() = releaseDate?.take(4) ?: "Unknown"
+
+    val displayGenre: String
+        get() = primaryGenreName ?: "Unknown"
+
+    val displayCountry: String
+        get() = country ?: "Unknown"
 }
