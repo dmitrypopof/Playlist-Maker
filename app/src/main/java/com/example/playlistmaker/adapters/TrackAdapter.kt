@@ -4,12 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.helpers.TrackIntentHelper
 import com.example.playlistmaker.models.Track
 import com.example.playlistmaker.viewholders.TrackViewHolder
 
 class TrackAdapter(
     private val tracks: List<Track>,
-    private val onTrackClick: ((Track) -> Unit)? = null  // Добавляем слушатель кликов
+    private val onTrackClick: ((Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -31,7 +32,12 @@ class TrackAdapter(
 
         // Добавляем обработчик клика
         holder.itemView.setOnClickListener {
+            // Сначала вызываем колбэк для сохранения в историю
             onTrackClick?.invoke(track)
+
+            // Затем открываем AudioPlayer
+            val context = holder.itemView.context
+            TrackIntentHelper.startAudioPlayer(context, track)
         }
     }
 
