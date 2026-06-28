@@ -88,9 +88,7 @@
         android:id="@+id/artist_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_display_medium"
-        android:textSize="14sp"
-        android:textColor="@color/YP_Black"
+        style="@style/Player_ArtistNameStyle"
         tools:text="Nirvana"
         app:layout_constraintTop_toBottomOf="@id/track_name"
         android:layout_marginTop="12dp"
@@ -136,9 +134,7 @@
         android:id="@+id/track_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ys_display_medium"
-        android:textSize="14sp"
-        android:textColor="@color/YP_Black"
+        style="@style/Player_ArtistNameStyle"
         tools:text="0:30"
         app:layout_constraintTop_toBottomOf="@id/playButton"
         android:layout_marginTop="4dp"
@@ -162,112 +158,47 @@
 
         <!-- Продолжительность -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="Продолжительность"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp" />
+            style="@style/TrackInfoText"
+            android:text="@string/duration_song" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="end"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp"
+            style="@style/TrackInfoText.End"
             tools:text="5:35" />
 
         <!-- Альбом -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="Альбом"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp" />
+            style="@style/TrackInfoText"
+            android:text="@string/album" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="end"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp"
+            style="@style/TrackInfoText.End"
             tools:text="Nevermind" />
 
         <!-- Год -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="Год"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp" />
+            style="@style/TrackInfoText"
+            android:text="@string/year"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="end"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp"
-            tools:text="1991" />
+            style="@style/TrackInfoText.End"
+            tools:text="1991"/>
 
         <!-- Жанр -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="Жанр"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp" />
+            style="@style/TrackInfoText"
+            android:text="@string/genre"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="end"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp"
+            style="@style/TrackInfoText.End"
             tools:text="Grunge" />
 
         <!-- Страна -->
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:text="Страна"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp" />
+            style="@style/TrackInfoText"
+            android:text="@string/country"/>
 
         <com.google.android.material.textview.MaterialTextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_columnWeight="1"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/ys_display_medium"
-            android:gravity="end"
-            android:textColor="@color/YP_Black"
-            android:textSize="14sp"
+            style="@style/TrackInfoText.End"
             tools:text="США" />
 
     </GridLayout>
