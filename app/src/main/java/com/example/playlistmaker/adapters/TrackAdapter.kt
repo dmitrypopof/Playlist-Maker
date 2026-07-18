@@ -1,6 +1,8 @@
 package com.example.playlistmaker.adapters
 
 import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,11 @@ class TrackAdapter(
     private var tracks: List<Track>,
     private val onTrackClick: ((Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
+
+    // Для debounce кликов
+    private var isClickAllowed = true
+    private val clickHandler = Handler(Looper.getMainLooper())
+    private val CLICK_DEBOUNCE_DELAY = 1000L
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -33,12 +40,15 @@ class TrackAdapter(
 
         // Добавляем обработчик клика
         holder.itemView.setOnClickListener {
-            // Сначала вызываем колбэк для сохранения в историю
-            onTrackClick?.invoke(track)
+            if (clickDebounce()) {
 
-            // Затем открываем AudioPlayer
-            val context = holder.itemView.context
-            TrackIntentHelper.startAudioPlayer(context, track)
+
+                // Сначала вызываем колбэк для сохранения в историю
+                onTrackClick?.invoke(track)
+                // Затем открываем AudioPlayer
+                val context = holder.itemView.context
+                TrackIntentHelper.startAudioPlayer(context, track)
+            }
         }
     }
 
@@ -52,4 +62,12 @@ class TrackAdapter(
         notifyDataSetChanged()
     }
 
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            clickHandler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
 }
