@@ -21,6 +21,8 @@
         <activity
             android:name=".MediaActivity"
             android:exported="false" />
+        <activity android:name=".AudioPlayer"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
