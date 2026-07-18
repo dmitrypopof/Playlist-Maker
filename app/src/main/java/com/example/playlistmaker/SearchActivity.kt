@@ -37,7 +37,10 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var hintMessage: MaterialTextView
 
     private val searchRunnable = Runnable {
-        performSearch(inputValue)
+        val currentQuery = searchField.text.toString()
+        if (currentQuery.isNotEmpty()) {
+            performSearch(currentQuery)
+        }
     }
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
 
@@ -114,6 +117,9 @@ class SearchActivity : AppCompatActivity() {
                 inputValue = s?.toString() ?: ""
                 clearButton.visibility = clearButtonVisibility(s)
 
+                // Отменяем предыдущий запрос всегда
+                handler.removeCallbacks(searchRunnable)
+
                 // Если текст изменился и стал пустым - показываем историю
                 if (inputValue.isEmpty()) {
                     showHistoryOrHint()
@@ -122,8 +128,6 @@ class SearchActivity : AppCompatActivity() {
                     // Скрываем историю и хинт при вводе текста
                     searchHistoryContainer.visibility = View.GONE
                     hintMessage.visibility = View.GONE
-                    // Отменяем предыдущий запрос на поиск
-                    handler.removeCallbacks(searchRunnable)
                     // Запускаем отложенный поиск
                     handler.postDelayed(searchRunnable, SEARCH_DELAY_MS)
                 }
@@ -168,11 +172,8 @@ class SearchActivity : AppCompatActivity() {
     private fun showHistoryOrHint() {
         val history = searchHistory.getHistory()
         if (history.isNotEmpty()) {
-            // Показываем историю
-            historyAdapter = TrackAdapter(history) { track ->
-                searchHistory.addTrack(track)
-            }
-            historyRecyclerView.adapter = historyAdapter
+            // Обновляем данные
+            historyAdapter.updateTracks(history)
             searchHistoryContainer.visibility = View.VISIBLE
             hintMessage.visibility = View.GONE
         } else {
@@ -260,11 +261,7 @@ class SearchActivity : AppCompatActivity() {
         stubNoResult.visibility = View.GONE
         searchHistoryContainer.visibility = View.GONE
 
-        adapter = TrackAdapter(tracks) { track ->
-            searchHistory.addTrack(track)  // Сохраняем трек в историю при клике
-        }
-
-        recyclerView.adapter = adapter
+        adapter.updateTracks(tracks)
     }
 
     private fun showNoResult() {

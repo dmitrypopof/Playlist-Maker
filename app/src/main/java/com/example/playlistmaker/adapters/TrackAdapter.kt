@@ -1,5 +1,6 @@
 package com.example.playlistmaker.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,7 @@ import com.example.playlistmaker.models.Track
 import com.example.playlistmaker.viewholders.TrackViewHolder
 
 class TrackAdapter(
-    private val tracks: List<Track>,
+    private var tracks: List<Track>,
     private val onTrackClick: ((Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -43,6 +44,12 @@ class TrackAdapter(
 
     override fun getItemCount(): Int {
         return tracks.size
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateTracks(newTracks: List<Track>) {
+        tracks = newTracks
+        notifyDataSetChanged()
     }
 
 }
