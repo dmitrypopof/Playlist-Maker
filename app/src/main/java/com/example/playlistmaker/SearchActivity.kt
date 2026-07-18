@@ -79,13 +79,10 @@ class SearchActivity : AppCompatActivity() {
             searchField.setText("")
             inputValue = ""
 
-            // Очищаем список треков
-            adapter = TrackAdapter(emptyList())
-            recyclerView.adapter = adapter
+            adapter.updateTracks(emptyList())
 
             // Скрываем RecyclerView и заглушки
             hideAllContainers()
-
             // Показываем историю, если поле в фокусе
             showHistoryOrHint()
 
@@ -126,7 +123,6 @@ class SearchActivity : AppCompatActivity() {
                 // Если текст изменился и стал пустым - показываем историю
                 if (inputValue.isEmpty()) {
                     showHistoryOrHint()
-                    handler.removeCallbacks(searchRunnable)
                 } else {
                     // Скрываем историю и хинт при вводе текста
                     searchHistoryContainer.visibility = View.GONE
@@ -141,12 +137,19 @@ class SearchActivity : AppCompatActivity() {
         clearButton.visibility = clearButtonVisibility(searchField.text)
 
         // Настройка RecyclerView для результатов поиска
-        adapter = TrackAdapter(emptyList())
+        adapter = TrackAdapter(emptyList()) { track ->
+            searchHistory.addTrack(track)
+            updateHistory()
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         // Настройка RecyclerView для истории
-        historyAdapter = TrackAdapter(emptyList())
+        historyAdapter = TrackAdapter(emptyList()) { track ->
+            searchHistory.addTrack(track)
+            updateHistory()
+        }
         historyRecyclerView.layoutManager = LinearLayoutManager(this)
         historyRecyclerView.adapter = historyAdapter
 
@@ -155,6 +158,10 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryButton.setOnClickListener {
             searchHistory.clearHistory()
             searchHistoryContainer.visibility = View.GONE
+
+            if (searchField.text.toString().isEmpty()) {
+                hintMessage.visibility = View.VISIBLE
+            }
         }
 
         // Кнопка обновить (при ошибке сети)
@@ -173,10 +180,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showHistoryOrHint() {
+        updateHistory()
+
         val history = searchHistory.getHistory()
         if (history.isNotEmpty()) {
             // Обновляем данные
-            historyAdapter.updateTracks(history)
             searchHistoryContainer.visibility = View.VISIBLE
             hintMessage.visibility = View.GONE
         } else {
@@ -296,5 +304,15 @@ class SearchActivity : AppCompatActivity() {
         placeholderSearch.visibility = View.VISIBLE
         stubNoResult.visibility = View.GONE
         searchHistoryContainer.visibility = View.GONE
+    }
+    private fun updateHistory() {
+        val history = searchHistory.getHistory()
+        if (history.isNotEmpty()) {
+            historyAdapter.updateTracks(history)
+            if (searchField.text.toString().isEmpty() && searchField.hasFocus()) {
+                searchHistoryContainer.visibility = View.VISIBLE
+                hintMessage.visibility = View.GONE
+            }
+        }
     }
 }
