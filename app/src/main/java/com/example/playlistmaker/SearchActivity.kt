@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -35,6 +36,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearButton: ImageView
     private lateinit var searchHistory: SearchHistory
     private lateinit var hintMessage: MaterialTextView
+    private lateinit var progressBar: ProgressBar
 
     private val searchRunnable = Runnable {
         val currentQuery = searchField.text.toString()
@@ -67,6 +69,7 @@ class SearchActivity : AppCompatActivity() {
         searchField = findViewById(R.id.search_field)
         clearButton = findViewById(R.id.clearIcon)
         hintMessage = findViewById(R.id.searchHint)
+        progressBar = findViewById(R.id.progressBar)
 
         backButton.setOnClickListener {
             finish()
@@ -192,6 +195,20 @@ class SearchActivity : AppCompatActivity() {
         stubNoResult.visibility = View.GONE
         searchHistoryContainer.visibility = View.GONE
         hintMessage.visibility = View.GONE
+        progressBar.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.GONE
+        searchHistoryContainer.visibility = View.GONE
+        hintMessage.visibility = View.GONE
+    }
+
+    private fun hideLoading() {
+        progressBar.visibility = View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -219,11 +236,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun performSearch(query: String) {
-        // Показываем RecyclerView, скрываем заглушки и историю
-        recyclerView.visibility = View.VISIBLE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.GONE
-        searchHistoryContainer.visibility = View.GONE
+
+        showLoading()
 
         // Выполняем запрос
         val call = RetrofitHelper.apiService.search(query)
@@ -232,6 +246,8 @@ class SearchActivity : AppCompatActivity() {
                 call: retrofit2.Call<TrackResponse>,
                 response: retrofit2.Response<TrackResponse>
             ) {
+                hideLoading()
+
                 if (response.isSuccessful) {
                     val trackResponse = response.body()
                     val tracks = trackResponse?.results ?: emptyList()
@@ -250,12 +266,14 @@ class SearchActivity : AppCompatActivity() {
                 call: retrofit2.Call<TrackResponse>,
                 t: Throwable
             ) {
+                hideLoading()
                 showNetworkError()
             }
         })
     }
 
     private fun showTracks(tracks: List<Track>) {
+        hideLoading()
         recyclerView.visibility = View.VISIBLE
         placeholderSearch.visibility = View.GONE
         stubNoResult.visibility = View.GONE
@@ -265,6 +283,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showNoResult() {
+        hideLoading()
         recyclerView.visibility = View.GONE
         placeholderSearch.visibility = View.GONE
         stubNoResult.visibility = View.VISIBLE
@@ -272,6 +291,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showNetworkError() {
+        hideLoading()
         recyclerView.visibility = View.GONE
         placeholderSearch.visibility = View.VISIBLE
         stubNoResult.visibility = View.GONE
