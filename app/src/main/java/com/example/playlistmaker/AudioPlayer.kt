@@ -1,6 +1,9 @@
 package com.example.playlistmaker
 
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -12,8 +15,20 @@ import com.example.playlistmaker.helpers.TrackIntentHelper
 import com.example.playlistmaker.models.Track
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AudioPlayer : AppCompatActivity() {
+    companion object {
+        private const val STATE_DEFAULT = 0
+        private const val STATE_PREPARED = 1
+        private const val STATE_PLAYING = 2
+        private const val STATE_PAUSED = 3
+    }
+
+    private val mainThreadHandler = Handler(Looper.getMainLooper())
+    private lateinit var updateProgressRunnable: Runnable
+
     private lateinit var track: Track
 
     private lateinit var backButton: MaterialButton
@@ -29,6 +44,9 @@ class AudioPlayer : AppCompatActivity() {
     private lateinit var yearView: MaterialTextView
     private lateinit var genreView: MaterialTextView
     private lateinit var countryView: MaterialTextView
+
+    private var mediaPlayer = MediaPlayer()
+    private var playerState = STATE_DEFAULT
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,14 +75,11 @@ class AudioPlayer : AppCompatActivity() {
                 )
             }
 
-        // Инициализация UI элементов
         initViews()
-
-        // Заполнение данными
         displayTrackInfo()
-
-        // Настройка слушателей
         setupListeners()
+        preparePlayer()
+
     }
 
     private fun initViews() {
@@ -121,7 +136,86 @@ class AudioPlayer : AppCompatActivity() {
             finish()
         }
 
-
+        playButton.setOnClickListener {
+            playbackControl()
+        }
     }
 
+
+
+    private fun preparePlayer() {
+        val previewUrl = track.previewUrl
+        if (previewUrl.isNullOrEmpty()) {
+            playButton.isEnabled = false
+            return
+        }
+
+        mediaPlayer.apply {
+            setDataSource(previewUrl)
+            prepareAsync()
+            setOnPreparedListener {
+                playButton.isEnabled = true
+                playerState = STATE_PREPARED
+                trackTimeView.text = track.formattedTime
+            }
+            setOnCompletionListener {
+                playerState = STATE_PREPARED
+                playButton.setIconResource(R.drawable.ic_play_button)
+                trackTimeView.text = "00:00"
+                stopUpdateProgress()
+            }
+        }
+    }
+
+
+    private fun startPlayer() {
+        mediaPlayer.apply {
+            start()
+            playerState = STATE_PLAYING
+            playButton.setIconResource(R.drawable.ic_pause_button)
+            startUpdateProgress()
+        }
+    }
+
+    private fun pausePlayer() {
+        mediaPlayer.apply {
+            pause()
+            playerState = STATE_PAUSED
+            playButton.setIconResource(R.drawable.ic_play_button)
+            stopUpdateProgress()
+        }
+    }
+
+    private fun playbackControl() {
+        when (playerState) {
+            STATE_PLAYING -> pausePlayer()
+            STATE_PREPARED, STATE_PAUSED -> startPlayer()
+        }
+    }
+    private fun startUpdateProgress() {
+        updateProgressRunnable = object : Runnable {
+            override fun run() {
+                if (playerState == STATE_PLAYING) {
+                    val currentPosition = mediaPlayer.currentPosition
+                    trackTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
+                    mainThreadHandler.postDelayed(this, 300)
+                }
+            }
+        }
+        mainThreadHandler.post(updateProgressRunnable)
+    }
+
+    private fun stopUpdateProgress() {
+        mainThreadHandler.removeCallbacks(updateProgressRunnable)
+    }
+    override fun onPause() {
+        super.onPause()
+        pausePlayer()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        stopUpdateProgress()
+        mediaPlayer.release()
+    }
 }
