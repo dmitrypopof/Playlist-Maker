@@ -161,7 +161,7 @@ class AudioPlayer : AppCompatActivity() {
             setOnCompletionListener {
                 playerState = STATE_PREPARED
                 playButton.setIconResource(R.drawable.ic_play_button)
-                trackTimeView.text = "00:00"
+                trackTimeView.text = getString(R.string.default_track_time)
                 stopUpdateProgress()
             }
         }
