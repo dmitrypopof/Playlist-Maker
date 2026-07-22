@@ -12,7 +12,8 @@ data class Track(
     @SerializedName("collectionName") val collectionName: String? = null,
     @SerializedName("releaseDate") val releaseDate: String? = null,
     @SerializedName("primaryGenreName") val primaryGenreName: String? = null,
-    @SerializedName("country") val country: String? = null
+    @SerializedName("country") val country: String? = null,
+    @SerializedName("previewUrl") val previewUrl: String? = null
 ) {
     val formattedTime: String
         get() = trackTime?.let { millis ->

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
@@ -35,9 +36,13 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearButton: ImageView
     private lateinit var searchHistory: SearchHistory
     private lateinit var hintMessage: MaterialTextView
+    private lateinit var progressBar: ProgressBar
 
     private val searchRunnable = Runnable {
-        performSearch(inputValue)
+        val currentQuery = searchField.text.toString()
+        if (currentQuery.isNotEmpty()) {
+            performSearch(currentQuery)
+        }
     }
     private val handler = android.os.Handler(android.os.Looper.getMainLooper())
 
@@ -64,6 +69,7 @@ class SearchActivity : AppCompatActivity() {
         searchField = findViewById(R.id.search_field)
         clearButton = findViewById(R.id.clearIcon)
         hintMessage = findViewById(R.id.searchHint)
+        progressBar = findViewById(R.id.progressBar)
 
         backButton.setOnClickListener {
             finish()
@@ -73,13 +79,10 @@ class SearchActivity : AppCompatActivity() {
             searchField.setText("")
             inputValue = ""
 
-            // Очищаем список треков
-            adapter = TrackAdapter(emptyList())
-            recyclerView.adapter = adapter
+            adapter.updateTracks(emptyList())
 
             // Скрываем RecyclerView и заглушки
             hideAllContainers()
-
             // Показываем историю, если поле в фокусе
             showHistoryOrHint()
 
@@ -114,16 +117,16 @@ class SearchActivity : AppCompatActivity() {
                 inputValue = s?.toString() ?: ""
                 clearButton.visibility = clearButtonVisibility(s)
 
+                // Отменяем предыдущий запрос всегда
+                handler.removeCallbacks(searchRunnable)
+
                 // Если текст изменился и стал пустым - показываем историю
                 if (inputValue.isEmpty()) {
                     showHistoryOrHint()
-                    handler.removeCallbacks(searchRunnable)
                 } else {
                     // Скрываем историю и хинт при вводе текста
                     searchHistoryContainer.visibility = View.GONE
                     hintMessage.visibility = View.GONE
-                    // Отменяем предыдущий запрос на поиск
-                    handler.removeCallbacks(searchRunnable)
                     // Запускаем отложенный поиск
                     handler.postDelayed(searchRunnable, SEARCH_DELAY_MS)
                 }
@@ -134,12 +137,19 @@ class SearchActivity : AppCompatActivity() {
         clearButton.visibility = clearButtonVisibility(searchField.text)
 
         // Настройка RecyclerView для результатов поиска
-        adapter = TrackAdapter(emptyList())
+        adapter = TrackAdapter(emptyList()) { track ->
+            searchHistory.addTrack(track)
+            updateHistory()
+        }
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
         // Настройка RecyclerView для истории
-        historyAdapter = TrackAdapter(emptyList())
+        historyAdapter = TrackAdapter(emptyList()) { track ->
+            searchHistory.addTrack(track)
+            updateHistory()
+        }
         historyRecyclerView.layoutManager = LinearLayoutManager(this)
         historyRecyclerView.adapter = historyAdapter
 
@@ -148,6 +158,10 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryButton.setOnClickListener {
             searchHistory.clearHistory()
             searchHistoryContainer.visibility = View.GONE
+
+            if (searchField.text.toString().isEmpty()) {
+                hintMessage.visibility = View.VISIBLE
+            }
         }
 
         // Кнопка обновить (при ошибке сети)
@@ -166,13 +180,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showHistoryOrHint() {
+        updateHistory()
+
         val history = searchHistory.getHistory()
         if (history.isNotEmpty()) {
-            // Показываем историю
-            historyAdapter = TrackAdapter(history) { track ->
-                searchHistory.addTrack(track)
-            }
-            historyRecyclerView.adapter = historyAdapter
+            // Обновляем данные
             searchHistoryContainer.visibility = View.VISIBLE
             hintMessage.visibility = View.GONE
         } else {
@@ -191,6 +203,20 @@ class SearchActivity : AppCompatActivity() {
         stubNoResult.visibility = View.GONE
         searchHistoryContainer.visibility = View.GONE
         hintMessage.visibility = View.GONE
+        progressBar.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        progressBar.visibility = View.VISIBLE
+        recyclerView.visibility = View.GONE
+        placeholderSearch.visibility = View.GONE
+        stubNoResult.visibility = View.GONE
+        searchHistoryContainer.visibility = View.GONE
+        hintMessage.visibility = View.GONE
+    }
+
+    private fun hideLoading() {
+        progressBar.visibility = View.GONE
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -218,11 +244,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun performSearch(query: String) {
-        // Показываем RecyclerView, скрываем заглушки и историю
-        recyclerView.visibility = View.VISIBLE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.GONE
-        searchHistoryContainer.visibility = View.GONE
+
+        showLoading()
 
         // Выполняем запрос
         val call = RetrofitHelper.apiService.search(query)
@@ -231,6 +254,8 @@ class SearchActivity : AppCompatActivity() {
                 call: retrofit2.Call<TrackResponse>,
                 response: retrofit2.Response<TrackResponse>
             ) {
+                hideLoading()
+
                 if (response.isSuccessful) {
                     val trackResponse = response.body()
                     val tracks = trackResponse?.results ?: emptyList()
@@ -249,25 +274,24 @@ class SearchActivity : AppCompatActivity() {
                 call: retrofit2.Call<TrackResponse>,
                 t: Throwable
             ) {
+                hideLoading()
                 showNetworkError()
             }
         })
     }
 
     private fun showTracks(tracks: List<Track>) {
+        hideLoading()
         recyclerView.visibility = View.VISIBLE
         placeholderSearch.visibility = View.GONE
         stubNoResult.visibility = View.GONE
         searchHistoryContainer.visibility = View.GONE
 
-        adapter = TrackAdapter(tracks) { track ->
-            searchHistory.addTrack(track)  // Сохраняем трек в историю при клике
-        }
-
-        recyclerView.adapter = adapter
+        adapter.updateTracks(tracks)
     }
 
     private fun showNoResult() {
+        hideLoading()
         recyclerView.visibility = View.GONE
         placeholderSearch.visibility = View.GONE
         stubNoResult.visibility = View.VISIBLE
@@ -275,9 +299,20 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun showNetworkError() {
+        hideLoading()
         recyclerView.visibility = View.GONE
         placeholderSearch.visibility = View.VISIBLE
         stubNoResult.visibility = View.GONE
         searchHistoryContainer.visibility = View.GONE
+    }
+    private fun updateHistory() {
+        val history = searchHistory.getHistory()
+        if (history.isNotEmpty()) {
+            historyAdapter.updateTracks(history)
+            if (searchField.text.toString().isEmpty() && searchField.hasFocus()) {
+                searchHistoryContainer.visibility = View.VISIBLE
+                hintMessage.visibility = View.GONE
+            }
+        }
     }
 }
