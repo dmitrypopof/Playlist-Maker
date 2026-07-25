@@ -26,21 +26,4 @@ class App: Application() {
             }
         )
     }
-
-    fun switchTheme(darkThemeEnabled: Boolean) {
-        darkTheme = darkThemeEnabled
-
-        val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
-        prefs.edit()
-            .putBoolean(THEME_PREF_KEY, darkThemeEnabled)
-            .apply()
-
-        AppCompatDelegate.setDefaultNightMode(
-            if (darkThemeEnabled) {
-                AppCompatDelegate.MODE_NIGHT_YES
-            } else {
-                AppCompatDelegate.MODE_NIGHT_NO
-            }
-        )
-    }
 }

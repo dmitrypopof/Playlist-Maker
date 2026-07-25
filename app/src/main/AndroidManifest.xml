@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.PlaylistMaker">
         <activity
-            android:name=".SettingsActivity"
+            android:name=".presentation.ui.settings.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.search.SearchActivity"
