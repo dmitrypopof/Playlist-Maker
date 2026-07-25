@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.adapters.TrackAdapter
 import com.example.playlistmaker.helpers.RetrofitHelper
 import com.example.playlistmaker.models.Track
-import com.example.playlistmaker.models.TrackResponse
+import com.example.playlistmaker.data.dto.TrackResponse
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 
