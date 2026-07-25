@@ -1,18 +1,22 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.presentation.ui.player
 
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.widget.GridLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.model.Track
+
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
-import com.example.playlistmaker.models.Track
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
@@ -61,19 +65,7 @@ class AudioPlayer : AppCompatActivity() {
 
 // Получаем данные о треке
         track = TrackIntentHelper.getTrackFromIntent(intent)
-            ?: run {
-                // Если трек не передан, создаем заглушку
-                Track(
-                    trackName = "Unknown Track",
-                    artistName = "Unknown Artist",
-                    trackTime = 0,
-                    artworkUrl100 = null,
-                    collectionName = "Unknown Album",
-                    releaseDate = "Unknown",
-                    primaryGenreName = "Unknown",
-                    country = "Unknown"
-                )
-            }
+            ?: Track.createDefault()
 
         initViews()
         displayTrackInfo()
@@ -94,7 +86,7 @@ class AudioPlayer : AppCompatActivity() {
 
         // Получаем элементы GridLayout через их ID (используем findViews по индексу или по ID)
         // Так как GridLayout не имеет прямых ID для TextView, используем findViewsByTag или getChildAt
-        val gridLayout = findViewById<android.widget.GridLayout>(R.id.track_info)
+        val gridLayout = findViewById<GridLayout>(R.id.track_info)
 
         // Используем getChildAt для получения TextView
         // Индексы: 0,1 - продолжительность; 2,3 - альбом; 4,5 - год; 6,7 - жанр; 8,9 - страна
@@ -107,13 +99,13 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun displayTrackInfo() {
         // Заполняем основные данные
-        trackNameView.text = track.displayTrackName
-        artistNameView.text = track.displayArtistName
+        trackNameView.text = track.trackName
+        artistNameView.text = track.artistName
 
         // Загружаем обложку альбома (используем artworkUrl100 для загрузки изображения)
-        val imageView = albumCover.getChildAt(0) as androidx.appcompat.widget.AppCompatImageView
+        val imageView = albumCover.getChildAt(0) as AppCompatImageView
         Glide.with(this)
-            .load(track.artworkUrl100?.replace("100x100", "512x512")) // Пытаемся загрузить изображение большего размера
+            .load(track.artworkUrl100.replace("100x100", "512x512")) // Пытаемся загрузить изображение большего размера
             .placeholder(ContextCompat.getDrawable(this, R.drawable.ic_placeholder_no_download_45x45))
             .error(ContextCompat.getDrawable(this, R.drawable.ic_placeholder_no_download_45x45))
             .centerCrop()
@@ -121,10 +113,10 @@ class AudioPlayer : AppCompatActivity() {
 
         // Заполняем информацию о треке
         durationView.text = track.formattedTime
-        albumView.text = track.displayCollectionName
+        albumView.text = track.collectionName
         yearView.text = track.displayYear
-        genreView.text = track.displayGenre
-        countryView.text = track.displayCountry
+        genreView.text = track.primaryGenreName
+        countryView.text = track.country
 
         // Отображаем время трека под кнопкой play
         trackTimeView.text = track.formattedTime
@@ -145,7 +137,7 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun preparePlayer() {
         val previewUrl = track.previewUrl
-        if (previewUrl.isNullOrEmpty()) {
+        if (previewUrl == null) {
             playButton.isEnabled = false
             return
         }
