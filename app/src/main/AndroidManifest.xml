@@ -19,12 +19,12 @@
             android:name=".presentation.ui.search.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MediaActivity"
+            android:name=".presentation.ui.media.MediaActivity"
             android:exported="false" />
         <activity android:name=".presentation.ui.player.AudioPlayer"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".presentation.ui.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
