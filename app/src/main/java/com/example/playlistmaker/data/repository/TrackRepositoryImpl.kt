@@ -6,7 +6,7 @@ import com.example.playlistmaker.domain.repository.TrackRepository
 
 
 class TrackRepositoryImpl: TrackRepository {
-    override suspend fun searchTracks(query: String): Result<List<Track>> {
+    override fun searchTracks(query: String): Result<List<Track>> {
         return try {
             val response = RetrofitHelper.apiService.search(query).execute()
             if (response.isSuccessful) {

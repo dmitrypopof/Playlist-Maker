@@ -14,6 +14,7 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Creator.init(this)
         val prefs = getSharedPreferences("app_settings", MODE_PRIVATE)
         darkTheme = prefs.getBoolean(THEME_PREF_KEY, false)
 

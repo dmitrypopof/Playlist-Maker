@@ -4,7 +4,7 @@ import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.repository.TrackRepository
 
 class SearchTracksUseCase (private val repository: TrackRepository) {
-    suspend operator fun invoke(query: String): Result<List<Track>> {
+    operator fun invoke(query: String): Result<List<Track>> {
         if (query.isBlank()) {
             return Result.failure(IllegalArgumentException("Query cannot be empty"))
         }

@@ -16,7 +16,7 @@
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".presentation.ui.search.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".MediaActivity"
