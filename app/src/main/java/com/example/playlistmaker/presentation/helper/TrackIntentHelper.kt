@@ -25,4 +25,8 @@ object TrackIntentHelper {
             null
         }
     }
+    fun putTrackToIntent(intent: Intent, track: Track) {
+        val json = Gson().toJson(track)
+        intent.putExtra(EXTRA_TRACK, json)
+    }
 }

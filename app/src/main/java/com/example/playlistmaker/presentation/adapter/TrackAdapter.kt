@@ -47,8 +47,8 @@ class TrackAdapter(
                 // Сначала вызываем колбэк для сохранения в историю
                 onTrackClick?.invoke(track)
                 // Затем открываем AudioPlayer
-                val context = holder.itemView.context
-                TrackIntentHelper.startAudioPlayer(context, track)
+//                val context = holder.itemView.context
+//                TrackIntentHelper.startAudioPlayer(context, track)
             }
         }
     }

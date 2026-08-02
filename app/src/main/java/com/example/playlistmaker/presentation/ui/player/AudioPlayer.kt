@@ -170,8 +170,9 @@ class AudioPlayer : AppCompatActivity() {
     }
 
     private fun pausePlayer() {
-        mediaPlayer.apply {
-            pause()
+        // Останавливаем плеер, только если он реально играет
+        if (playerState == STATE_PLAYING) {
+            mediaPlayer.pause()
             playerState = STATE_PAUSED
             playButton.setIconResource(R.drawable.ic_play_button)
             stopUpdateProgress()
@@ -198,11 +199,18 @@ class AudioPlayer : AppCompatActivity() {
     }
 
     private fun stopUpdateProgress() {
-        mainThreadHandler.removeCallbacks(updateProgressRunnable)
+        // Проверяем, был ли инициализирован Runnable
+        if (::updateProgressRunnable.isInitialized) {
+            mainThreadHandler.removeCallbacks(updateProgressRunnable)
+        }
     }
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        // Не вызываем pausePlayer() здесь, если плеер не в состоянии PLAYING,
+        // или оставляем как есть, но с защищённым pausePlayer() – он сам проверит.
+        if (playerState == STATE_PLAYING) {
+            pausePlayer()
+        }
     }
 
     override fun onDestroy() {
