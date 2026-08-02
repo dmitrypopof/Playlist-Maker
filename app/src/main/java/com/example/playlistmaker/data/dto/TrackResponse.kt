@@ -1,8 +1,8 @@
-package com.example.playlistmaker.models
+package com.example.playlistmaker.data.dto
 
 import com.google.gson.annotations.SerializedName
 
 data class TrackResponse(
     @SerializedName("resultCount") val resultCount: Int,
-    @SerializedName("results") val results: List<Track>
+    @SerializedName("results") val results: List<TrackDto>
 )

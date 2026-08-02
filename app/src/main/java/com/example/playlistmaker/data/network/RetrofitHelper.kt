@@ -1,9 +1,8 @@
-package com.example.playlistmaker.helpers
+package com.example.playlistmaker.data.network
 
-import com.example.playlistmaker.api.ITunesApi
+import com.example.playlistmaker.data.network.ITunesApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.jvm.java
 
 object RetrofitHelper {
     private const val BASE_URL = "https://itunes.apple.com"

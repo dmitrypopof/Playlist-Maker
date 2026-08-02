@@ -1,9 +1,10 @@
-package com.example.playlistmaker.helpers
+package com.example.playlistmaker.presentation.helper
 
 import android.content.Context
 import android.content.Intent
-import com.example.playlistmaker.AudioPlayer
-import com.example.playlistmaker.models.Track
+import com.example.playlistmaker.presentation.ui.player.AudioPlayer
+import com.example.playlistmaker.domain.model.Track
+
 import com.google.gson.Gson
 
 object TrackIntentHelper {
