@@ -175,6 +175,14 @@ class SearchActivity : AppCompatActivity() {
         searchField.requestFocus()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Если поле поиска пустое, показываем историю (или подсказку)
+        if (searchField.text.isNullOrEmpty()) {
+            showHistoryOrHint()
+        }
+    }
+
     private fun showHistoryOrHint() {
         val history = searchHistoryUseCase.getHistory()
         if (history.isNotEmpty()) {
@@ -286,6 +294,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun openAudioPlayer(track: Track) {
+        searchField.text?.clear()
+        searchField.clearFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+
         val intent = Intent(this, AudioPlayer::class.java)
         TrackIntentHelper.putTrackToIntent(intent, track)
         startActivity(intent)
