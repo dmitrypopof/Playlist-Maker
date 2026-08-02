@@ -12,6 +12,7 @@ object TrackIntentHelper {
         return try {
             Gson().fromJson(json, Track::class.java)
         } catch (e: Exception) {
+            android.util.Log.e("TrackIntentHelper", "Failed to parse track from JSON", e)
             null
         }
     }
