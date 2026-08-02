@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.presentation.helper.TrackIntentHelper
 import com.example.playlistmaker.presentation.viewholder.TrackViewHolder
 
 
@@ -47,8 +46,8 @@ class TrackAdapter(
                 // Сначала вызываем колбэк для сохранения в историю
                 onTrackClick?.invoke(track)
                 // Затем открываем AudioPlayer
-                val context = holder.itemView.context
-                TrackIntentHelper.startAudioPlayer(context, track)
+//                val context = holder.itemView.context
+//                TrackIntentHelper.startAudioPlayer(context, track)
             }
         }
     }

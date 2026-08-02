@@ -1,10 +1,12 @@
 package com.example.playlistmaker.presentation.ui.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -21,10 +23,14 @@ import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
+import com.example.playlistmaker.presentation.helper.TrackIntentHelper
+import com.example.playlistmaker.presentation.ui.player.AudioPlayer
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 
 class SearchActivity : AppCompatActivity() {
+
+    private val tag = "SearchActivityLifecycle"
 
     private var inputValue: String = TEXT_DEF
     private lateinit var recyclerView: RecyclerView
@@ -53,6 +59,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(tag, "onCreate")
         enableEdgeToEdge()
         setContentView(R.layout.activity_search)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -72,6 +79,11 @@ class SearchActivity : AppCompatActivity() {
         clearButton = findViewById(R.id.clearIcon)
         hintMessage = findViewById(R.id.searchHint)
         progressBar = findViewById(R.id.progressBar)
+
+        val mainLayout = findViewById<View>(R.id.main)
+        mainLayout.setOnClickListener {
+            hideKeyboard()
+        }
 
         backButton.setOnClickListener {
             finish()
@@ -130,6 +142,7 @@ class SearchActivity : AppCompatActivity() {
         adapter = TrackAdapter(emptyList()) { track ->
             searchHistoryUseCase.addTrack(track)
             updateHistory()
+            openAudioPlayer(track)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -139,6 +152,7 @@ class SearchActivity : AppCompatActivity() {
         historyAdapter = TrackAdapter(emptyList()) { track ->
             searchHistoryUseCase.addTrack(track)
             updateHistory()
+            openAudioPlayer(track)
         }
         historyRecyclerView.layoutManager = LinearLayoutManager(this)
         historyRecyclerView.adapter = historyAdapter
@@ -164,6 +178,14 @@ class SearchActivity : AppCompatActivity() {
 
         hideAllContainers()
         searchField.requestFocus()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Если поле поиска пустое, показываем историю (или подсказку)
+        if (searchField.text.isNullOrEmpty()) {
+            showHistoryOrHint()
+        }
     }
 
     private fun showHistoryOrHint() {
@@ -212,7 +234,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val INPUT_TEXT = "INPUT_TEXT"
         const val TEXT_DEF = ""
         const val SEARCH_DELAY_MS = 2000L
     }
@@ -274,5 +295,22 @@ class SearchActivity : AppCompatActivity() {
                 hintMessage.visibility = View.GONE
             }
         }
+    }
+
+    private fun openAudioPlayer(track: Track) {
+        searchField.text?.clear()
+        searchField.clearFocus()
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+
+        val intent = Intent(this, AudioPlayer::class.java)
+        TrackIntentHelper.putTrackToIntent(intent, track)
+        startActivity(intent)
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+        searchField.clearFocus()
     }
 }

@@ -38,6 +38,6 @@ object Creator{
     }
 
     fun provideSearchHistoryUseCase(): SearchHistoryUseCase {
-        return SearchHistoryUseCase()
+        return SearchHistoryUseCase(applicationContext)
     }
 }
