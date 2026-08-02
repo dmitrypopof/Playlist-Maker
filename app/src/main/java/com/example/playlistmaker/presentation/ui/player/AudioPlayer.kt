@@ -8,21 +8,21 @@ import android.widget.GridLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
 import com.example.playlistmaker.domain.model.Track
-
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayer : AppCompatActivity() {
+    private lateinit var binding: ActivityAudioplayerBinding
+
     companion object {
         private const val STATE_DEFAULT = 0
         private const val STATE_PREPARED = 1
@@ -35,14 +35,6 @@ class AudioPlayer : AppCompatActivity() {
 
     private lateinit var track: Track
 
-    private lateinit var backButton: MaterialButton
-    private lateinit var trackNameView: MaterialTextView
-    private lateinit var artistNameView: MaterialTextView
-    private lateinit var albumCover: CardView
-    private lateinit var playButton: MaterialButton
-    private lateinit var favouriteButton: MaterialButton
-    private lateinit var addPlaylistButton: MaterialButton
-    private lateinit var trackTimeView: MaterialTextView
     private lateinit var durationView: MaterialTextView
     private lateinit var albumView: MaterialTextView
     private lateinit var yearView: MaterialTextView
@@ -55,9 +47,10 @@ class AudioPlayer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_audioplayer)
+        binding = ActivityAudioplayerBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.audioPlayer)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(binding.audioPlayer) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
@@ -67,22 +60,14 @@ class AudioPlayer : AppCompatActivity() {
         track = TrackIntentHelper.getTrackFromIntent(intent)
             ?: Track.createDefault()
 
-        initViews()
+        setupGridViews()
         displayTrackInfo()
         setupListeners()
         preparePlayer()
 
     }
 
-    private fun initViews() {
-        backButton = findViewById(R.id.back_button)
-        trackNameView = findViewById(R.id.track_name)
-        artistNameView = findViewById(R.id.artist_name)
-        albumCover = findViewById(R.id.album_cover)
-        playButton = findViewById(R.id.playButton)
-        favouriteButton = findViewById(R.id.favouriteButton)
-        addPlaylistButton = findViewById(R.id.addPlaylist)
-        trackTimeView = findViewById(R.id.track_time)
+    private fun setupGridViews() {
 
         // Получаем элементы GridLayout через их ID (используем findViews по индексу или по ID)
         // Так как GridLayout не имеет прямых ID для TextView, используем findViewsByTag или getChildAt
@@ -99,11 +84,11 @@ class AudioPlayer : AppCompatActivity() {
 
     private fun displayTrackInfo() {
         // Заполняем основные данные
-        trackNameView.text = track.trackName
-        artistNameView.text = track.artistName
+        binding.trackName.text = track.trackName
+        binding.artistName.text = track.artistName
 
         // Загружаем обложку альбома (используем artworkUrl100 для загрузки изображения)
-        val imageView = albumCover.getChildAt(0) as AppCompatImageView
+        val imageView = binding.albumCover.getChildAt(0) as AppCompatImageView
         Glide.with(this)
             .load(track.artworkUrl100.replace("100x100", "512x512")) // Пытаемся загрузить изображение большего размера
             .placeholder(ContextCompat.getDrawable(this, R.drawable.ic_placeholder_no_download_45x45))
@@ -119,16 +104,16 @@ class AudioPlayer : AppCompatActivity() {
         countryView.text = track.country
 
         // Отображаем время трека под кнопкой play
-        trackTimeView.text = track.formattedTime
+        binding.trackTime.text = track.formattedTime
     }
 
     private fun setupListeners() {
         // Кнопка назад
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
 
-        playButton.setOnClickListener {
+        binding.playButton.setOnClickListener {
             playbackControl()
         }
     }
@@ -138,7 +123,7 @@ class AudioPlayer : AppCompatActivity() {
     private fun preparePlayer() {
         val previewUrl = track.previewUrl
         if (previewUrl == null) {
-            playButton.isEnabled = false
+            binding.playButton.isEnabled = false
             return
         }
 
@@ -146,14 +131,14 @@ class AudioPlayer : AppCompatActivity() {
             setDataSource(previewUrl)
             prepareAsync()
             setOnPreparedListener {
-                playButton.isEnabled = true
+                binding.playButton.isEnabled = true
                 playerState = STATE_PREPARED
-                trackTimeView.text = track.formattedTime
+                binding.trackTime.text = track.formattedTime
             }
             setOnCompletionListener {
                 playerState = STATE_PREPARED
-                playButton.setIconResource(R.drawable.ic_play_button)
-                trackTimeView.text = getString(R.string.default_track_time)
+                binding.playButton.setIconResource(R.drawable.ic_play_button)
+                binding.trackTime.text = getString(R.string.default_track_time)
                 stopUpdateProgress()
             }
         }
@@ -164,7 +149,7 @@ class AudioPlayer : AppCompatActivity() {
         mediaPlayer.apply {
             start()
             playerState = STATE_PLAYING
-            playButton.setIconResource(R.drawable.ic_pause_button)
+            binding.playButton.setIconResource(R.drawable.ic_pause_button)
             startUpdateProgress()
         }
     }
@@ -174,7 +159,7 @@ class AudioPlayer : AppCompatActivity() {
         if (playerState == STATE_PLAYING) {
             mediaPlayer.pause()
             playerState = STATE_PAUSED
-            playButton.setIconResource(R.drawable.ic_play_button)
+            binding.playButton.setIconResource(R.drawable.ic_play_button)
             stopUpdateProgress()
         }
     }
@@ -190,7 +175,7 @@ class AudioPlayer : AppCompatActivity() {
             override fun run() {
                 if (playerState == STATE_PLAYING) {
                     val currentPosition = mediaPlayer.currentPosition
-                    trackTimeView.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
+                    binding.trackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
                     mainThreadHandler.postDelayed(this, 300)
                 }
             }
