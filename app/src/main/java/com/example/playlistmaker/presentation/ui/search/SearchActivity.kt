@@ -9,48 +9,33 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.Creator
-import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
 import com.example.playlistmaker.presentation.ui.player.AudioPlayer
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
 
 class SearchActivity : AppCompatActivity() {
 
     private val tag = "SearchActivityLifecycle"
+    private lateinit var binding: ActivitySearchBinding
 
     private var inputValue: String = TEXT_DEF
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var historyRecyclerView: RecyclerView
-    private lateinit var placeholderSearch: LinearLayout
-    private lateinit var stubNoResult: LinearLayout
-    private lateinit var searchHistoryContainer: LinearLayout
     private lateinit var adapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
-    private lateinit var searchField: AppCompatEditText
-    private lateinit var clearButton: ImageView
-    private lateinit var hintMessage: MaterialTextView
-    private lateinit var progressBar: ProgressBar
 
     // Use cases через Creator
     private val searchTracksUseCase by lazy { Creator.provideSearchTracksUseCase() }
     private val searchHistoryUseCase by lazy { Creator.provideSearchHistoryUseCase() }
 
     private val searchRunnable = Runnable {
-        val currentQuery = searchField.text.toString()
+        val currentQuery = binding.searchField.text.toString()
         if (currentQuery.isNotEmpty()) {
             performSearch(currentQuery)
         }
@@ -61,36 +46,24 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(tag, "onCreate")
         enableEdgeToEdge()
-        setContentView(R.layout.activity_search)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        val backButton = findViewById<MaterialButton>(R.id.back_button)
-
-        recyclerView = findViewById(R.id.recyclerView)
-        historyRecyclerView = findViewById(R.id.history_recycler_view)
-        placeholderSearch = findViewById(R.id.placeholder_search)
-        stubNoResult = findViewById(R.id.stub_no_result)
-        searchHistoryContainer = findViewById(R.id.search_history_container)
-        searchField = findViewById(R.id.search_field)
-        clearButton = findViewById(R.id.clearIcon)
-        hintMessage = findViewById(R.id.searchHint)
-        progressBar = findViewById(R.id.progressBar)
-
-        val mainLayout = findViewById<View>(R.id.main)
-        mainLayout.setOnClickListener {
+        binding.main.setOnClickListener {
             hideKeyboard()
         }
 
-        backButton.setOnClickListener {
+        binding.backButton.setOnClickListener {
             finish()
         }
 
-        clearButton.setOnClickListener {
-            searchField.setText("")
+        binding.clearIcon.setOnClickListener {
+            binding.searchField.setText("")
             inputValue = ""
 
             adapter.updateTracks(emptyList())
@@ -98,22 +71,21 @@ class SearchActivity : AppCompatActivity() {
             hideAllContainers()
             showHistoryOrHint()
 
-            searchField.clearFocus()
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+            binding.searchField.clearFocus()
+            hideKeyboard()
 
             handler.removeCallbacks(searchRunnable)
         }
 
-        searchField.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && searchField.text.toString().isEmpty()) {
+        binding.searchField.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && binding.searchField.text.toString().isEmpty()) {
                 showHistoryOrHint()
             } else {
-                hintMessage.visibility = View.GONE
-                searchHistoryContainer.visibility = View.GONE
+                binding.searchHint.visibility = View.GONE
+                binding.searchHistoryContainer.visibility = View.GONE
             }
         }
-
+        // TextWatcher для поиска
         val simpleTextWatcher = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
@@ -121,22 +93,22 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 inputValue = s?.toString() ?: ""
-                clearButton.visibility = clearButtonVisibility(s)
+                binding.clearIcon.visibility = clearButtonVisibility(s)
 
                 handler.removeCallbacks(searchRunnable)
 
                 if (inputValue.isEmpty()) {
                     showHistoryOrHint()
                 } else {
-                    searchHistoryContainer.visibility = View.GONE
-                    hintMessage.visibility = View.GONE
+                    binding.searchHistoryContainer.visibility = View.GONE
+                    binding.searchHint.visibility = View.GONE
                     handler.postDelayed(searchRunnable, SEARCH_DELAY_MS)
                 }
             }
         }
 
-        searchField.addTextChangedListener(simpleTextWatcher)
-        clearButton.visibility = clearButtonVisibility(searchField.text)
+        binding.searchField.addTextChangedListener(simpleTextWatcher)
+        binding.clearIcon.visibility = clearButtonVisibility(binding.searchField.text)
 
         // Адаптер для результатов поиска
         adapter = TrackAdapter(emptyList()) { track ->
@@ -145,8 +117,8 @@ class SearchActivity : AppCompatActivity() {
             openAudioPlayer(track)
         }
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
 
         // Адаптер для истории
         historyAdapter = TrackAdapter(emptyList()) { track ->
@@ -154,75 +126,79 @@ class SearchActivity : AppCompatActivity() {
             updateHistory()
             openAudioPlayer(track)
         }
-        historyRecyclerView.layoutManager = LinearLayoutManager(this)
-        historyRecyclerView.adapter = historyAdapter
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.historyRecyclerView.adapter = historyAdapter
 
         // Кнопка очистки истории
-        val clearHistoryButton = findViewById<MaterialButton>(R.id.clear_history_button)
-        clearHistoryButton.setOnClickListener {
+        binding.clearHistoryButton.setOnClickListener {
             searchHistoryUseCase.clearHistory()
-            searchHistoryContainer.visibility = View.GONE
+            binding.searchHistoryContainer.visibility = View.GONE
 
-            if (searchField.text.toString().isEmpty()) {
-                hintMessage.visibility = View.VISIBLE
+            if (binding.searchField.text.toString().isEmpty()) {
+                binding.searchHint.visibility = View.VISIBLE
             }
         }
 
         // Кнопка обновить
-        val updateButton = findViewById<MaterialButton>(R.id.update_button)
-        updateButton.setOnClickListener {
+        binding.updateButton.setOnClickListener {
             if (inputValue.isNotEmpty()) {
                 performSearch(inputValue)
             }
         }
 
         hideAllContainers()
-        searchField.requestFocus()
+        binding.searchField.requestFocus()
     }
 
     override fun onResume() {
         super.onResume()
         // Если поле поиска пустое, показываем историю (или подсказку)
-        if (searchField.text.isNullOrEmpty()) {
+        if (binding.searchField.text.isNullOrEmpty()) {
             showHistoryOrHint()
         }
     }
+
+    // ---------- Вспомогательные методы ----------
 
     private fun showHistoryOrHint() {
         val history = searchHistoryUseCase.getHistory()
         if (history.isNotEmpty()) {
             historyAdapter.updateTracks(history)
-            searchHistoryContainer.visibility = View.VISIBLE
-            hintMessage.visibility = View.GONE
+            binding.searchHistoryContainer.visibility = View.VISIBLE
+            binding.searchHint.visibility = View.GONE
         } else {
-            hintMessage.visibility = View.VISIBLE
-            searchHistoryContainer.visibility = View.GONE
+            binding.searchHint.visibility = View.VISIBLE
+            binding.searchHistoryContainer.visibility = View.GONE
         }
-        recyclerView.visibility = View.GONE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.GONE
+        binding.recyclerView.visibility = View.GONE
+        binding.placeholderSearch.visibility = View.GONE
+        binding.stubNoResult.visibility = View.GONE
     }
 
     private fun hideAllContainers() {
-        recyclerView.visibility = View.GONE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.GONE
-        searchHistoryContainer.visibility = View.GONE
-        hintMessage.visibility = View.GONE
-        progressBar.visibility = View.GONE
+        binding.apply {
+            recyclerView.visibility = View.GONE
+            placeholderSearch.visibility = View.GONE
+            stubNoResult.visibility = View.GONE
+            searchHistoryContainer.visibility = View.GONE
+            searchHint.visibility = View.GONE
+            progressBar.visibility = View.GONE
+        }
     }
 
     private fun showLoading() {
-        progressBar.visibility = View.VISIBLE
-        recyclerView.visibility = View.GONE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.GONE
-        searchHistoryContainer.visibility = View.GONE
-        hintMessage.visibility = View.GONE
+        binding.apply {
+            progressBar.visibility = View.VISIBLE
+            recyclerView.visibility = View.GONE
+            placeholderSearch.visibility = View.GONE
+            stubNoResult.visibility = View.GONE
+            searchHistoryContainer.visibility = View.GONE
+            searchHint.visibility = View.GONE
+        }
     }
 
     private fun hideLoading() {
-        progressBar.visibility = View.GONE
+        binding.progressBar.visibility = View.GONE
     }
 
     private fun clearButtonVisibility(s: CharSequence?): Int {
@@ -262,46 +238,50 @@ class SearchActivity : AppCompatActivity() {
 
     private fun showTracks(tracks: List<Track>) {
         hideLoading()
-        recyclerView.visibility = View.VISIBLE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.GONE
-        searchHistoryContainer.visibility = View.GONE
-
+        binding.apply {
+            recyclerView.visibility = View.VISIBLE
+            placeholderSearch.visibility = View.GONE
+            stubNoResult.visibility = View.GONE
+            searchHistoryContainer.visibility = View.GONE
+        }
         adapter.updateTracks(tracks)
     }
 
     private fun showNoResult() {
         hideLoading()
-        recyclerView.visibility = View.GONE
-        placeholderSearch.visibility = View.GONE
-        stubNoResult.visibility = View.VISIBLE
-        searchHistoryContainer.visibility = View.GONE
+        binding.apply {
+            recyclerView.visibility = View.GONE
+            placeholderSearch.visibility = View.GONE
+            stubNoResult.visibility = View.VISIBLE
+            searchHistoryContainer.visibility = View.GONE
+        }
     }
 
     private fun showNetworkError() {
         hideLoading()
-        recyclerView.visibility = View.GONE
-        placeholderSearch.visibility = View.VISIBLE
-        stubNoResult.visibility = View.GONE
-        searchHistoryContainer.visibility = View.GONE
+        binding.apply {
+            recyclerView.visibility = View.GONE
+            placeholderSearch.visibility = View.VISIBLE
+            stubNoResult.visibility = View.GONE
+            searchHistoryContainer.visibility = View.GONE
+        }
     }
 
     private fun updateHistory() {
         val history = searchHistoryUseCase.getHistory()
         if (history.isNotEmpty()) {
             historyAdapter.updateTracks(history)
-            if (searchField.text.toString().isEmpty() && searchField.hasFocus()) {
-                searchHistoryContainer.visibility = View.VISIBLE
-                hintMessage.visibility = View.GONE
+            if (binding.searchField.text.toString().isEmpty() && binding.searchField.hasFocus()) {
+                binding.searchHistoryContainer.visibility = View.VISIBLE
+                binding.searchHint.visibility = View.GONE
             }
         }
     }
 
     private fun openAudioPlayer(track: Track) {
-        searchField.text?.clear()
-        searchField.clearFocus()
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+        binding.searchField.text?.clear()
+        binding.searchField.clearFocus()
+        hideKeyboard()
 
         val intent = Intent(this, AudioPlayer::class.java)
         TrackIntentHelper.putTrackToIntent(intent, track)
@@ -310,7 +290,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun hideKeyboard() {
         val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
-        searchField.clearFocus()
+        imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
+        binding.searchField.clearFocus()
     }
 }
