@@ -80,6 +80,11 @@ class SearchActivity : AppCompatActivity() {
         hintMessage = findViewById(R.id.searchHint)
         progressBar = findViewById(R.id.progressBar)
 
+        val mainLayout = findViewById<View>(R.id.main)
+        mainLayout.setOnClickListener {
+            hideKeyboard()
+        }
+
         backButton.setOnClickListener {
             finish()
         }
@@ -229,7 +234,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val INPUT_TEXT = "INPUT_TEXT"
         const val TEXT_DEF = ""
         const val SEARCH_DELAY_MS = 2000L
     }
@@ -304,4 +308,9 @@ class SearchActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(searchField.windowToken, 0)
+        searchField.clearFocus()
+    }
 }

@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import com.example.playlistmaker.domain.model.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import androidx.core.content.edit
 
 class SearchHistoryUseCase(context: Context) {
 
@@ -39,7 +40,7 @@ class SearchHistoryUseCase(context: Context) {
 
     private fun saveHistory() {
         val json = gson.toJson(history)
-        prefs.edit().putString("history_json", json).apply()
+        prefs.edit { putString("history_json", json) }
     }
     private fun loadHistory() {
         val json = prefs.getString("history_json", null)
