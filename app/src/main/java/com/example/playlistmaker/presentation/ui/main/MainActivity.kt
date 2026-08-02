@@ -10,26 +10,26 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivityMainBinding
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 import com.example.playlistmaker.presentation.ui.media.MediaActivity
 import com.example.playlistmaker.presentation.ui.search.SearchActivity
 import com.example.playlistmaker.presentation.ui.settings.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.updatePadding(top = systemBars.top,
                 bottom = systemBars.bottom)
             insets
         }
-
-        val searchBut = findViewById<Button>(R.id.search_button)
-        val mediaBut = findViewById<Button>(R.id.media_button)
-        val settingBut = findViewById<Button>(R.id.setting_button)
-
 
         val buttonClickListener: View.OnClickListener = object : View.OnClickListener {
             override fun onClick(v: View?) {
@@ -38,22 +38,18 @@ class MainActivity : AppCompatActivity() {
                 startActivity(searchIntent)
             }
         }
-        searchBut.setOnClickListener(buttonClickListener)
+        binding.searchButton.setOnClickListener(buttonClickListener)
 
-
-        mediaBut.setOnClickListener {
+        binding.mediaButton.setOnClickListener {
             //Toast.makeText(this@MainActivity,"Нажали на кнопку медиатеки!", Toast.LENGTH_SHORT).show()
             val mediaIntent = Intent(this, MediaActivity::class.java)
             startActivity(mediaIntent)
         }
 
-
-        settingBut.setOnClickListener {
+        binding.settingButton.setOnClickListener {
             //Toast.makeText(this@MainActivity,"Нажали на кнопку настройки!", Toast.LENGTH_SHORT).show()
             val setIntent = Intent(this, SettingsActivity::class.java)
             startActivity(setIntent)
         }
-
-
     }
 }
