@@ -186,6 +186,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TrackInfoText.End"
+            android:id="@+id/duration_value"
             tools:text="5:35" />
 
         <!-- Альбом -->
@@ -195,6 +196,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TrackInfoText.End"
+            android:id="@+id/album_value"
             tools:text="Nevermind" />
 
         <!-- Год -->
@@ -204,6 +206,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TrackInfoText.End"
+            android:id="@+id/year_value"
             tools:text="1991" />
 
         <!-- Жанр -->
@@ -213,6 +216,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TrackInfoText.End"
+            android:id="@+id/genre_value"
             tools:text="Grunge" />
 
         <!-- Страна -->
@@ -222,6 +226,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/TrackInfoText.End"
+            android:id="@+id/country_value"
             tools:text="США" />
 
     </GridLayout>
