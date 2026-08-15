@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.playlistmaker.feature.settings.data.repository.SettingsRepositoryImpl
 import com.example.playlistmaker.feature.settings.domain.repository.SettingsRepository
 import com.example.playlistmaker.feature.settings.domain.usecase.GetThemeSettingsUseCase
-import com.example.playlistmaker.domain.usecase.SearchTracksUseCase
+import com.example.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
 import com.example.playlistmaker.feature.settings.domain.usecase.UpdateThemeSettingsUseCase
 import com.example.playlistmaker.feature.search.data.repository.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.feature.search.data.repository.TrackRepositoryImpl

@@ -5,7 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.usecase.SearchTracksUseCase
+import com.example.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.feature.search.domain.usecase.AddTrackToHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.ClearSearchHistoryUseCase

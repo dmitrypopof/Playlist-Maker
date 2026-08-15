@@ -14,9 +14,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.feature.player.presentation.AudioPlayerActivity
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
-import com.example.playlistmaker.feature.player.presentation.AudioPlayerActivity
 
 class SearchActivity : AppCompatActivity() {
 

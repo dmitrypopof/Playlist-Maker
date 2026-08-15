@@ -2,7 +2,7 @@ package com.example.playlistmaker.feature.search.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlistmaker.domain.usecase.SearchTracksUseCase
+import com.example.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.AddTrackToHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.ClearSearchHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.GetSearchHistoryUseCase
