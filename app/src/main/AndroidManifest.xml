@@ -24,7 +24,7 @@
         <activity android:name=".feature.player.presentation.AudioPlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.main.MainActivity"
+            android:name=".feature.main.presentation.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
