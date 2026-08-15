@@ -16,7 +16,7 @@ import com.example.playlistmaker.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
-import com.example.playlistmaker.presentation.ui.player.AudioPlayer
+import com.example.playlistmaker.feature.player.presentation.AudioPlayerActivity
 
 class SearchActivity : AppCompatActivity() {
 
@@ -210,7 +210,7 @@ class SearchActivity : AppCompatActivity() {
             binding.searchField.clearFocus()
             hideKeyboard()
 
-            val intent = Intent(this, AudioPlayer::class.java)
+            val intent = Intent(this, AudioPlayerActivity::class.java)
             TrackIntentHelper.putTrackToIntent(intent, track)
             startActivity(intent)
         }

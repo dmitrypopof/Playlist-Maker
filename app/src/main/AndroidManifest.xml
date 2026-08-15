@@ -21,7 +21,7 @@
         <activity
             android:name=".presentation.ui.media.MediaActivity"
             android:exported="false" />
-        <activity android:name=".presentation.ui.player.AudioPlayer"
+        <activity android:name=".feature.player.presentation.AudioPlayerActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.main.MainActivity"
