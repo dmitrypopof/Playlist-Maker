@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui.search
+package com.example.playlistmaker.feature.search.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,10 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
-import com.example.playlistmaker.feature.search.presentation.SearchState
-import com.example.playlistmaker.feature.search.presentation.SearchViewModel
-import com.example.playlistmaker.feature.search.presentation.SearchViewModelFactory
-import com.example.playlistmaker.feature.search.presentation.TrackAdapter
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
 import com.example.playlistmaker.presentation.ui.player.AudioPlayer
 

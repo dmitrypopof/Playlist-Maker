@@ -3,8 +3,8 @@ package com.example.playlistmaker.feature.settings.presentation
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.domain.usecase.GetThemeSettingsUseCase
-import com.example.playlistmaker.domain.usecase.UpdateThemeSettingsUseCase
+import com.example.playlistmaker.feature.settings.domain.usecase.GetThemeSettingsUseCase
+import com.example.playlistmaker.feature.settings.domain.usecase.UpdateThemeSettingsUseCase
 
 class SettingsViewModel (
     private val getThemeSettingsUseCase: GetThemeSettingsUseCase,

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.ui.settings
+package com.example.playlistmaker.feature.settings.presentation
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,7 @@ import com.example.playlistmaker.databinding.ActivitySettingsBinding
 class SettingsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySettingsBinding
+    private lateinit var viewModel: SettingsViewModel
 
     private val getThemeSettingsUseCase by lazy { Creator.provideGetThemeSettingsUseCase() }
     private val updateThemeSettingsUseCase by lazy { Creator.provideUpdateThemeSettingsUseCase() }
@@ -86,7 +87,5 @@ class SettingsActivity : AppCompatActivity() {
                 )
             )
         }
-
-
     }
 }

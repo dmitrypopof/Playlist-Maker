@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.PlaylistMaker">
         <activity
-            android:name=".presentation.ui.settings.SettingsActivity"
+            android:name=".feature.settings.presentation.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.search.SearchActivity"
+            android:name=".feature.search.presentation.SearchActivity"
             android:exported="false" />
         <activity
             android:name=".presentation.ui.media.MediaActivity"

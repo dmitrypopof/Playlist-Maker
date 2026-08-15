@@ -1,7 +1,7 @@
-package com.example.playlistmaker.feature.settings
+package com.example.playlistmaker.feature.settings.data.repository
 
 import android.content.Context
-import com.example.playlistmaker.domain.repository.SettingsRepository
+import com.example.playlistmaker.feature.settings.domain.repository.SettingsRepository
 
 class SettingsRepositoryImpl(context: Context) : SettingsRepository {
     private val prefs = context.getSharedPreferences("app_settings", Context.MODE_PRIVATE)

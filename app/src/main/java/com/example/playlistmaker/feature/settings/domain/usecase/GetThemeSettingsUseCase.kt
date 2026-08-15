@@ -1,6 +1,6 @@
-package com.example.playlistmaker.domain.usecase
+package com.example.playlistmaker.feature.settings.domain.usecase
 
-import com.example.playlistmaker.domain.repository.SettingsRepository
+import com.example.playlistmaker.feature.settings.domain.repository.SettingsRepository
 
 class GetThemeSettingsUseCase(private val repository: SettingsRepository) {
     operator fun invoke(): Boolean {
