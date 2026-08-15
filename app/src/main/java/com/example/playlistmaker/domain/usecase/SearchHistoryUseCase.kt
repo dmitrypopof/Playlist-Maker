@@ -2,7 +2,7 @@ package com.example.playlistmaker.domain.usecase
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.feature.search.domain.model.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import androidx.core.content.edit

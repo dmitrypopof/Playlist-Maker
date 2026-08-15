@@ -16,8 +16,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.presentation.adapter.TrackAdapter
+import com.example.playlistmaker.feature.search.domain.model.Track
+import com.example.playlistmaker.feature.search.presentation.TrackAdapter
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
 import com.example.playlistmaker.presentation.ui.player.AudioPlayer
 
@@ -32,7 +32,11 @@ class SearchActivity : AppCompatActivity() {
 
     // Use cases через Creator
     private val searchTracksUseCase by lazy { Creator.provideSearchTracksUseCase() }
-    private val searchHistoryUseCase by lazy { Creator.provideSearchHistoryUseCase() }
+//    private val searchHistoryUseCase by lazy { Creator.provideSearchHistoryUseCase() }
+
+    private val getSearchHistoryUseCase by lazy { Creator.provideGetSearchHistoryUseCase() }
+    private val addTrackToHistoryUseCase by lazy { Creator.provideAddTrackToHistoryUseCase() }
+    private val clearSearchHistoryUseCase by lazy { Creator.provideClearSearchHistoryUseCase() }
 
     private val searchRunnable = Runnable {
         val currentQuery = binding.searchField.text.toString()
@@ -112,7 +116,7 @@ class SearchActivity : AppCompatActivity() {
 
         // Адаптер для результатов поиска
         adapter = TrackAdapter(emptyList()) { track ->
-            searchHistoryUseCase.addTrack(track)
+            addTrackToHistoryUseCase(track)
             updateHistory()
             openAudioPlayer(track)
         }
@@ -122,7 +126,7 @@ class SearchActivity : AppCompatActivity() {
 
         // Адаптер для истории
         historyAdapter = TrackAdapter(emptyList()) { track ->
-            searchHistoryUseCase.addTrack(track)
+            addTrackToHistoryUseCase(track)
             updateHistory()
             openAudioPlayer(track)
         }
@@ -131,7 +135,7 @@ class SearchActivity : AppCompatActivity() {
 
         // Кнопка очистки истории
         binding.clearHistoryButton.setOnClickListener {
-            searchHistoryUseCase.clearHistory()
+            clearSearchHistoryUseCase()
             binding.searchHistoryContainer.visibility = View.GONE
 
             if (binding.searchField.text.toString().isEmpty()) {
@@ -161,7 +165,7 @@ class SearchActivity : AppCompatActivity() {
     // ---------- Вспомогательные методы ----------
 
     private fun showHistoryOrHint() {
-        val history = searchHistoryUseCase.getHistory()
+        val history = getSearchHistoryUseCase()
         if (history.isNotEmpty()) {
             historyAdapter.updateTracks(history)
             binding.searchHistoryContainer.visibility = View.VISIBLE
@@ -268,7 +272,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateHistory() {
-        val history = searchHistoryUseCase.getHistory()
+        val history = getSearchHistoryUseCase()
         if (history.isNotEmpty()) {
             historyAdapter.updateTracks(history)
             if (binding.searchField.text.toString().isEmpty() && binding.searchField.hasFocus()) {

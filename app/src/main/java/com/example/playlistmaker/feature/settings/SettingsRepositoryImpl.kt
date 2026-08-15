@@ -1,4 +1,4 @@
-package com.example.playlistmaker.data.repository
+package com.example.playlistmaker.feature.settings
 
 import android.content.Context
 import com.example.playlistmaker.domain.repository.SettingsRepository

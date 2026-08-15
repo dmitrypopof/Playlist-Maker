@@ -1,6 +1,5 @@
-package com.example.playlistmaker.data.network
+package com.example.playlistmaker.core.network
 
-import com.example.playlistmaker.data.network.ITunesApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

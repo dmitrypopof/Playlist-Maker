@@ -1,7 +1,7 @@
-package com.example.playlistmaker.data.repository
+package com.example.playlistmaker.feature.search.data.mapper
 
-import com.example.playlistmaker.data.dto.TrackDto
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.core.network.dto.TrackDto
+import com.example.playlistmaker.feature.search.domain.model.Track
 
 object TrackMapper {
     fun map(dto: TrackDto): Track {

@@ -1,7 +1,7 @@
 package com.example.playlistmaker.presentation.helper
 
 import android.content.Intent
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.feature.search.domain.model.Track
 import com.google.gson.Gson
 
 object TrackIntentHelper {

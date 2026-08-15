@@ -1,7 +1,7 @@
 package com.example.playlistmaker.domain.usecase
 
-import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.domain.repository.TrackRepository
+import com.example.playlistmaker.feature.search.domain.model.Track
+import com.example.playlistmaker.feature.search.domain.repository.TrackRepository
 
 class SearchTracksUseCase (private val repository: TrackRepository) {
     operator fun invoke(query: String): Result<List<Track>> {

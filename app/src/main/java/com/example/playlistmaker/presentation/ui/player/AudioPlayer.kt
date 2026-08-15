@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
-import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
 import java.text.SimpleDateFormat
 import java.util.Locale

@@ -1,4 +1,4 @@
-package com.example.playlistmaker.presentation.adapter
+package com.example.playlistmaker.feature.search.presentation
 
 import android.annotation.SuppressLint
 import android.os.Handler
@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.ItemTrackBinding
-import com.example.playlistmaker.domain.model.Track
-import com.example.playlistmaker.presentation.viewholder.TrackViewHolder
-
+import com.example.playlistmaker.feature.search.domain.model.Track
 
 class TrackAdapter(
     private var tracks: List<Track>,
