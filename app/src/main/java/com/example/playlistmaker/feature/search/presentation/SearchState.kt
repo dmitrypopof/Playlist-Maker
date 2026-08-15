@@ -15,4 +15,7 @@ sealed class SearchState {
     data class HistoryContent(
         val tracks: List<Track>
     ) : SearchState()
+
+    // Новое состояние - переход к плееру
+    object NavigateToPlayer : SearchState()
 }

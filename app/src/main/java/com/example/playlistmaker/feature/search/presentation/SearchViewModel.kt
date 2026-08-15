@@ -21,7 +21,7 @@ class SearchViewModel(
     private val handler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
     private val SEARCH_DELAY_MS = 2000L
-
+    private var selectedTrack: Track? = null
     // Состояние экрана
     private val _state = MutableLiveData<SearchState>()
     val state: LiveData<SearchState> = _state
@@ -105,12 +105,28 @@ class SearchViewModel(
      * Обработка клика по треку
      */
     fun onTrackClicked(track: Track) {
+        // Сохраняем трек
+        selectedTrack = track
+        // Добавляем в историю (фоново)
         addTrackToHistoryUseCase(track)
-        // Обновляем историю после добавления
-        val history = getSearchHistoryUseCase()
-        if (history.isNotEmpty() && currentQuery.isEmpty()) {
-            _state.value = SearchState.HistoryContent(history)
+        // Отправляем сигнал к навигации
+        _state.value = SearchState.NavigateToPlayer
+    }
+
+    /**
+     * Обновить историю (используется при возвращении на экран)
+     */
+    fun refreshHistory() {
+        if (currentQuery.isEmpty()) {
+            showHistoryOrEmpty()
         }
+    }
+
+    // Получить выбранный трек и сбросить его
+    fun consumeSelectedTrack(): Track? {
+        val track = selectedTrack
+        selectedTrack = null
+        return track
     }
 
     /**
