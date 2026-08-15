@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.feature.search.presentation.SearchActivity
 import com.example.playlistmaker.feature.settings.presentation.SettingsActivity
-import com.example.playlistmaker.presentation.ui.media.MediaActivity
+import com.example.playlistmaker.feature.media.presentation.MediaActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

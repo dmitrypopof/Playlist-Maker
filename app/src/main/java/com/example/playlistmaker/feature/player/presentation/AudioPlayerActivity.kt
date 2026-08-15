@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
-import com.example.playlistmaker.presentation.helper.TrackIntentHelper
+import com.example.playlistmaker.core.utils.TrackIntentHelper
 
 class AudioPlayerActivity : AppCompatActivity() {
 

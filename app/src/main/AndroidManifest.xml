@@ -19,7 +19,7 @@
             android:name=".feature.search.presentation.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".presentation.ui.media.MediaActivity"
+            android:name=".feature.media.presentation.MediaActivity"
             android:exported="false" />
         <activity android:name=".feature.player.presentation.AudioPlayerActivity"
             android:exported="false" />

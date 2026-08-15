@@ -1,6 +1,7 @@
-package com.example.playlistmaker.presentation.helper
+package com.example.playlistmaker.core.utils
 
 import android.content.Intent
+import android.util.Log
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.google.gson.Gson
 
@@ -12,7 +13,7 @@ object TrackIntentHelper {
         return try {
             Gson().fromJson(json, Track::class.java)
         } catch (e: Exception) {
-            android.util.Log.e("TrackIntentHelper", "Failed to parse track from JSON", e)
+            Log.e("TrackIntentHelper", "Failed to parse track from JSON", e)
             null
         }
     }
