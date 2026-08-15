@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
+import com.example.playlistmaker.feature.search.presentation.SearchViewModel
 import com.example.playlistmaker.feature.search.presentation.TrackAdapter
 import com.example.playlistmaker.presentation.helper.TrackIntentHelper
 import com.example.playlistmaker.presentation.ui.player.AudioPlayer
@@ -25,6 +26,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val tag = "SearchActivityLifecycle"
     private lateinit var binding: ActivitySearchBinding
+    private lateinit var viewModel: SearchViewModel
 
     private var inputValue: String = TEXT_DEF
     private lateinit var adapter: TrackAdapter
@@ -32,7 +34,6 @@ class SearchActivity : AppCompatActivity() {
 
     // Use cases через Creator
     private val searchTracksUseCase by lazy { Creator.provideSearchTracksUseCase() }
-//    private val searchHistoryUseCase by lazy { Creator.provideSearchHistoryUseCase() }
 
     private val getSearchHistoryUseCase by lazy { Creator.provideGetSearchHistoryUseCase() }
     private val addTrackToHistoryUseCase by lazy { Creator.provideAddTrackToHistoryUseCase() }
