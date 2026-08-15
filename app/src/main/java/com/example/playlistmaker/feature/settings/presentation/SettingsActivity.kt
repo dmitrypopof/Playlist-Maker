@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
@@ -17,16 +18,11 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     private lateinit var viewModel: SettingsViewModel
 
-    private val getThemeSettingsUseCase by lazy { Creator.provideGetThemeSettingsUseCase() }
-    private val updateThemeSettingsUseCase by lazy { Creator.provideUpdateThemeSettingsUseCase() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.themeSwitcher.isChecked = getThemeSettingsUseCase()
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -34,14 +30,34 @@ class SettingsActivity : AppCompatActivity() {
             insets
         }
 
+        // Инициализация ViewModel
+        viewModel = ViewModelProvider(
+            this,
+            SettingsViewModelFactory(
+                Creator.provideGetThemeSettingsUseCase(),
+                Creator.provideUpdateThemeSettingsUseCase()
+            )
+        )[SettingsViewModel::class.java]
+
+        // Настройка слушателей
+        setupListeners()
+
+        // Наблюдение за состоянием
+        observeState()
+    }
+
+    private fun setupListeners() {
         binding.backButton.setOnClickListener {
             finish()
         }
 
-        binding.themeSwitcher.setOnCheckedChangeListener { _, checked ->
-            updateThemeSettingsUseCase(checked)
+        // Обработка переключателя темы
+        binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+            // Передаем событие в ViewModel
+            viewModel.onThemeChanged(isChecked)
+            // Применяем тему
             AppCompatDelegate.setDefaultNightMode(
-                if (checked) {
+                if (isChecked) {
                     AppCompatDelegate.MODE_NIGHT_YES
                 } else {
                     AppCompatDelegate.MODE_NIGHT_NO
@@ -49,6 +65,7 @@ class SettingsActivity : AppCompatActivity() {
             )
         }
 
+        // Кнопка "Поделиться приложением"
         binding.shareApp.setOnClickListener {
             val intent = Intent(Intent.ACTION_SEND)
             intent.type = "text/plain"
@@ -61,6 +78,7 @@ class SettingsActivity : AppCompatActivity() {
             )
         }
 
+        // Кнопка "Написать в поддержку"
         binding.writeSupport.setOnClickListener {
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = "mailto:".toUri()
@@ -74,18 +92,46 @@ class SettingsActivity : AppCompatActivity() {
                 getString(R.string.textMail)
             )
             startActivity(Intent.createChooser(intent, getString(R.string.textBottomSheet_support)))
-
         }
 
+        // Кнопка "Пользовательское соглашение"
         binding.userAgreement.setOnClickListener {
-            val intent =
-                Intent(Intent.ACTION_VIEW, getString(R.string.linkPracticumOffer).toUri())
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                getString(R.string.linkPracticumOffer).toUri()
+            )
             startActivity(
                 Intent.createChooser(
                     intent,
                     getString(R.string.textBottomSheet_agreement)
                 )
             )
+        }
+    }
+
+    private fun observeState() {
+        viewModel.state.observe(this) { state ->
+            renderState(state)
+        }
+    }
+
+    private fun renderState(state: SettingsState) {
+        when (state) {
+            is SettingsState.ThemeSettings -> {
+                // Обновляем состояние переключателя без вызова listener
+                binding.themeSwitcher.setOnCheckedChangeListener(null)
+                binding.themeSwitcher.isChecked = state.isDarkTheme
+                binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.onThemeChanged(isChecked)
+                    AppCompatDelegate.setDefaultNightMode(
+                        if (isChecked) {
+                            AppCompatDelegate.MODE_NIGHT_YES
+                        } else {
+                            AppCompatDelegate.MODE_NIGHT_NO
+                        }
+                    )
+                }
+            }
         }
     }
 }
