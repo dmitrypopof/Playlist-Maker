@@ -21,7 +21,7 @@ import com.example.playlistmaker.core.utils.TrackIntentHelper
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel  // <-- ДОБАВИТЬ ViewModel
+    private lateinit var viewModel: SearchViewModel
 
     private lateinit var adapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
@@ -68,6 +68,9 @@ class SearchActivity : AppCompatActivity() {
         if (binding.searchField.text.isNullOrEmpty()) {
             // Обновляем историю из репозитория
             viewModel.refreshHistory()
+        } else {
+            val query = binding.searchField.text.toString()
+            viewModel.onSearchTextChanged(query)
         }
     }
 
@@ -206,7 +209,7 @@ class SearchActivity : AppCompatActivity() {
     private fun openAudioPlayer() {
         val track = viewModel.consumeSelectedTrack()
         if (track != null) {
-            binding.searchField.text?.clear()
+            //binding.searchField.text?.clear()
             binding.searchField.clearFocus()
             hideKeyboard()
 
