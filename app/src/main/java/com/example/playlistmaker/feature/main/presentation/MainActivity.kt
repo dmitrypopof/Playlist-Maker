@@ -15,7 +15,6 @@ import com.example.playlistmaker.feature.media.presentation.MediaActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,12 +28,6 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        // Инициализация ViewModel
-        viewModel = ViewModelProvider(
-            this,
-            MainViewModelFactory()
-        )[MainViewModel::class.java]
-
         // Настройка слушателей
         setupListeners()
     }
@@ -42,20 +35,32 @@ class MainActivity : AppCompatActivity() {
     private fun setupListeners() {
         // Кнопка поиска
         binding.searchButton.setOnClickListener {
-            val searchIntent = Intent(this@MainActivity, SearchActivity::class.java)
-            startActivity(searchIntent)
+            navigateToSearch()
         }
 
         // Кнопка медиатеки
         binding.mediaButton.setOnClickListener {
-            val mediaIntent = Intent(this@MainActivity, MediaActivity::class.java)
-            startActivity(mediaIntent)
+            navigateToMedia()
         }
 
         // Кнопка настроек
         binding.settingButton.setOnClickListener {
-            val setIntent = Intent(this@MainActivity, SettingsActivity::class.java)
-            startActivity(setIntent)
+            navigateToSettings()
         }
+    }
+
+    private fun navigateToSearch() {
+        val intent = Intent(this, SearchActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToMedia() {
+        val intent = Intent(this, MediaActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun navigateToSettings() {
+        val intent = Intent(this, SettingsActivity::class.java)
+        startActivity(intent)
     }
 }
