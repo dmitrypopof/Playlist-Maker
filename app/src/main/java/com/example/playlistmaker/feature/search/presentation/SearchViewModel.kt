@@ -21,13 +21,22 @@ class SearchViewModel(
     private val handler = Handler(Looper.getMainLooper())
     private var searchRunnable: Runnable? = null
     private val SEARCH_DELAY_MS = 2000L
-    private var selectedTrack: Track? = null
+
     // Состояние экрана
     private val _state = MutableLiveData<SearchState>()
     val state: LiveData<SearchState> = _state
 
+
+    // События для навигации
+    private val _events = MutableLiveData<SearchEvent>()
+    val events: LiveData<SearchEvent> = _events
+
+
     // Текущий поисковый запрос
     private var currentQuery: String = ""
+
+    // Сохраненные результаты поиска
+    private var lastSearchResults: List<Track>? = null
 
     init {
         // При создании ViewModel показываем историю или пустое состояние
@@ -57,18 +66,16 @@ class SearchViewModel(
         }
     }
 
-    /**
-     * Обработка изменения фокуса поля поиска
-     */
+
+    //Обработка изменения фокуса поля поиска
     fun onSearchFocusChanged(hasFocus: Boolean) {
         if (hasFocus && currentQuery.isEmpty()) {
             showHistoryOrEmpty()
         }
     }
 
-    /**
-     * Выполнение поиска
-     */
+
+    //Выполнение поиска
     private fun performSearch(query: String) {
         _state.value = SearchState.Loading
 
@@ -89,9 +96,7 @@ class SearchViewModel(
         }.start()
     }
 
-    /**
-     * Показать историю или пустое состояние
-     */
+    // Показать историю или пустое состояние
     private fun showHistoryOrEmpty() {
         val history = getSearchHistoryUseCase()
         if (history.isNotEmpty()) {
@@ -101,37 +106,44 @@ class SearchViewModel(
         }
     }
 
-    /**
-     * Обработка клика по треку
-     */
+    //Обработка клика по треку
     fun onTrackClicked(track: Track) {
-        // Сохраняем трек
-        selectedTrack = track
         // Добавляем в историю (фоново)
         addTrackToHistoryUseCase(track)
-        // Отправляем сигнал к навигации
-        _state.value = SearchState.NavigateToPlayer
+        // Отправляем событие навигации
+        _events.value = SearchEvent.NavigateToPlayer(track)
     }
 
-    /**
-     * Обновить историю (используется при возвращении на экран)
-     */
+
+    //Обновить историю (используется при возвращении на экран)
     fun refreshHistory() {
         if (currentQuery.isEmpty()) {
             showHistoryOrEmpty()
         }
     }
 
-    // Получить выбранный трек и сбросить его
-    fun consumeSelectedTrack(): Track? {
-        val track = selectedTrack
-        selectedTrack = null
-        return track
+    //Восстановление результатов поиска при возвращении на экран
+    fun restoreSearchResults() {
+        if (currentQuery.isNotEmpty()) {
+            if (lastSearchResults != null) {
+                // Показываем сохраненные результаты
+                lastSearchResults?.let { tracks ->
+                    if (tracks.isEmpty()) {
+                        _state.value = SearchState.Empty
+                    } else {
+                        _state.value = SearchState.Content(tracks)
+                    }
+                }
+            } else {
+                // Если результатов нет, выполняем поиск заново
+                performSearch(currentQuery)
+            }
+        } else {
+            showHistoryOrEmpty()
+        }
     }
 
-    /**
-     * Очистка истории
-     */
+    //Очистка истории
     fun onClearHistoryClicked() {
         clearSearchHistoryUseCase()
         if (currentQuery.isEmpty()) {
@@ -139,20 +151,17 @@ class SearchViewModel(
         }
     }
 
-    /**
-     * Повторный поиск при ошибке сети
-     */
+    //Повторный поиск при ошибке сети
     fun onRetryClicked() {
         if (currentQuery.isNotEmpty()) {
             performSearch(currentQuery)
         }
     }
 
-    /**
-     * Очистка поискового запроса
-     */
+    //Очистка поискового запроса
     fun onClearQueryClicked() {
         currentQuery = ""
+        lastSearchResults = null
         showHistoryOrEmpty()
     }
 

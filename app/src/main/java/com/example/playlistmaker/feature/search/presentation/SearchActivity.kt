@@ -58,32 +58,30 @@ class SearchActivity : AppCompatActivity() {
         // ===== НАБЛЮДЕНИЕ ЗА СОСТОЯНИЕМ =====
         observeState()
 
+        // ===== НАБЛЮДЕНИЕ ЗА СОБЫТИЯМИ =====
+        observeEvents()
+
         hideAllContainers()
         binding.searchField.requestFocus()
     }
 
     override fun onResume() {
         super.onResume()
-        // Если поле поиска пустое, обновляем историю
+        // Восстанавливаем состояние экрана
         if (binding.searchField.text.isNullOrEmpty()) {
-            // Обновляем историю из репозитория
             viewModel.refreshHistory()
         } else {
-            val query = binding.searchField.text.toString()
-            viewModel.onSearchTextChanged(query)
+            viewModel.restoreSearchResults()
         }
     }
 
-    // ===== НОВЫЙ МЕТОД ДЛЯ НАСТРОЙКИ АДАПТЕРОВ =====
     private fun setupAdapters() {
         adapter = TrackAdapter(emptyList()) { track ->
             viewModel.onTrackClicked(track)
-            //openAudioPlayer(track)
         }
 
         historyAdapter = TrackAdapter(emptyList()) { track ->
             viewModel.onTrackClicked(track)
-            //openAudioPlayer(track)
         }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -93,7 +91,6 @@ class SearchActivity : AppCompatActivity() {
         binding.historyRecyclerView.adapter = historyAdapter
     }
 
-    // ===== НОВЫЙ МЕТОД ДЛЯ НАСТРОЙКИ СЛУШАТЕЛЕЙ =====
     private fun setupListeners() {
         binding.backButton.setOnClickListener {
             finish()
@@ -137,19 +134,22 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    // ===== НАБЛЮДЕНИЕ ЗА СОСТОЯНИЕМ =====
     private fun observeState() {
         viewModel.state.observe(this) { state ->
             renderState(state)
+        }
+    }
 
-            // Обрабатываем навигацию отдельно
-            if (state is SearchState.NavigateToPlayer) {
-                openAudioPlayer()
+    private fun observeEvents() {
+        viewModel.events.observe(this) { event ->
+            when (event) {
+                is SearchEvent.NavigateToPlayer -> {
+                    openAudioPlayer(event.track)
+                }
             }
         }
     }
 
-    // ===== ОТРИСОВКА СОСТОЯНИЙ =====
     private fun renderState(state: SearchState) {
         hideAllContainers()
 
@@ -160,10 +160,6 @@ class SearchActivity : AppCompatActivity() {
             is SearchState.HistoryContent -> showHistory(state.tracks)
             is SearchState.HistoryEmpty -> showHint()
             is SearchState.NetworkError -> showNetworkError()
-            is SearchState.NavigateToPlayer -> {
-                // Ничего не показываем, просто открываем плеер
-                // Состояние не меняем, чтобы не было мерцания
-            }
         }
     }
 
@@ -206,17 +202,14 @@ class SearchActivity : AppCompatActivity() {
     }
 
     // ===== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =====
-    private fun openAudioPlayer() {
-        val track = viewModel.consumeSelectedTrack()
-        if (track != null) {
-            //binding.searchField.text?.clear()
-            binding.searchField.clearFocus()
-            hideKeyboard()
+    private fun openAudioPlayer(track: Track) {
+        binding.searchField.clearFocus()
+        hideKeyboard()
 
-            val intent = Intent(this, AudioPlayerActivity::class.java)
-            TrackIntentHelper.putTrackToIntent(intent, track)
-            startActivity(intent)
-        }
+        val intent = Intent(this, AudioPlayerActivity::class.java)
+        TrackIntentHelper.putTrackToIntent(intent, track)
+        startActivity(intent)
+
     }
 
     private fun hideKeyboard() {
