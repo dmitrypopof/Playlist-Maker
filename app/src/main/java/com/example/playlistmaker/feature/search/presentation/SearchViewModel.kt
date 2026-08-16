@@ -31,32 +31,23 @@ class SearchViewModel(
     private val _events = MutableLiveData<SearchEvent>()
     val events: LiveData<SearchEvent> = _events
 
-
-    // Текущий поисковый запрос
     private var currentQuery: String = ""
 
-    // Сохраненные результаты поиска
     private var lastSearchResults: List<Track>? = null
 
     init {
-        // При создании ViewModel показываем историю или пустое состояние
         showHistoryOrEmpty()
     }
 
-    /**
-     * Обработка изменения текста в поле поиска
-     */
+     //Обработка изменения текста в поле поиска
     fun onSearchTextChanged(query: String) {
         currentQuery = query
 
-        // Удаляем предыдущий поиск
         searchRunnable?.let { handler.removeCallbacks(it) }
 
         if (query.isEmpty()) {
-            // Если строка пустая - показываем историю или пустое состояние
             showHistoryOrEmpty()
         } else {
-            // Если есть текст - выполняем поиск с debounce
             searchRunnable = Runnable {
                 performSearch(query)
             }
@@ -66,16 +57,12 @@ class SearchViewModel(
         }
     }
 
-
-    //Обработка изменения фокуса поля поиска
     fun onSearchFocusChanged(hasFocus: Boolean) {
         if (hasFocus && currentQuery.isEmpty()) {
             showHistoryOrEmpty()
         }
     }
 
-
-    //Выполнение поиска
     private fun performSearch(query: String) {
         _state.value = SearchState.Loading
 
@@ -114,7 +101,6 @@ class SearchViewModel(
         _events.value = SearchEvent.NavigateToPlayer(track)
     }
 
-
     //Обновить историю (используется при возвращении на экран)
     fun refreshHistory() {
         if (currentQuery.isEmpty()) {
@@ -135,7 +121,6 @@ class SearchViewModel(
                     }
                 }
             } else {
-                // Если результатов нет, выполняем поиск заново
                 performSearch(currentQuery)
             }
         } else {
