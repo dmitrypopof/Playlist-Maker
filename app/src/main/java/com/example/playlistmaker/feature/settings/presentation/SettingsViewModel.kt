@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.feature.settings.domain.usecase.GetThemeSettingsUseCase
 import com.example.playlistmaker.feature.settings.domain.usecase.UpdateThemeSettingsUseCase
 
-class SettingsViewModel (
+class SettingsViewModel(
     private val getThemeSettingsUseCase: GetThemeSettingsUseCase,
     private val updateThemeSettingsUseCase: UpdateThemeSettingsUseCase
 ) : ViewModel() {
@@ -20,27 +20,22 @@ class SettingsViewModel (
         loadThemeSettings()
     }
 
-    /**
-     * Загрузка настроек темы
-     */
+    //Загрузка настроек темы
     private fun loadThemeSettings() {
         val isDarkTheme = getThemeSettingsUseCase()
         _state.value = SettingsState.ThemeSettings(isDarkTheme)
     }
 
-    /**
-     * Обработка изменения темы
-     */
+    //Обработка изменения темы
     fun onThemeChanged(isDarkTheme: Boolean) {
+        // Сохраняем настройку
         updateThemeSettingsUseCase(isDarkTheme)
         // Обновляем состояние
         _state.value = SettingsState.ThemeSettings(isDarkTheme)
     }
 
-    /**
-     * Получить текущее состояние темы
-     */
-    fun getCurrentTheme(): Boolean {
-        return getThemeSettingsUseCase()
-    }
+    //Получить текущее состояние темы
+//    fun getCurrentTheme(): Boolean {
+//        return getThemeSettingsUseCase()
+//    }
 }

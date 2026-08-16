@@ -55,57 +55,22 @@ class SettingsActivity : AppCompatActivity() {
         binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             // Передаем событие в ViewModel
             viewModel.onThemeChanged(isChecked)
-            // Применяем тему
-            AppCompatDelegate.setDefaultNightMode(
-                if (isChecked) {
-                    AppCompatDelegate.MODE_NIGHT_YES
-                } else {
-                    AppCompatDelegate.MODE_NIGHT_NO
-                }
-            )
+            applyTheme(isChecked)
         }
 
         // Кнопка "Поделиться приложением"
         binding.shareApp.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.type = "text/plain"
-            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.link_androidDeveloper))
-            startActivity(
-                Intent.createChooser(
-                    intent,
-                    getString(R.string.textBottomSheet_shareApp)
-                )
-            )
+            shareApp()
         }
 
         // Кнопка "Написать в поддержку"
         binding.writeSupport.setOnClickListener {
-            val intent = Intent(Intent.ACTION_SENDTO)
-            intent.data = "mailto:".toUri()
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.sendMail)))
-            intent.putExtra(
-                Intent.EXTRA_SUBJECT,
-                getString(R.string.subjectMail)
-            )
-            intent.putExtra(
-                Intent.EXTRA_TEXT,
-                getString(R.string.textMail)
-            )
-            startActivity(Intent.createChooser(intent, getString(R.string.textBottomSheet_support)))
+            writeSupport()
         }
 
         // Кнопка "Пользовательское соглашение"
         binding.userAgreement.setOnClickListener {
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                getString(R.string.linkPracticumOffer).toUri()
-            )
-            startActivity(
-                Intent.createChooser(
-                    intent,
-                    getString(R.string.textBottomSheet_agreement)
-                )
-            )
+            openUserAgreement()
         }
     }
 
@@ -123,15 +88,59 @@ class SettingsActivity : AppCompatActivity() {
                 binding.themeSwitcher.isChecked = state.isDarkTheme
                 binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
                     viewModel.onThemeChanged(isChecked)
-                    AppCompatDelegate.setDefaultNightMode(
-                        if (isChecked) {
-                            AppCompatDelegate.MODE_NIGHT_YES
-                        } else {
-                            AppCompatDelegate.MODE_NIGHT_NO
-                        }
-                    )
+                    applyTheme(isChecked)
                 }
             }
         }
+    }
+
+    private fun applyTheme(isDarkTheme: Boolean) {
+        AppCompatDelegate.setDefaultNightMode(
+            if (isDarkTheme) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
+    }
+
+    private fun shareApp() {
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.link_androidDeveloper))
+        startActivity(
+            Intent.createChooser(
+                intent,
+                getString(R.string.textBottomSheet_shareApp)
+            )
+        )
+    }
+
+    private fun writeSupport() {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = "mailto:".toUri()
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.sendMail)))
+        intent.putExtra(
+            Intent.EXTRA_SUBJECT,
+            getString(R.string.subjectMail)
+        )
+        intent.putExtra(
+            Intent.EXTRA_TEXT,
+            getString(R.string.textMail)
+        )
+        startActivity(Intent.createChooser(intent, getString(R.string.textBottomSheet_support)))
+    }
+
+    private fun openUserAgreement() {
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            getString(R.string.linkPracticumOffer).toUri()
+        )
+        startActivity(
+            Intent.createChooser(
+                intent,
+                getString(R.string.textBottomSheet_agreement)
+            )
+        )
     }
 }
