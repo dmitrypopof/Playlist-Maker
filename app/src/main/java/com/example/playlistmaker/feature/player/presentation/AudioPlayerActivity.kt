@@ -19,8 +19,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAudioplayerBinding
     private lateinit var viewModel: AudioPlayerViewModel
 
-    private lateinit var track: Track
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -33,18 +31,15 @@ class AudioPlayerActivity : AppCompatActivity() {
             insets
         }
 
-        // Получаем данные о треке
-        track = TrackIntentHelper.getTrackFromIntent(intent)
-            ?: Track.createDefault()
-
         // Инициализация ViewModel
         viewModel = ViewModelProvider(
             this,
             AudioPlayerViewModelFactory()
         )[AudioPlayerViewModel::class.java]
 
-        // Отображаем информацию о треке
-        displayTrackInfo()
+        // Получаем данные о треке
+        val track = TrackIntentHelper.getTrackFromIntent(intent)
+            ?: Track.createDefault()
 
         // Настройка слушателей
         setupListeners()
@@ -54,6 +49,9 @@ class AudioPlayerActivity : AppCompatActivity() {
 
         // Загружаем трек в плеер
         viewModel.loadTrack(track)
+
+        // Отображаем информацию о треке
+        displayTrackInfo(track)
     }
 
     override fun onPause() {
@@ -61,12 +59,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.onPause()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // ViewModel сама освободит ресурсы в onCleared()
-    }
-
-    private fun displayTrackInfo() {
+    private fun displayTrackInfo(track: Track) {
         // Заполняем основные данные
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
@@ -123,12 +116,16 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun renderState(state: AudioPlayerState) {
         when (state) {
+            is AudioPlayerState.Default -> {
+                // Начальное состояние
+                binding.playButton.setIconResource(R.drawable.ic_play_button)
+            }
             is AudioPlayerState.Content -> {
                 // Информация о треке уже отображена
+                binding.playButton.setIconResource(R.drawable.ic_play_button)
             }
             is AudioPlayerState.Prepared -> {
                 binding.playButton.setIconResource(R.drawable.ic_play_button)
-                binding.trackTime.text = track.formattedTime
             }
             is AudioPlayerState.Playing -> {
                 binding.playButton.setIconResource(R.drawable.ic_pause_button)
@@ -138,9 +135,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             }
             is AudioPlayerState.Progress -> {
                 binding.trackTime.text = state.currentPosition
-            }
-            is AudioPlayerState.Default -> {
-                // Начальное состояние
             }
         }
     }

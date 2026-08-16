@@ -9,7 +9,9 @@ sealed class AudioPlayerState {
     object Paused : AudioPlayerState()
 
     data class Content(
-        val track: Track
+        val track: Track,
+        val isPlaying: Boolean = false,
+        val currentPosition: String = "00:00"
     ) : AudioPlayerState()
 
     data class Progress(
