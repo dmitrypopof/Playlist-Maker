@@ -11,16 +11,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerViewModel : ViewModel() {
-
-    companion object {
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
-    }
-
     private var mediaPlayer: MediaPlayer? = null
-    private var playerState = STATE_DEFAULT
+    private var playerState = PlayerState.DEFAULT
 
     private val mainThreadHandler = Handler(Looper.getMainLooper())
     private var updateProgressRunnable: Runnable? = null
@@ -53,11 +45,11 @@ class AudioPlayerViewModel : ViewModel() {
              setDataSource(previewUrl)
              prepareAsync()
              setOnPreparedListener {
-                 playerState = STATE_PREPARED
+                 playerState = PlayerState.PREPARED
                  _state.value = AudioPlayerState.Prepared
              }
              setOnCompletionListener {
-                 playerState = STATE_PREPARED
+                 playerState = PlayerState.PREPARED
                  _state.value = AudioPlayerState.Prepared
                  stopUpdateProgress()
              }
@@ -67,8 +59,11 @@ class AudioPlayerViewModel : ViewModel() {
      //Управление воспроизведением (play/pause)
     fun playbackControl() {
         when (playerState) {
-            STATE_PLAYING -> pausePlayer()
-            STATE_PREPARED, STATE_PAUSED -> startPlayer()
+            PlayerState.PLAYING -> pausePlayer()
+            PlayerState.PREPARED, PlayerState.PAUSED -> startPlayer()
+            PlayerState.DEFAULT -> {
+                // В состоянии DEFAULT ничего не делаем
+            }
         }
     }
 
@@ -76,7 +71,7 @@ class AudioPlayerViewModel : ViewModel() {
     private fun startPlayer() {
          mediaPlayer?.let { player ->
              player.start()
-             playerState = STATE_PLAYING
+             playerState = PlayerState.PLAYING
              _state.value = AudioPlayerState.Playing
              startUpdateProgress()
          }
@@ -84,9 +79,9 @@ class AudioPlayerViewModel : ViewModel() {
 
       //Пауза воспроизведения
     private fun pausePlayer() {
-        if (playerState == STATE_PLAYING) {
+        if (playerState == PlayerState.PLAYING) {
             mediaPlayer?.pause()
-            playerState = STATE_PAUSED
+            playerState = PlayerState.PAUSED
             _state.value = AudioPlayerState.Paused
             stopUpdateProgress()
         }
@@ -96,7 +91,7 @@ class AudioPlayerViewModel : ViewModel() {
     private fun startUpdateProgress() {
         updateProgressRunnable = object : Runnable {
             override fun run(){
-                if (playerState == STATE_PLAYING) {
+                if (playerState == PlayerState.PLAYING) {
                     mediaPlayer?.let { player ->
                         val currentPosition = player.currentPosition
                         val formattedTime = SimpleDateFormat("mm:ss", Locale.getDefault())
@@ -129,12 +124,12 @@ class AudioPlayerViewModel : ViewModel() {
     private fun releasePlayer() {
         mediaPlayer?.release()
         mediaPlayer = null
-        playerState = STATE_DEFAULT
+        playerState = PlayerState.DEFAULT
     }
 
     //Приостановка воспроизведения при паузе Activity
     fun onPause() {
-        if (playerState == STATE_PLAYING) {
+        if (playerState == PlayerState.PLAYING) {
             pausePlayer()
         }
     }
