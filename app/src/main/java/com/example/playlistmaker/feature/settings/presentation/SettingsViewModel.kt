@@ -38,4 +38,5 @@ class SettingsViewModel(
 //    fun getCurrentTheme(): Boolean {
 //        return getThemeSettingsUseCase()
 //    }
+
 }
