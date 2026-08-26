@@ -1,6 +1,5 @@
 package com.example.playlistmaker.feature.player.presentation
 
-import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.LiveData
