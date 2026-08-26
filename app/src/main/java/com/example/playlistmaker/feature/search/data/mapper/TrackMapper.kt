@@ -1,6 +1,6 @@
 package com.example.playlistmaker.feature.search.data.mapper
 
-import com.example.playlistmaker.core.network.dto.TrackDto
+import com.example.playlistmaker.feature.search.data.network.dto.TrackDto
 import com.example.playlistmaker.feature.search.domain.model.Track
 
 object TrackMapper {

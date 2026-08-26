@@ -1,6 +1,6 @@
-package com.example.playlistmaker.core.network
+package com.example.playlistmaker.feature.search.data.network
 
-import com.example.playlistmaker.core.network.dto.TrackResponse
+import com.example.playlistmaker.feature.search.data.network.dto.TrackResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
