@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
@@ -34,7 +35,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         // Инициализация ViewModel
         viewModel = ViewModelProvider(
             this,
-            AudioPlayerViewModelFactory()
+            AudioPlayerViewModelFactory(Creator.providePlayerRepository())
         )[AudioPlayerViewModel::class.java]
 
         // Получаем данные о треке

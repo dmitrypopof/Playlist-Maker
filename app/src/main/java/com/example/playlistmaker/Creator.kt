@@ -1,6 +1,8 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
+import com.example.playlistmaker.feature.player.data.repository.PlayerRepositoryImpl
 import com.example.playlistmaker.feature.settings.data.repository.SettingsRepositoryImpl
 import com.example.playlistmaker.feature.settings.domain.repository.SettingsRepository
 import com.example.playlistmaker.feature.settings.domain.usecase.GetThemeSettingsUseCase
@@ -32,6 +34,14 @@ object Creator {
 
     private val settingsRepository: SettingsRepository by lazy {
         SettingsRepositoryImpl(applicationContext)
+    }
+
+    private val playerRepository: PlayerRepository by lazy {
+        PlayerRepositoryImpl()
+    }
+
+    fun providePlayerRepository(): PlayerRepository {
+        return playerRepository
     }
 
     // UseCase для поиска
