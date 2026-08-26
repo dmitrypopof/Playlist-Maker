@@ -6,6 +6,7 @@ import com.example.playlistmaker.feature.search.domain.model.Track
 object TrackMapper {
     fun map(dto: TrackDto): Track {
         return Track(
+            trackId = dto.trackId ?: 0,
             trackName = dto.trackName ?: "Unknown Track",
             artistName = dto.artistName ?: "Unknown Artist",
             trackTime = dto.trackTime ?: 0,

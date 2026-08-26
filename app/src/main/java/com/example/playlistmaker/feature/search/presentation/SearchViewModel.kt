@@ -95,10 +95,8 @@ class SearchViewModel(
 
     //Обработка клика по треку
     fun onTrackClicked(track: Track) {
-        // Добавляем в историю (фоново)
         addTrackToHistoryUseCase(track)
-        // Отправляем событие навигации
-        _events.value = SearchEvent.NavigateToPlayer(track)
+        _events.value = SearchEvent.NavigateToPlayer(track.trackId)
     }
 
     //Обновить историю (используется при возвращении на экран)
@@ -153,5 +151,10 @@ class SearchViewModel(
     override fun onCleared() {
         super.onCleared()
         searchRunnable?.let { handler.removeCallbacks(it) }
+    }
+    fun getTrackById(trackId: Long): Track? {
+        // Ищем трек в истории или в последних результатах поиска
+        return getSearchHistoryUseCase().find { it.trackId == trackId }
+            ?: lastSearchResults?.find { it.trackId == trackId }
     }
 }

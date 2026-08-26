@@ -3,6 +3,7 @@ package com.example.playlistmaker.feature.search.data.network.dto
 import com.google.gson.annotations.SerializedName
 
 data class TrackDto(
+    @SerializedName("trackId") val trackId: Long?,
     @SerializedName("trackName") val trackName: String?,
     @SerializedName("artistName") val artistName: String?,
     @SerializedName("trackTimeMillis") val trackTime: Long?,

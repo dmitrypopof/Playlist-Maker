@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 data class Track (
+    val trackId: Long,
     val trackName: String,
     val artistName: String,
     val trackTime: Long,
@@ -23,6 +24,7 @@ data class Track (
     companion object {
         fun createDefault(): Track {
             return Track(
+                trackId = 0,
                 trackName = "Unknown Track",
                 artistName = "Unknown Artist",
                 trackTime = 0,

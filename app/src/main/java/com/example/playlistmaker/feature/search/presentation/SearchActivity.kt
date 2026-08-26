@@ -144,7 +144,9 @@ class SearchActivity : AppCompatActivity() {
         viewModel.events.observe(this) { event ->
             when (event) {
                 is SearchEvent.NavigateToPlayer -> {
-                    openAudioPlayer(event.track)
+                    viewModel.getTrackById(event.trackId)?.let { track ->
+                        openAudioPlayer(track)
+                    }
                 }
             }
         }
