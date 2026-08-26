@@ -1,6 +1,5 @@
 package com.example.playlistmaker.feature.search.data.repository
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.feature.search.domain.repository.SearchHistoryRepository
@@ -8,10 +7,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 class SearchHistoryRepositoryImpl(
-    private val context: Context
+    private val prefs: SharedPreferences,
+    private val gson: Gson
 ) : SearchHistoryRepository {
-    private val prefs: SharedPreferences = context.getSharedPreferences("history_prefs", Context.MODE_PRIVATE)
-    private val gson = Gson()
     private val maxSize = 10
 
     override fun getHistory(): List<Track> {

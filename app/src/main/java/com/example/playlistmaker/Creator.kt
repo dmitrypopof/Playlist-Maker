@@ -15,9 +15,11 @@ import com.example.playlistmaker.feature.search.domain.repository.TrackRepositor
 import com.example.playlistmaker.feature.search.domain.usecase.AddTrackToHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.ClearSearchHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.GetSearchHistoryUseCase
+import com.google.gson.Gson
 
 object Creator {
     private lateinit var applicationContext: Context
+    private val gson = Gson()
 
     fun init(context: Context) {
         applicationContext = context.applicationContext
@@ -29,7 +31,13 @@ object Creator {
     }
 
     private val searchHistoryRepository: SearchHistoryRepository by lazy {
-        SearchHistoryRepositoryImpl(applicationContext)
+        SearchHistoryRepositoryImpl(
+            prefs = applicationContext.getSharedPreferences(
+                "history_prefs",
+                Context.MODE_PRIVATE
+            ),
+            gson = gson
+        )
     }
 
     private val settingsRepository: SettingsRepository by lazy {
