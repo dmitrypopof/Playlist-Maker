@@ -1,10 +1,11 @@
 package com.example.playlistmaker.feature.settings.data.repository
 
 import android.content.Context
+import android.content.SharedPreferences
 import com.example.playlistmaker.feature.settings.domain.repository.SettingsRepository
 
-class SettingsRepositoryImpl(context: Context) : SettingsRepository {
-    private val prefs = context.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+class SettingsRepositoryImpl(private val prefs: SharedPreferences
+) : SettingsRepository {
 
     override fun getThemeSettings(): Boolean {
         return prefs.getBoolean("theme_enabled", false)

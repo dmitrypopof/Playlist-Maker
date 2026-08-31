@@ -7,18 +7,17 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.playlistmaker.Creator
 import com.example.playlistmaker.R
+import com.example.playlistmaker.core.utils.TrackIntentHelper
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
-import com.example.playlistmaker.core.utils.TrackIntentHelper
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioPlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAudioplayerBinding
-    private lateinit var viewModel: AudioPlayerViewModel
+    private val viewModel: AudioPlayerViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +30,6 @@ class AudioPlayerActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        // Инициализация ViewModel
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModelFactory(Creator.providePlayerRepository())
-        )[AudioPlayerViewModel::class.java]
 
         // Получаем данные о треке
         val track = TrackIntentHelper.getTrackFromIntent(intent)
