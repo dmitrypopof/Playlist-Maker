@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.playlistmaker.feature.search.data.network.ITunesApi
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -18,12 +19,12 @@ val dataModule = module {
             .create(ITunesApi::class.java)
     }
 
-    single {
+    single(named("history_prefs")) {
         androidContext()
             .getSharedPreferences("history_prefs", Context.MODE_PRIVATE)
     }
 
-    single {
+    single(named("app_settings")) {
         androidContext()
             .getSharedPreferences("app_settings", Context.MODE_PRIVATE)
     }

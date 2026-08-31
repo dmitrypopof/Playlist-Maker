@@ -3,6 +3,7 @@ package com.example.playlistmaker
 import android.content.Context
 import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
 import com.example.playlistmaker.feature.player.data.repository.PlayerRepositoryImpl
+import com.example.playlistmaker.feature.search.data.network.RetrofitHelper
 import com.example.playlistmaker.feature.settings.data.repository.SettingsRepositoryImpl
 import com.example.playlistmaker.feature.settings.domain.repository.SettingsRepository
 import com.example.playlistmaker.feature.settings.domain.usecase.GetThemeSettingsUseCase
@@ -27,7 +28,7 @@ object Creator {
 
     // Репозитории
     private val trackRepository: TrackRepository by lazy {
-        TrackRepositoryImpl()
+        TrackRepositoryImpl(RetrofitHelper.apiService)
     }
 
     private val searchHistoryRepository: SearchHistoryRepository by lazy {
@@ -41,7 +42,9 @@ object Creator {
     }
 
     private val settingsRepository: SettingsRepository by lazy {
-        SettingsRepositoryImpl(applicationContext)
+        SettingsRepositoryImpl(
+            applicationContext.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+        )
     }
 
     private val playerRepository: PlayerRepository by lazy {
