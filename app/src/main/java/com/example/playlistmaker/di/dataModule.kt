@@ -29,5 +29,5 @@ val dataModule = module {
             .getSharedPreferences("app_settings", Context.MODE_PRIVATE)
     }
 
-    factory { Gson() }
+    single { Gson() }
 }
