@@ -10,18 +10,19 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.ViewModelProvider
+
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.playlistmaker.Creator
+
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.feature.player.presentation.AudioPlayerActivity
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.core.utils.TrackIntentHelper
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel()
 
     private lateinit var adapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
@@ -37,17 +38,6 @@ class SearchActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-        // ===== ИНИЦИАЛИЗАЦИЯ VIEWMODEL =====
-        viewModel = ViewModelProvider(
-            this,
-            SearchViewModelFactory(
-                Creator.provideSearchTracksUseCase(),
-                Creator.provideGetSearchHistoryUseCase(),
-                Creator.provideAddTrackToHistoryUseCase(),
-                Creator.provideClearSearchHistoryUseCase()
-            )
-        )[SearchViewModel::class.java]
 
         // ===== НАСТРОЙКА АДАПТЕРОВ =====
         setupAdapters()
