@@ -20,7 +20,6 @@ class App: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        Creator.init(this)
 
         startKoin {
             androidContext(this@App)
