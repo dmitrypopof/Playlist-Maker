@@ -163,4 +163,20 @@
         <item name="iconTint">@color/white</item>
     </style>
 
+    <!-- TabLayout для экрана Медиатека -->
+    <style name="CustomTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+        <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextColor">@color/YP_Text_Gray</item>
+        <item name="android:background">@color/black_liquorice</item>
+    </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
 </resources>
