@@ -30,4 +30,12 @@
     <string name="genre">Жанр</string>
     <string name="country">Страна</string>
     <string name="default_track_time">00:00</string>
+
+    <!-- Экран Медиатека -->
+    <string name="media_title">Медиатека</string>
+    <string name="tab_playlists">Плейлисты</string>
+    <string name="tab_favorite_tracks">Избранные треки</string>
+    <string name="new_playlist_button">Новый плейлист</string>
+    <string name="no_playlists_created">Вы не создали\nни одного плейлиста</string>
+    <string name="media_library_empty">Ваша медиатека пуста</string>
 </resources>
