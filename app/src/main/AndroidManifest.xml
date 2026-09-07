@@ -12,8 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.PlaylistMaker">
-        <activity android:name=".feature.player.presentation.AudioPlayerActivity"
-            android:exported="false" />
         <activity
             android:name=".feature.main.presentation.MainActivity"
             android:exported="true">
