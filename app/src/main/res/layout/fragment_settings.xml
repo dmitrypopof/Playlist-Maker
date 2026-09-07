@@ -10,8 +10,6 @@
     style="@style/ActivityScreenMain.Background.Setting"
     tools:context="com.example.playlistmaker.feature.settings.presentation.SettingsFragment">
 
-    <!-- УДАЛЕНО: LinearLayout с back_button и заголовком в виде отдельного блока -->
-    <!-- ЗАМЕНЕНО на простой заголовок без кнопки "Назад" -->
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="42dp"

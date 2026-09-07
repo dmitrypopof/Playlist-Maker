@@ -1,50 +1,55 @@
 package com.example.playlistmaker.feature.player.presentation
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.core.utils.TrackIntentHelper
-import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
+import com.example.playlistmaker.databinding.FragmentAudioplayerBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
+import com.google.gson.Gson
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class AudioPlayerActivity : AppCompatActivity() {
+class AudioPlayerFragment : Fragment() {
 
-    private lateinit var binding: ActivityAudioplayerBinding
+    companion object {
+        private const val ARG_TRACK_JSON = "track_json"
+
+        fun createArgs(track: Track): Bundle {
+            val json = Gson().toJson(track)
+            return bundleOf(ARG_TRACK_JSON to json)
+        }
+    }
+
+    private var _binding: FragmentAudioplayerBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: AudioPlayerViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityAudioplayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentAudioplayerBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.audioPlayer) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        // Получаем данные о треке
-        val track = TrackIntentHelper.getTrackFromIntent(intent)
-            ?: Track.createDefault()
+        // Получаем данные о треке из аргументов фрагмента вместо Intent
+        val track = getTrackFromArgs()
 
-        // Настройка слушателей
         setupListeners()
-
-        // Наблюдение за состоянием
         observeState()
 
-        // Загружаем трек в плеер
         viewModel.loadTrack(track)
-
-        // Отображаем информацию о треке
         displayTrackInfo(track)
     }
 
@@ -53,12 +58,28 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.onPause()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun getTrackFromArgs(): Track {
+        val json = requireArguments().getString(ARG_TRACK_JSON)
+        return if (json != null) {
+            try {
+                Gson().fromJson(json, Track::class.java) ?: Track.createDefault()
+            } catch (e: Exception) {
+                Track.createDefault()
+            }
+        } else {
+            Track.createDefault()
+        }
+    }
+
     private fun displayTrackInfo(track: Track) {
-        // Заполняем основные данные
         binding.trackName.text = track.trackName
         binding.artistName.text = track.artistName
 
-        // Загружаем обложку альбома
         val imageView = binding.albumCover.getChildAt(0) as AppCompatImageView
         Glide.with(this)
             .load(
@@ -69,15 +90,19 @@ class AudioPlayerActivity : AppCompatActivity() {
             )
             .placeholder(
                 ContextCompat.getDrawable(
-                    this,
+                    requireContext(),
                     R.drawable.ic_placeholder_no_download_45x45
                 )
             )
-            .error(ContextCompat.getDrawable(this, R.drawable.ic_placeholder_no_download_45x45))
+            .error(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_placeholder_no_download_45x45
+                )
+            )
             .centerCrop()
             .into(imageView)
 
-        // Заполняем информацию о треке
         binding.apply {
             durationValue.text = track.formattedTime
             albumValue.text = track.collectionName
@@ -86,24 +111,24 @@ class AudioPlayerActivity : AppCompatActivity() {
             countryValue.text = track.country
         }
 
-        // Отображаем время трека под кнопкой play
         binding.trackTime.text = track.formattedTime
     }
 
     private fun setupListeners() {
-        // Кнопка назад
         binding.backButton.setOnClickListener {
-            finish()
+            // TODO: заменить на findNavController().navigateUp() после подключения
+            // Jetpack Navigation Component (шаг 6)
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        // Кнопка play/pause
         binding.playButton.setOnClickListener {
             viewModel.playbackControl()
         }
     }
 
     private fun observeState() {
-        viewModel.state.observe(this) { state ->
+        // Используем viewLifecycleOwner вместо this (Activity)
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
     }
@@ -111,11 +136,9 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun renderState(state: AudioPlayerState) {
         when (state) {
             is AudioPlayerState.Default -> {
-                // Начальное состояние
                 binding.playButton.setIconResource(R.drawable.ic_play_button)
             }
             is AudioPlayerState.Content -> {
-                // Информация о треке уже отображена
                 binding.playButton.setIconResource(R.drawable.ic_play_button)
             }
             is AudioPlayerState.Prepared -> {

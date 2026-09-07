@@ -1,54 +1,44 @@
 package com.example.playlistmaker.feature.search.presentation
 
-import android.content.Intent
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-
-import com.example.playlistmaker.databinding.ActivitySearchBinding
-import com.example.playlistmaker.feature.player.presentation.AudioPlayerActivity
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
-import com.example.playlistmaker.core.utils.TrackIntentHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
-    private lateinit var binding: ActivitySearchBinding
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: SearchViewModel by viewModel()
 
     private lateinit var adapter: TrackAdapter
     private lateinit var historyAdapter: TrackAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        // ===== НАСТРОЙКА АДАПТЕРОВ =====
         setupAdapters()
-
-        // ===== НАСТРОЙКА СЛУШАТЕЛЕЙ =====
         setupListeners()
-
-        // ===== НАБЛЮДЕНИЕ ЗА СОСТОЯНИЕМ =====
         observeState()
-
-        // ===== НАБЛЮДЕНИЕ ЗА СОБЫТИЯМИ =====
         observeEvents()
 
         hideAllContainers()
@@ -57,12 +47,16 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        // Восстанавливаем состояние экрана
         if (binding.searchField.text.isNullOrEmpty()) {
             viewModel.refreshHistory()
         } else {
             viewModel.restoreSearchResults()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun setupAdapters() {
@@ -74,17 +68,14 @@ class SearchActivity : AppCompatActivity() {
             viewModel.onTrackClicked(track)
         }
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
 
-        binding.historyRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.historyRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.historyRecyclerView.adapter = historyAdapter
     }
 
     private fun setupListeners() {
-        binding.backButton.setOnClickListener {
-            finish()
-        }
 
         binding.clearIcon.setOnClickListener {
             viewModel.onClearQueryClicked()
@@ -125,13 +116,13 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun observeState() {
-        viewModel.state.observe(this) { state ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
     }
 
     private fun observeEvents() {
-        viewModel.events.observe(this) { event ->
+        viewModel.events.observe(viewLifecycleOwner) { event ->
             when (event) {
                 is SearchEvent.NavigateToPlayer -> {
                     viewModel.getTrackById(event.trackId)?.let { track ->
@@ -155,7 +146,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    // ===== МЕТОДЫ ОТОБРАЖЕНИЯ =====
     private fun showHistory(tracks: List<Track>) {
         historyAdapter.updateTracks(tracks)
         binding.searchHistoryContainer.visibility = View.VISIBLE
@@ -193,19 +183,16 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    // ===== ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ =====
     private fun openAudioPlayer(track: Track) {
         binding.searchField.clearFocus()
         hideKeyboard()
 
-        val intent = Intent(this, AudioPlayerActivity::class.java)
-        TrackIntentHelper.putTrackToIntent(intent, track)
-        startActivity(intent)
-
+        // TODO: заменить на findNavController().navigate(...) с передачей аргументов
+        // после подключения Jetpack Navigation Component
     }
 
     private fun hideKeyboard() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(binding.searchField.windowToken, 0)
         binding.searchField.clearFocus()
     }
