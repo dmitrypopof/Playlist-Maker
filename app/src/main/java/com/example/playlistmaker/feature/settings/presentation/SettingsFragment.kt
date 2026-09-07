@@ -2,70 +2,68 @@ package com.example.playlistmaker.feature.settings.presentation
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.databinding.FragmentSettingsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment() {
 
-    private lateinit var binding: ActivitySettingsBinding
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
     private val viewModel: SettingsViewModel by viewModel()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        // Настройка слушателей
         setupListeners()
-
-        // Наблюдение за состоянием
         observeState()
     }
 
-    private fun setupListeners() {
-        binding.backButton.setOnClickListener {
-            finish()
-        }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-        // Обработка переключателя темы
+    private fun setupListeners() {
+        // Кнопка "Назад" удалена — она больше не нужна на этом экране
+
         binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-            // Передаем событие в ViewModel
             viewModel.onThemeChanged(isChecked)
             applyTheme(isChecked)
         }
 
-        // Кнопка "Поделиться приложением"
         binding.shareApp.setOnClickListener {
             shareApp()
         }
 
-        // Кнопка "Написать в поддержку"
         binding.writeSupport.setOnClickListener {
             writeSupport()
         }
 
-        // Кнопка "Пользовательское соглашение"
         binding.userAgreement.setOnClickListener {
             openUserAgreement()
         }
     }
 
     private fun observeState() {
-        viewModel.state.observe(this) { state ->
+        // Используем viewLifecycleOwner вместо this (Activity)
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
     }
@@ -73,7 +71,6 @@ class SettingsActivity : AppCompatActivity() {
     private fun renderState(state: SettingsState) {
         when (state) {
             is SettingsState.ThemeSettings -> {
-                // Обновляем состояние переключателя без вызова listener
                 binding.themeSwitcher.setOnCheckedChangeListener(null)
                 binding.themeSwitcher.isChecked = state.isDarkTheme
                 binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->

@@ -9,7 +9,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.feature.search.presentation.SearchActivity
-import com.example.playlistmaker.feature.settings.presentation.SettingsActivity
 import com.example.playlistmaker.feature.media.presentation.MediaActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
