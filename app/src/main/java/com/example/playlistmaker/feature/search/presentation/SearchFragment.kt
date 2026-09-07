@@ -9,8 +9,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
+import com.example.playlistmaker.feature.player.presentation.AudioPlayerFragment
 import com.example.playlistmaker.feature.search.domain.model.Track
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -187,8 +190,11 @@ class SearchFragment : Fragment() {
         binding.searchField.clearFocus()
         hideKeyboard()
 
-        // TODO: заменить на findNavController().navigate(...) с передачей аргументов
-        // после подключения Jetpack Navigation Component
+        // Навигация через NavController вместо Intent
+        findNavController().navigate(
+            R.id.action_searchFragment_to_audioPlayerFragment,
+            AudioPlayerFragment.createArgs(track)
+        )
     }
 
     private fun hideKeyboard() {

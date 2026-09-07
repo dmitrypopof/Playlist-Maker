@@ -188,4 +188,12 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <!-- стиль для BottomNavigationView (светлая тема) -->
+    <style name="CustomBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/bottom_nav_item_color</item>
+        <item name="itemTextColor">@color/bottom_nav_item_color</item>
+        <item name="itemRippleColor">@color/yp_light_gray</item>
+    </style>
+
 </resources>

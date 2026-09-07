@@ -8,6 +8,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAudioplayerBinding
@@ -116,9 +117,8 @@ class AudioPlayerFragment : Fragment() {
 
     private fun setupListeners() {
         binding.backButton.setOnClickListener {
-            // TODO: заменить на findNavController().navigateUp() после подключения
-            // Jetpack Navigation Component (шаг 6)
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            // Навигация через NavController вместо onBackPressedDispatcher
+            findNavController().navigateUp()
         }
 
         binding.playButton.setOnClickListener {
