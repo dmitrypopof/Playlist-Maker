@@ -11,8 +11,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="42dp"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical"
+        android:paddingStart="16dp"
         android:text="@string/media_title"
         android:textSize="22sp"
         android:fontFamily="@font/ys_display_medium"
