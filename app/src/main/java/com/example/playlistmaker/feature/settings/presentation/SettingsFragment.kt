@@ -41,7 +41,6 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        // Кнопка "Назад" удалена — она больше не нужна на этом экране
 
         binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.onThemeChanged(isChecked)
