@@ -13,17 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.PlaylistMaker">
         <activity
-            android:name=".feature.settings.presentation.SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".feature.search.presentation.SearchActivity"
-            android:exported="false" />
-        <activity
-            android:name=".feature.media.presentation.MediaActivity"
-            android:exported="false" />
-        <activity android:name=".feature.player.presentation.AudioPlayerActivity"
-            android:exported="false" />
-        <activity
             android:name=".feature.main.presentation.MainActivity"
             android:exported="true">
             <intent-filter>

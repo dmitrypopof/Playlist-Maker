@@ -5,6 +5,7 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.playlistmaker.core.utils.SingleLiveEvent
 import com.example.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.feature.search.domain.usecase.AddTrackToHistoryUseCase
@@ -28,7 +29,7 @@ class SearchViewModel(
 
 
     // События для навигации
-    private val _events = MutableLiveData<SearchEvent>()
+    private val _events = SingleLiveEvent<SearchEvent>()
     val events: LiveData<SearchEvent> = _events
 
     private var currentQuery: String = ""
