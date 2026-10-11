@@ -1,22 +1,29 @@
 package com.example.playlistmaker.feature.player.presentation
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
 import com.example.playlistmaker.feature.search.domain.model.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerViewModel(
     private val playerRepository: PlayerRepository
 ) : ViewModel() {
+
+    companion object {
+        private const val PROGRESS_UPDATE_DELAY_MS = 300L
+        private const val DEFAULT_TIME = "00:00"
+    }
+
     private var playerState = PlayerState.DEFAULT
 
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
-    private var updateProgressRunnable: Runnable? = null
+    private var progressJob: Job? = null
 
     // Состояние экрана
     private val _state = MutableLiveData<AudioPlayerState>()
@@ -44,8 +51,9 @@ class AudioPlayerViewModel(
             },
             onCompletion = {
                 playerState = PlayerState.PREPARED
-                _state.value = AudioPlayerState.Prepared
                 stopUpdateProgress()
+                _state.value = AudioPlayerState.Prepared
+                _state.value = AudioPlayerState.Progress(DEFAULT_TIME)
             }
         )
     }
@@ -81,28 +89,21 @@ class AudioPlayerViewModel(
 
     //Запуск обновления прогресса
     private fun startUpdateProgress() {
-        updateProgressRunnable = object : Runnable {
-            override fun run() {
-                if (playerState == PlayerState.PLAYING) {
-                    val currentPosition = playerRepository.getCurrentPosition()
-                    val formattedTime =
-                        SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
-                    _state.value = AudioPlayerState.Progress(formattedTime)
-                    mainThreadHandler.postDelayed(this, 300)
-                }
+        progressJob = viewModelScope.launch {
+            while (playerState == PlayerState.PLAYING) {
+                val currentPosition = playerRepository.getCurrentPosition()
+                val formattedTime =
+                    SimpleDateFormat("mm:ss", Locale.getDefault()).format(currentPosition)
+                _state.value = AudioPlayerState.Progress(formattedTime)
+                delay(PROGRESS_UPDATE_DELAY_MS)
             }
-        }
-        updateProgressRunnable?.let {
-            mainThreadHandler.post(it)
         }
     }
 
     //Остановка обновления прогресса
     private fun stopUpdateProgress() {
-        updateProgressRunnable?.let {
-            mainThreadHandler.removeCallbacks(it)
-        }
-        updateProgressRunnable = null
+        progressJob?.cancel()
+        progressJob = null
     }
 
     //Получение текущего трека
