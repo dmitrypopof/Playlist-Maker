@@ -1,23 +1,29 @@
 package com.example.playlistmaker.feature.search.presentation
 
 import android.annotation.SuppressLint
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.databinding.ItemTrackBinding
 import com.example.playlistmaker.feature.search.domain.model.Track
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class TrackAdapter(
     private var tracks: List<Track>,
+    private val lifecycleOwner: LifecycleOwner,
     private val onTrackClick: ((Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+    }
     // Для debounce кликов
     private var isClickAllowed = true
-    private val clickHandler = Handler(Looper.getMainLooper())
-    private val CLICK_DEBOUNCE_DELAY = 1000L
+    private var clickJob: Job? = null
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -64,7 +70,10 @@ class TrackAdapter(
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
-            clickHandler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            clickJob = lifecycleOwner.lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
+                isClickAllowed = true
+            }
         }
         return current
     }

@@ -1,16 +1,18 @@
 package com.example.playlistmaker.feature.search.presentation
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.core.utils.SingleLiveEvent
-import com.example.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.feature.search.domain.usecase.AddTrackToHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.ClearSearchHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.GetSearchHistoryUseCase
+import com.example.playlistmaker.feature.search.domain.usecase.SearchTracksUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val searchTracksUseCase: SearchTracksUseCase,
@@ -19,9 +21,10 @@ class SearchViewModel(
     private val clearSearchHistoryUseCase: ClearSearchHistoryUseCase
 ) : ViewModel() {
 
-    private val handler = Handler(Looper.getMainLooper())
-    private var searchRunnable: Runnable? = null
-    private val SEARCH_DELAY_MS = 2000L
+    companion object {
+        private const val SEARCH_DELAY_MS = 2000L
+    }
+    private var searchJob: Job? = null
 
     // Состояние экрана
     private val _state = MutableLiveData<SearchState>()
@@ -44,16 +47,14 @@ class SearchViewModel(
     fun onSearchTextChanged(query: String) {
         currentQuery = query
 
-        searchRunnable?.let { handler.removeCallbacks(it) }
+         searchJob?.cancel()
 
         if (query.isEmpty()) {
             showHistoryOrEmpty()
         } else {
-            searchRunnable = Runnable {
+            searchJob = viewModelScope.launch {
+                delay(SEARCH_DELAY_MS)
                 performSearch(query)
-            }
-            searchRunnable?.let {
-                handler.postDelayed(it, SEARCH_DELAY_MS)
             }
         }
     }
@@ -70,16 +71,15 @@ class SearchViewModel(
         Thread {
             val result = searchTracksUseCase(query)
 
-            handler.post {
-                result.onSuccess { tracks ->
-                    if (tracks.isEmpty()) {
-                        _state.value = SearchState.Empty
-                    } else {
-                        _state.value = SearchState.Content(tracks)
-                    }
-                }.onFailure {
-                    _state.value = SearchState.NetworkError
+            result.onSuccess { tracks ->
+                if (tracks.isEmpty()) {
+                    _state.postValue(SearchState.Empty)
+                } else {
+                    lastSearchResults = tracks
+                    _state.postValue(SearchState.Content(tracks))
                 }
+            }.onFailure {
+                _state.postValue(SearchState.NetworkError)
             }
         }.start()
     }
@@ -145,13 +145,13 @@ class SearchViewModel(
     //Очистка поискового запроса
     fun onClearQueryClicked() {
         currentQuery = ""
-        lastSearchResults = null
+        searchJob?.cancel()
         showHistoryOrEmpty()
     }
 
     override fun onCleared() {
         super.onCleared()
-        searchRunnable?.let { handler.removeCallbacks(it) }
+        searchJob?.cancel()
     }
     fun getTrackById(trackId: Long): Track? {
         // Ищем трек в истории или в последних результатах поиска
