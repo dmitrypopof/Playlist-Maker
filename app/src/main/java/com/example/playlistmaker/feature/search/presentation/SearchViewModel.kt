@@ -68,20 +68,20 @@ class SearchViewModel(
     private fun performSearch(query: String) {
         _state.value = SearchState.Loading
 
-        Thread {
-            val result = searchTracksUseCase(query)
-
-            result.onSuccess { tracks ->
-                if (tracks.isEmpty()) {
-                    _state.postValue(SearchState.Empty)
-                } else {
-                    lastSearchResults = tracks
-                    _state.postValue(SearchState.Content(tracks))
+        viewModelScope.launch {
+            searchTracksUseCase(query).collect { result ->
+                result.onSuccess { tracks ->
+                    if (tracks.isEmpty()) {
+                        _state.value = SearchState.Empty
+                    } else {
+                        lastSearchResults = tracks
+                        _state.value = SearchState.Content(tracks)
+                    }
+                }.onFailure {
+                    _state.value = SearchState.NetworkError
                 }
-            }.onFailure {
-                _state.postValue(SearchState.NetworkError)
             }
-        }.start()
+        }
     }
 
     // Показать историю или пустое состояние
