@@ -24,7 +24,9 @@ class SearchViewModel(
     companion object {
         private const val SEARCH_DELAY_MS = 2000L
     }
+    private var debounceJob: Job? = null
     private var searchJob: Job? = null
+
 
     // Состояние экрана
     private val _state = MutableLiveData<SearchState>()
@@ -47,12 +49,13 @@ class SearchViewModel(
     fun onSearchTextChanged(query: String) {
         currentQuery = query
 
-         searchJob?.cancel()
+         debounceJob?.cancel()
 
         if (query.isEmpty()) {
+            searchJob?.cancel()
             showHistoryOrEmpty()
         } else {
-            searchJob = viewModelScope.launch {
+            debounceJob = viewModelScope.launch {
                 delay(SEARCH_DELAY_MS)
                 performSearch(query)
             }
@@ -68,7 +71,8 @@ class SearchViewModel(
     private fun performSearch(query: String) {
         _state.value = SearchState.Loading
 
-        viewModelScope.launch {
+        searchJob?.cancel()
+        searchJob = viewModelScope.launch {
             searchTracksUseCase(query).collect { result ->
                 result.onSuccess { tracks ->
                     if (tracks.isEmpty()) {
@@ -145,12 +149,14 @@ class SearchViewModel(
     //Очистка поискового запроса
     fun onClearQueryClicked() {
         currentQuery = ""
+        debounceJob?.cancel()
         searchJob?.cancel()
         showHistoryOrEmpty()
     }
 
     override fun onCleared() {
         super.onCleared()
+        debounceJob?.cancel()
         searchJob?.cancel()
     }
     fun getTrackById(trackId: Long): Track? {
