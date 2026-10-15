@@ -63,11 +63,11 @@ class SearchFragment : Fragment() {
     }
 
     private fun setupAdapters() {
-        adapter = TrackAdapter(emptyList()) { track ->
+        adapter = TrackAdapter(emptyList(), viewLifecycleOwner) { track ->
             viewModel.onTrackClicked(track)
         }
 
-        historyAdapter = TrackAdapter(emptyList()) { track ->
+        historyAdapter = TrackAdapter(emptyList(), viewLifecycleOwner) { track ->
             viewModel.onTrackClicked(track)
         }
 
