@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.feature.favorite.domain.usecase.FavoriteTracksInteractor
 import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
 import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.Job
@@ -13,7 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerViewModel(
-    private val playerRepository: PlayerRepository
+    private val playerRepository: PlayerRepository,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) : ViewModel() {
 
     companion object {
@@ -29,6 +31,10 @@ class AudioPlayerViewModel(
     private val _state = MutableLiveData<AudioPlayerState>()
     val state: LiveData<AudioPlayerState> = _state
 
+    // LiveData для статуса избранного
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> = _isFavorite
+
     // Текущий трек
     private var currentTrack: Track? = null
 
@@ -36,6 +42,7 @@ class AudioPlayerViewModel(
     fun loadTrack(track: Track) {
         currentTrack = track
         _state.value = AudioPlayerState.Content(track)
+        _isFavorite.value = track.isFavorite
         preparePlayer(track)
     }
 
@@ -121,6 +128,22 @@ class AudioPlayerViewModel(
     fun onPause() {
         if (playerState == PlayerState.PLAYING) {
             pausePlayer()
+        }
+    }
+
+    // обработка нажатия на кнопку "Нравится"
+    fun onFavoriteClicked() {
+        val track = currentTrack ?: return
+
+        viewModelScope.launch {
+            if (track.isFavorite) {
+                favoriteTracksInteractor.removeFromFavorites(track)
+                track.isFavorite = false
+            } else {
+                favoriteTracksInteractor.addToFavorites(track)
+                track.isFavorite = true
+            }
+            _isFavorite.value = track.isFavorite
         }
     }
 
