@@ -1,6 +1,8 @@
 package com.example.playlistmaker.di
 
 import android.content.Context
+import androidx.room.Room
+import com.example.playlistmaker.feature.favorite.data.db.AppDatabase
 import com.example.playlistmaker.feature.search.data.network.ITunesApi
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -30,4 +32,12 @@ val dataModule = module {
     }
 
     single { Gson() }
+
+    single {
+        Room.databaseBuilder(
+            androidContext(),
+            AppDatabase::class.java,
+            "playlist_maker.db"
+        ).build()
+    }
 }
