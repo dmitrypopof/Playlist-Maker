@@ -33,7 +33,7 @@ class FavoriteTrackDbConvertor {
             country = entity.country,
             previewUrl = entity.previewUrl
         ).apply {
-            //isFavorite = true // трек из таблицы избранного всегда isFavorite = true
+            isFavorite = true
         }
     }
 }

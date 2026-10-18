@@ -15,6 +15,9 @@ data class Track (
     val country: String,
     val previewUrl: String?
 ) {
+
+    var isFavorite: Boolean = false
+
     val formattedTime: String
         get() = SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTime)
 

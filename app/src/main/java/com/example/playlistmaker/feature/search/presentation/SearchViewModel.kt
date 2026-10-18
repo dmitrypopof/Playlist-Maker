@@ -90,11 +90,13 @@ class SearchViewModel(
 
     // Показать историю или пустое состояние
     private fun showHistoryOrEmpty() {
-        val history = getSearchHistoryUseCase()
-        if (history.isNotEmpty()) {
-            _state.value = SearchState.HistoryContent(history)
-        } else {
-            _state.value = SearchState.HistoryEmpty
+        viewModelScope.launch {
+            val history = getSearchHistoryUseCase()
+            if (history.isNotEmpty()) {
+                _state.value = SearchState.HistoryContent(history)
+            } else {
+                _state.value = SearchState.HistoryEmpty
+            }
         }
     }
 
@@ -149,6 +151,7 @@ class SearchViewModel(
     //Очистка поискового запроса
     fun onClearQueryClicked() {
         currentQuery = ""
+        lastSearchResults = null
         debounceJob?.cancel()
         searchJob?.cancel()
         showHistoryOrEmpty()
@@ -159,7 +162,7 @@ class SearchViewModel(
         debounceJob?.cancel()
         searchJob?.cancel()
     }
-    fun getTrackById(trackId: Long): Track? {
+    suspend fun getTrackById(trackId: Long): Track? {
         // Ищем трек в истории или в последних результатах поиска
         return getSearchHistoryUseCase().find { it.trackId == trackId }
             ?: lastSearchResults?.find { it.trackId == trackId }
