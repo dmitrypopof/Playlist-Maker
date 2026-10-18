@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.core.utils.SingleLiveEvent
 import com.example.playlistmaker.feature.favorite.domain.usecase.FavoriteTracksInteractor
+import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.launch
 
 class FavoriteTracksViewModel(
@@ -13,6 +15,9 @@ class FavoriteTracksViewModel(
 
     private val _state = MutableLiveData<FavoriteTracksState>()
     val state: LiveData<FavoriteTracksState> = _state
+
+    private val _events = SingleLiveEvent<FavoriteTracksEvent>()
+    val events: LiveData<FavoriteTracksEvent> = _events
 
     init {
         //подписка на Flow избранных треков через viewModelScope
@@ -25,5 +30,9 @@ class FavoriteTracksViewModel(
                 }
             }
         }
+    }
+
+    fun onTrackClicked(track: Track) {
+        _events.value = FavoriteTracksEvent.NavigateToPlayer(track)
     }
 }

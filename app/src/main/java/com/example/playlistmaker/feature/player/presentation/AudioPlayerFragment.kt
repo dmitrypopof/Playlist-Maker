@@ -47,8 +47,9 @@ class AudioPlayerFragment : Fragment() {
         // Получаем данные о треке из аргументов фрагмента вместо Intent
         val track = getTrackFromArgs()
 
-        setupListeners()
+        setupListeners(track)
         observeState()
+        observeFavoriteState()
 
         viewModel.loadTrack(track)
         displayTrackInfo(track)
@@ -115,14 +116,17 @@ class AudioPlayerFragment : Fragment() {
         binding.trackTime.text = track.formattedTime
     }
 
-    private fun setupListeners() {
+    private fun setupListeners(track: Track) {
         binding.backButton.setOnClickListener {
-            // Навигация через NavController вместо onBackPressedDispatcher
             findNavController().navigateUp()
         }
 
         binding.playButton.setOnClickListener {
             viewModel.playbackControl()
+        }
+
+        binding.favouriteButton.setOnClickListener { // ADDED
+            viewModel.onFavoriteClicked()
         }
     }
 
@@ -131,6 +135,21 @@ class AudioPlayerFragment : Fragment() {
         viewModel.state.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
+    }
+
+    private fun observeFavoriteState() {
+        viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            renderFavoriteState(isFavorite)
+        }
+    }
+
+    private fun renderFavoriteState(isFavorite: Boolean) {
+        val iconRes = if (isFavorite) {
+            R.drawable.ic_favourites_button_active
+        } else {
+            R.drawable.ic_favourites_button
+        }
+        binding.favouriteButton.setIconResource(iconRes)
     }
 
     private fun renderState(state: AudioPlayerState) {
