@@ -26,6 +26,7 @@ class AudioPlayerViewModel(
     private var playerState = PlayerState.DEFAULT
 
     private var progressJob: Job? = null
+    private var favoriteJob: Job? = null
 
     // Состояние экрана
     private val _state = MutableLiveData<AudioPlayerState>()
@@ -42,8 +43,17 @@ class AudioPlayerViewModel(
     fun loadTrack(track: Track) {
         currentTrack = track
         _state.value = AudioPlayerState.Content(track)
-        _isFavorite.value = track.isFavorite
+        observeFavoriteStatus(track.trackId)
         preparePlayer(track)
+    }
+    //подписка на актуальный список избранного
+    private fun observeFavoriteStatus(trackId: Long) {
+        favoriteJob?.cancel()
+        favoriteJob = viewModelScope.launch {
+            favoriteTracksInteractor.getFavoriteTracks().collect { favorites ->
+                _isFavorite.value = favorites.any { it.trackId == trackId }
+            }
+        }
     }
 
     // Подготовка плеера
@@ -136,20 +146,19 @@ class AudioPlayerViewModel(
         val track = currentTrack ?: return
 
         viewModelScope.launch {
-            if (track.isFavorite) {
+            val currentlyFavorite = _isFavorite.value ?: false
+            if (currentlyFavorite) {
                 favoriteTracksInteractor.removeFromFavorites(track)
-                track.isFavorite = false
             } else {
                 favoriteTracksInteractor.addToFavorites(track)
-                track.isFavorite = true
             }
-            _isFavorite.value = track.isFavorite
         }
     }
 
     override fun onCleared() {
         super.onCleared()
         stopUpdateProgress()
+        favoriteJob?.cancel()
         releasePlayer()
     }
 }

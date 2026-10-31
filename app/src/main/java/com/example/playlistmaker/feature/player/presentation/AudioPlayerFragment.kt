@@ -47,7 +47,7 @@ class AudioPlayerFragment : Fragment() {
         // Получаем данные о треке из аргументов фрагмента вместо Intent
         val track = getTrackFromArgs()
 
-        setupListeners(track)
+        setupListeners()
         observeState()
         observeFavoriteState()
 
@@ -116,7 +116,7 @@ class AudioPlayerFragment : Fragment() {
         binding.trackTime.text = track.formattedTime
     }
 
-    private fun setupListeners(track: Track) {
+    private fun setupListeners() {
         binding.backButton.setOnClickListener {
             findNavController().navigateUp()
         }
@@ -125,13 +125,12 @@ class AudioPlayerFragment : Fragment() {
             viewModel.playbackControl()
         }
 
-        binding.favouriteButton.setOnClickListener { // ADDED
+        binding.favouriteButton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
     }
 
     private fun observeState() {
-        // Используем viewLifecycleOwner вместо this (Activity)
         viewModel.state.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
