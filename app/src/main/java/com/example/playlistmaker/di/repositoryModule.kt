@@ -1,5 +1,8 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.feature.favorite.data.converters.FavoriteTrackDbConvertor
+import com.example.playlistmaker.feature.favorite.data.repository.FavoriteTracksRepositoryImpl
+import com.example.playlistmaker.feature.favorite.domain.repository.FavoriteTracksRepository
 import com.example.playlistmaker.feature.player.data.repository.PlayerRepositoryImpl
 import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
 import com.example.playlistmaker.feature.search.data.repository.SearchHistoryRepositoryImpl
@@ -14,11 +17,11 @@ import org.koin.dsl.module
 val repositoryModule = module {
 
     single<TrackRepository> {
-        TrackRepositoryImpl(get())
+        TrackRepositoryImpl(get(), get())
     }
 
     single<SearchHistoryRepository> {
-        SearchHistoryRepositoryImpl(get(named("history_prefs")), get())
+        SearchHistoryRepositoryImpl(get(named("history_prefs")), get(),get())
     }
 
     single<SettingsRepository> {
@@ -28,4 +31,11 @@ val repositoryModule = module {
     single<PlayerRepository> {
         PlayerRepositoryImpl()
     }
+
+    factory { FavoriteTrackDbConvertor() }
+
+    single<FavoriteTracksRepository> {
+        FavoriteTracksRepositoryImpl(get(), get())
+    }
+
 }

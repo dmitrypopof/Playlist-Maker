@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.feature.favorite.domain.usecase.FavoriteTracksInteractor
 import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
 import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.Job
@@ -13,7 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerViewModel(
-    private val playerRepository: PlayerRepository
+    private val playerRepository: PlayerRepository,
+    private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) : ViewModel() {
 
     companion object {
@@ -24,10 +26,15 @@ class AudioPlayerViewModel(
     private var playerState = PlayerState.DEFAULT
 
     private var progressJob: Job? = null
+    private var favoriteJob: Job? = null
 
     // Состояние экрана
     private val _state = MutableLiveData<AudioPlayerState>()
     val state: LiveData<AudioPlayerState> = _state
+
+    // LiveData для статуса избранного
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> = _isFavorite
 
     // Текущий трек
     private var currentTrack: Track? = null
@@ -36,7 +43,17 @@ class AudioPlayerViewModel(
     fun loadTrack(track: Track) {
         currentTrack = track
         _state.value = AudioPlayerState.Content(track)
+        observeFavoriteStatus(track.trackId)
         preparePlayer(track)
+    }
+    //подписка на актуальный список избранного
+    private fun observeFavoriteStatus(trackId: Long) {
+        favoriteJob?.cancel()
+        favoriteJob = viewModelScope.launch {
+            favoriteTracksInteractor.getFavoriteTracks().collect { favorites ->
+                _isFavorite.value = favorites.any { it.trackId == trackId }
+            }
+        }
     }
 
     // Подготовка плеера
@@ -124,9 +141,24 @@ class AudioPlayerViewModel(
         }
     }
 
+    // обработка нажатия на кнопку "Нравится"
+    fun onFavoriteClicked() {
+        val track = currentTrack ?: return
+
+        viewModelScope.launch {
+            val currentlyFavorite = _isFavorite.value ?: false
+            if (currentlyFavorite) {
+                favoriteTracksInteractor.removeFromFavorites(track)
+            } else {
+                favoriteTracksInteractor.addToFavorites(track)
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         stopUpdateProgress()
+        favoriteJob?.cancel()
         releasePlayer()
     }
 }

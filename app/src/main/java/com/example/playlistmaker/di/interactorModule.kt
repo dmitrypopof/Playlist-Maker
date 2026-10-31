@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import com.example.playlistmaker.feature.favorite.domain.usecase.FavoriteTracksInteractor
+import com.example.playlistmaker.feature.favorite.domain.usecase.FavoriteTracksInteractorImpl
 import com.example.playlistmaker.feature.search.domain.usecase.AddTrackToHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.ClearSearchHistoryUseCase
 import com.example.playlistmaker.feature.search.domain.usecase.GetSearchHistoryUseCase
@@ -33,4 +35,9 @@ val interactorModule = module {
     factory {
         UpdateThemeSettingsUseCase(get())
     }
+
+    single<FavoriteTracksInteractor> {
+        FavoriteTracksInteractorImpl(get())
+    }
+
 }

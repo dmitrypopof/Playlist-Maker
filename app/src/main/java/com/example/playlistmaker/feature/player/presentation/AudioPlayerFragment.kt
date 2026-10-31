@@ -49,6 +49,7 @@ class AudioPlayerFragment : Fragment() {
 
         setupListeners()
         observeState()
+        observeFavoriteState()
 
         viewModel.loadTrack(track)
         displayTrackInfo(track)
@@ -117,20 +118,37 @@ class AudioPlayerFragment : Fragment() {
 
     private fun setupListeners() {
         binding.backButton.setOnClickListener {
-            // Навигация через NavController вместо onBackPressedDispatcher
             findNavController().navigateUp()
         }
 
         binding.playButton.setOnClickListener {
             viewModel.playbackControl()
         }
+
+        binding.favouriteButton.setOnClickListener {
+            viewModel.onFavoriteClicked()
+        }
     }
 
     private fun observeState() {
-        // Используем viewLifecycleOwner вместо this (Activity)
         viewModel.state.observe(viewLifecycleOwner) { state ->
             renderState(state)
         }
+    }
+
+    private fun observeFavoriteState() {
+        viewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            renderFavoriteState(isFavorite)
+        }
+    }
+
+    private fun renderFavoriteState(isFavorite: Boolean) {
+        val iconRes = if (isFavorite) {
+            R.drawable.ic_favourites_button_active
+        } else {
+            R.drawable.ic_favourites_button
+        }
+        binding.favouriteButton.setIconResource(iconRes)
     }
 
     private fun renderState(state: AudioPlayerState) {

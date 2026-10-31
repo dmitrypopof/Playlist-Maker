@@ -1,6 +1,5 @@
 package com.example.playlistmaker.feature.media.presentation.playlists
 
-import com.example.playlistmaker.feature.player.presentation.AudioPlayerViewModel
 import com.example.playlistmaker.feature.search.presentation.SearchViewModel
 import com.example.playlistmaker.feature.settings.presentation.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -10,10 +9,6 @@ val viewModelModule = module {
 
     viewModel {
         SearchViewModel(get(), get(), get(), get())
-    }
-
-    viewModel {
-        AudioPlayerViewModel(get())
     }
 
     viewModel {

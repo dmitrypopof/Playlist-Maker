@@ -6,7 +6,7 @@ import com.example.playlistmaker.feature.search.domain.repository.SearchHistoryR
 class GetSearchHistoryUseCase(
     private val repository: SearchHistoryRepository
 ) {
-    operator fun invoke(): List<Track> {
+    suspend operator fun invoke(): List<Track> {
         return repository.getHistory()
     }
 }
