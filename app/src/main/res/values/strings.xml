@@ -38,4 +38,15 @@
     <string name="new_playlist_button">Новый плейлист</string>
     <string name="no_playlists_created">Вы не создали\nни одного плейлиста</string>
     <string name="media_library_empty">Ваша медиатека пуста</string>
+
+    <!-- Экран Создание плейлиста -->
+    <string name="new_playlist_title">Новый плейлист</string>
+    <string name="playlist_name_hint">Название плейлиста</string>
+    <string name="playlist_description_hint">Описание</string>
+    <string name="create_playlist_button">Создать</string>
+    <string name="finish_playlist_creation_title">Завершить создание плейлиста?</string>
+    <string name="finish_playlist_creation_message">Все несохраненные данные будут потеряны</string>
+    <string name="cancel_button">Отмена</string>
+    <string name="finish_button">Завершить</string>
+    <string name="playlist_created_message">Плейлист %1$s создан</string>
 </resources>
