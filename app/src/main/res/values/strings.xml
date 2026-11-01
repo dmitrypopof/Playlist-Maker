@@ -49,4 +49,5 @@
     <string name="cancel_button">Отмена</string>
     <string name="finish_button">Завершить</string>
     <string name="playlist_created_message">Плейлист %1$s создан</string>
+    <string name="tracks_count_format">%1$d треков</string>
 </resources>
