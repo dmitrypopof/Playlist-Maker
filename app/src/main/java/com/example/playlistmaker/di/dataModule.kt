@@ -44,6 +44,11 @@ val dataModule = module {
             .fallbackToDestructiveMigration(false)
             .build()
     }
+
+    single { get<AppDatabase>().favoriteTrackDao() }
+    single { get<AppDatabase>().playlistDao() }
+    single { get<AppDatabase>().playlistTrackDao() }
+
     factory { PlaylistDbConvertor(get()) }
     factory { PlaylistTrackDbConvertor() }
 }
