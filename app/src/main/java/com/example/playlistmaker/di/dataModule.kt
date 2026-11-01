@@ -38,6 +38,8 @@ val dataModule = module {
             androidContext(),
             AppDatabase::class.java,
             "playlist_maker.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
 }
