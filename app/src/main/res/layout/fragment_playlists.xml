@@ -17,8 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- ADDED: список плейлистов. Отступ от краёв экрана через padding (12dp) + margin элемента (4dp) = 16dp,
-         отступ между элементами через margin с обеих сторон (4dp + 4dp) = 8dp -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistsRecyclerView"
         android:layout_width="match_parent"

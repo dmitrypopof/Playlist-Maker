@@ -7,9 +7,7 @@
     android:layout_height="match_parent">
 
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/audioPlayer"
     style="@style/AudioPlayer_generalSet"
     android:layout_width="match_parent"
@@ -241,7 +239,7 @@
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- ADDED: затемнение контента плеера при открытом Bottom Sheet -->
+    <!-- затемнение контента плеера при открытом Bottom Sheet -->
     <View
         android:id="@+id/overlay"
         android:layout_width="match_parent"
@@ -249,7 +247,7 @@
         android:background="#99000000"
         android:visibility="gone" />
 
-    <!-- ADDED: Bottom Sheet со списком плейлистов -->
+    <!-- Bottom Sheet со списком плейлистов -->
     <LinearLayout
         android:id="@+id/playlists_bottom_sheet"
         android:layout_width="match_parent"

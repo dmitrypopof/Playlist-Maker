@@ -54,4 +54,8 @@
 
     <!-- Экран Аудиоплеер: Bottom Sheet добавления в плейлист -->
     <string name="add_to_playlist_title">Добавить в плейлист</string>
+
+    <!-- Экран Аудиоплеер: добавление трека в плейлист -->
+    <string name="added_to_playlist_message">Добавлено в плейлист %1$s</string>
+    <string name="track_already_in_playlist_message">Трек уже добавлен в плейлист %1$s</string>
 </resources>

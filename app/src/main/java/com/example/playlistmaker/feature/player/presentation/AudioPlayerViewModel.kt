@@ -5,17 +5,22 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.feature.favorite.domain.usecase.FavoriteTracksInteractor
+import com.example.playlistmaker.feature.media.domain.model.Playlist
+import com.example.playlistmaker.feature.media.domain.usecase.PlaylistsInteractor
 import com.example.playlistmaker.feature.player.domain.repository.PlayerRepository
 import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioPlayerViewModel(
     private val playerRepository: PlayerRepository,
-    private val favoriteTracksInteractor: FavoriteTracksInteractor
+    private val favoriteTracksInteractor: FavoriteTracksInteractor,
+    private val playlistsInteractor: PlaylistsInteractor
 ) : ViewModel() {
 
     companion object {
@@ -36,8 +41,29 @@ class AudioPlayerViewModel(
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> = _isFavorite
 
+    //LiveData со списком плейлистов для Bottom Sheet
+    private val _playlists = MutableLiveData<List<Playlist>>(emptyList())
+    val playlists: LiveData<List<Playlist>> = _playlists
+
+    //LiveData-событие результата добавления трека в плейлист
+    private val _addToPlaylistResult = MutableLiveData<AudioPlayerAddToPlaylistResult?>()
+    val addToPlaylistResult: LiveData<AudioPlayerAddToPlaylistResult?> = _addToPlaylistResult
+
     // Текущий трек
     private var currentTrack: Track? = null
+
+    init {
+        observePlaylists()
+    }
+
+    // подписка на актуальный список плейлистов из БД
+    private fun observePlaylists() {
+        playlistsInteractor.getPlaylists()
+            .onEach { playlistsList ->
+                _playlists.value = playlistsList
+            }
+            .launchIn(viewModelScope)
+    }
 
     //Загрузка трека для воспроизведения
     fun loadTrack(track: Track) {
@@ -153,6 +179,27 @@ class AudioPlayerViewModel(
                 favoriteTracksInteractor.addToFavorites(track)
             }
         }
+    }
+
+    //обработка нажатия на плейлист в Bottom Sheet
+    fun onPlaylistSelected(playlist: Playlist) {
+        val track = currentTrack ?: return
+
+        val alreadyInPlaylist = playlist.trackIds.contains(track.trackId)
+        if (alreadyInPlaylist) {
+            _addToPlaylistResult.value = AudioPlayerAddToPlaylistResult.AlreadyAdded(playlist.name)
+            return
+        }
+
+        viewModelScope.launch {
+            playlistsInteractor.addTrackToPlaylist(track, playlist)
+            _addToPlaylistResult.value = AudioPlayerAddToPlaylistResult.Added(playlist.name)
+        }
+    }
+
+    // сброс одноразового события после обработки в UI
+    fun onAddToPlaylistResultHandled() {
+        _addToPlaylistResult.value = null
     }
 
     override fun onCleared() {
