@@ -196,4 +196,9 @@
         <item name="itemRippleColor">@color/yp_light_gray</item>
     </style>
 
+    <!-- Фон для Bottom Sheet (светлая тема) -->
+    <style name="BottomSheetStyle">
+        <item name="android:background">@drawable/bottom_sheet_bg_light</item>
+    </style>
+
 </resources>

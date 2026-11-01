@@ -187,4 +187,9 @@
         <item name="itemRippleColor">@color/gray_aluminium_snow</item>
     </style>
 
+    <!-- Фон для Bottom Sheet (тёмная тема) -->
+    <style name="BottomSheetStyle">
+        <item name="android:background">@drawable/bottom_sheet_bg_dark</item>
+    </style>
+
 </resources>

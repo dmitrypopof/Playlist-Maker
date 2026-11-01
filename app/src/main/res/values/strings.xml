@@ -50,4 +50,8 @@
     <string name="finish_button">Завершить</string>
     <string name="playlist_created_message">Плейлист %1$s создан</string>
     <string name="tracks_count_format">%1$d треков</string>
+
+
+    <!-- Экран Аудиоплеер: Bottom Sheet добавления в плейлист -->
+    <string name="add_to_playlist_title">Добавить в плейлист</string>
 </resources>
