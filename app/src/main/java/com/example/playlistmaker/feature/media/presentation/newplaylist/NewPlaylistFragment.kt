@@ -96,7 +96,7 @@ class NewPlaylistFragment : Fragment() {
     }
 
     private fun showExitConfirmationDialog() {
-        MaterialAlertDialogBuilder(requireContext())
+        MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogButtonTheme)
             .setTitle(R.string.finish_playlist_creation_title)
             .setMessage(R.string.finish_playlist_creation_message)
             .setNegativeButton(R.string.cancel_button) { dialog, _ ->

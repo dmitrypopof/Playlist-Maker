@@ -188,7 +188,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <!-- стиль для BottomNavigationView (светлая тема) -->
+    <!-- стиль для BottomNavigationView -->
     <style name="CustomBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:background">@color/white</item>
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
@@ -196,9 +196,18 @@
         <item name="itemRippleColor">@color/yp_light_gray</item>
     </style>
 
-    <!-- Фон для Bottom Sheet (светлая тема) -->
+    <!-- Фон для Bottom Sheet -->
     <style name="BottomSheetStyle">
         <item name="android:background">@drawable/bottom_sheet_bg_light</item>
     </style>
 
+    <!-- Алерт -->
+    <style name="AlertDialogButtonTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButtonStyle</item>
+    </style>
+
+    <style name="AlertDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue_cornflower</item>
+    </style>
 </resources>
