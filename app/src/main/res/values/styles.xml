@@ -52,7 +52,7 @@
     <item name="fontFamily">@font/ys_display_medium</item>
     <item name="android:textAllCaps">false</item>
     <item name="android:gravity">center_vertical</item>
-    </style>>
+    </style>
 
     <style name="SearchEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:drawableTint">@color/YP_Text_Gray</item>
@@ -172,6 +172,12 @@
         <item name="iconTint">@null</item>
     </style>
 
+    <!-- Текст плейлиста -->
+    <style name="TextStubStylePlaylist">
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/YP_Black</item>
+    </style>
+
     <!-- Экран Медиа: TabLayout -->
     <style name="CustomTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
@@ -188,7 +194,7 @@
         <item name="textAllCaps">false</item>
     </style>
 
-    <!-- стиль для BottomNavigationView (светлая тема) -->
+    <!-- стиль для BottomNavigationView -->
     <style name="CustomBottomNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="android:background">@color/white</item>
         <item name="itemIconTint">@color/bottom_nav_item_color</item>
@@ -196,4 +202,28 @@
         <item name="itemRippleColor">@color/yp_light_gray</item>
     </style>
 
+    <!-- Фон для Bottom Sheet -->
+    <style name="BottomSheetStyle">
+        <item name="android:background">@drawable/bottom_sheet_bg_light</item>
+    </style>
+
+    <!-- Алерт -->
+    <style name="AlertDialogButtonTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="buttonBarPositiveButtonStyle">@style/AlertDialogButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AlertDialogButtonStyle</item>
+    </style>
+
+    <style name="AlertDialogButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/blue_cornflower</item>
+    </style>
+
+    <!-- Текст инпутов Создание плелиста  -->
+    <style name="Widget.App.TextInputLayout.PlaylistName" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">@color/YP_Black</item>
+        <item name="android:textColorHint">@color/YP_Black</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.App.CoverImage" parent="">
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>

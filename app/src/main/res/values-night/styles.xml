@@ -163,6 +163,12 @@
         <item name="iconTint">@color/white</item>
     </style>
 
+    <!-- Текст плейлиста -->
+    <style name="TextStubStylePlaylist">
+        <item name="textAllCaps">false</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
     <!-- TabLayout для экрана Медиатека -->
     <style name="CustomTabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
@@ -187,4 +193,14 @@
         <item name="itemRippleColor">@color/gray_aluminium_snow</item>
     </style>
 
+    <!-- Фон для Bottom Sheet (тёмная тема) -->
+    <style name="BottomSheetStyle">
+        <item name="android:background">@drawable/bottom_sheet_bg_dark</item>
+    </style>
+
+    <!-- Текст инпутов Создание плелиста  -->
+    <style name="Widget.App.TextInputLayout.PlaylistName" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="hintTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
 </resources>

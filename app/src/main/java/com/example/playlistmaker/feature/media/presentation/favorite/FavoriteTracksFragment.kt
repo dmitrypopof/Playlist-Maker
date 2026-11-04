@@ -42,7 +42,7 @@ class FavoriteTracksFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        adapter = null // ADDED
+        adapter = null
         binding.favoriteTracksRecyclerView.adapter = null
         _binding = null
     }

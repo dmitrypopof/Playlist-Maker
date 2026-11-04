@@ -1,6 +1,8 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.feature.media.presentation.favorite.FavoriteTracksViewModel
+import com.example.playlistmaker.feature.media.presentation.newplaylist.NewPlaylistViewModel
+import com.example.playlistmaker.feature.media.presentation.playlists.PlaylistsViewModel
 import com.example.playlistmaker.feature.player.presentation.AudioPlayerViewModel
 import com.example.playlistmaker.feature.search.presentation.SearchViewModel
 import com.example.playlistmaker.feature.settings.presentation.SettingsViewModel
@@ -14,7 +16,7 @@ val viewModelModule = module {
     }
 
     viewModel {
-        AudioPlayerViewModel(get(),get())
+        AudioPlayerViewModel(get(),get(),get())
     }
 
     viewModel {
@@ -23,5 +25,13 @@ val viewModelModule = module {
 
     viewModel {
         FavoriteTracksViewModel(get())
+    }
+
+    viewModel {
+        PlaylistsViewModel(get())
+    }
+
+    viewModel {
+        NewPlaylistViewModel(get())
     }
 }

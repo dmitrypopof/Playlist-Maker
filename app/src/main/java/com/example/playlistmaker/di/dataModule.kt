@@ -3,6 +3,8 @@ package com.example.playlistmaker.di
 import android.content.Context
 import androidx.room.Room
 import com.example.playlistmaker.feature.favorite.data.db.AppDatabase
+import com.example.playlistmaker.feature.media.data.converters.PlaylistDbConvertor
+import com.example.playlistmaker.feature.media.data.converters.PlaylistTrackDbConvertor
 import com.example.playlistmaker.feature.search.data.network.ITunesApi
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -38,6 +40,15 @@ val dataModule = module {
             androidContext(),
             AppDatabase::class.java,
             "playlist_maker.db"
-        ).build()
+        )
+            .fallbackToDestructiveMigration(false)
+            .build()
     }
+
+    single { get<AppDatabase>().favoriteTrackDao() }
+    single { get<AppDatabase>().playlistDao() }
+    single { get<AppDatabase>().playlistTrackDao() }
+
+    factory { PlaylistDbConvertor(get()) }
+    factory { PlaylistTrackDbConvertor() }
 }
