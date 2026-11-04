@@ -41,7 +41,7 @@
 
     <!-- Экран Создание плейлиста -->
     <string name="new_playlist_title">Новый плейлист</string>
-    <string name="playlist_name_hint">Название плейлиста</string>
+    <string name="playlist_name_hint">Название*</string>
     <string name="playlist_description_hint">Описание</string>
     <string name="create_playlist_button">Создать</string>
     <string name="finish_playlist_creation_title">Завершить создание плейлиста?</string>

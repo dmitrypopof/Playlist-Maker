@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -111,6 +112,15 @@ class NewPlaylistFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.isCreateButtonEnabled.observe(viewLifecycleOwner) { isEnabled ->
             binding.createButton.isEnabled = isEnabled
+
+            val colorRes = if (isEnabled) {
+                R.color.blue_cornflower
+            } else {
+                R.color.gray_aluminium_snow
+            }
+
+            binding.createButton.backgroundTintList =
+                ContextCompat.getColorStateList(requireContext(), colorRes)
         }
 
         viewModel.coverPreview.observe(viewLifecycleOwner) { uri ->
@@ -135,7 +145,7 @@ class NewPlaylistFragment : Fragment() {
                 .into(binding.coverImage)
         } else {
             binding.coverImage.scaleType = ImageView.ScaleType.CENTER_INSIDE
-            binding.coverImage.setImageResource(R.drawable.ic_placeholder_no_download_45x45)
+            binding.coverImage.setImageResource(R.drawable.ic_add_photo)
         }
     }
 
