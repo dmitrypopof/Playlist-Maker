@@ -75,21 +75,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.appcompat.widget.AppCompatImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/coverImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/dashed_cover_background"
                     android:padding="1dp"
                     android:scaleType="centerInside"
-                    android:src="@drawable/ic_add_photo" />
+                    android:src="@drawable/ic_add_photo"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CoverImage"/>
 
             </FrameLayout>
 
             <!-- Поле ввода названия плейлиста -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/nameInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.App.TextInputLayout.PlaylistName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -107,6 +108,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/nameEditText"
+                    android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1" />
@@ -116,7 +118,7 @@
             <!-- Поле ввода описания плейлиста -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/descriptionInputLayout"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                style="@style/Widget.App.TextInputLayout.PlaylistName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -134,6 +136,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/descriptionEditText"
+                    android:textSize="16sp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1" />
