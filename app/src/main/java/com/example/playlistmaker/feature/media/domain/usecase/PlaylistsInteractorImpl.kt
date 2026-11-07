@@ -33,4 +33,8 @@ class PlaylistsInteractorImpl(
     override fun saveCoverToPrivateStorage(uri: Uri): String? {
         return repository.saveCoverToPrivateStorage(uri)
     }
+
+    override fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>> {
+        return repository.getTracksByIds(trackIds)
+    }
 }

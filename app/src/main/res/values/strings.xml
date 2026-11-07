@@ -58,4 +58,10 @@
     <!-- Экран Аудиоплеер: добавление трека в плейлист -->
     <string name="added_to_playlist_message">Добавлено в плейлист %1$s</string>
     <string name="track_already_in_playlist_message">Трек уже добавлен в плейлист %1$s</string>
+
+    <!-- плейлист -->
+    <string name="back">Назад</string>
+    <string name="share">Поделиться</string>
+    <string name="menu">Меню</string>
+    <string name="minutes_format">%d минут</string>
 </resources>

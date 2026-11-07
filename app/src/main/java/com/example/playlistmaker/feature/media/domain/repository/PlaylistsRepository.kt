@@ -18,4 +18,6 @@ interface PlaylistsRepository {
     suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
 
     fun saveCoverToPrivateStorage(uri: Uri): String?
+
+    fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>>
 }

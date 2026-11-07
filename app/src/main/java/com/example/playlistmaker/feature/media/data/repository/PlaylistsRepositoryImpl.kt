@@ -13,6 +13,7 @@ import com.example.playlistmaker.feature.media.domain.model.Playlist
 import com.example.playlistmaker.feature.media.domain.repository.PlaylistsRepository
 import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.io.File
 import java.io.FileOutputStream
@@ -83,5 +84,14 @@ class PlaylistsRepositoryImpl(
         } catch (e: Exception) {
             null
         }
+    }
+
+    override fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>> = flow {
+        val allTracksEntities = playlistTrackDao.getAllTracks()
+        val allTracks = allTracksEntities.map { playlistTrackDbConvertor.map(it) }
+        val filteredTracks = trackIds.mapNotNull { id ->
+            allTracks.find { it.trackId == id }
+        }
+        emit(filteredTracks)
     }
 }
