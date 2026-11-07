@@ -15,6 +15,7 @@ import kotlinx.coroutines.launch
 class TrackAdapter(
     private var tracks: List<Track>,
     private val lifecycleOwner: LifecycleOwner,
+    private val onTrackLongClick: ((Track) -> Unit)? = null,
     private val onTrackClick: ((Track) -> Unit)? = null
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -52,6 +53,15 @@ class TrackAdapter(
                 // Затем открываем AudioPlayer
 //                val context = holder.itemView.context
 //                TrackIntentHelper.startAudioPlayer(context, track)
+            }
+        }
+
+        holder.itemView.setOnLongClickListener {
+            if (onTrackLongClick != null) {
+                onTrackLongClick.invoke(track)
+                true
+            } else {
+                false
             }
         }
     }

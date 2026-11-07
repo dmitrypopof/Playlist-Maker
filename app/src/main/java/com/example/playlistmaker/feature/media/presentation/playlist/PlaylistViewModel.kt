@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.feature.media.domain.model.Playlist
 import com.example.playlistmaker.feature.media.domain.usecase.PlaylistsInteractor
+import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -19,6 +21,8 @@ class PlaylistViewModel(
     private val _state = MutableLiveData<PlaylistState>(PlaylistState.Loading)
     val state: LiveData<PlaylistState> = _state
 
+    private var currentPlaylist: Playlist? = null
+
     init {
         loadPlaylist()
     }
@@ -30,6 +34,8 @@ class PlaylistViewModel(
             if (playlist == null) {
                 return@launch
             }
+
+            currentPlaylist = playlist
 
             playlistsInteractor.getTracksByIds(playlist.trackIds)
                 .onEach { tracks ->
@@ -46,6 +52,15 @@ class PlaylistViewModel(
                     )
                 }
                 .launchIn(viewModelScope)
+        }
+    }
+
+    fun removeTrack(track: Track) {
+        val playlist = currentPlaylist ?: return
+
+        viewModelScope.launch {
+            playlistsInteractor.removeTrackFromPlaylist(track.trackId, playlist)
+            loadPlaylist()
         }
     }
 }

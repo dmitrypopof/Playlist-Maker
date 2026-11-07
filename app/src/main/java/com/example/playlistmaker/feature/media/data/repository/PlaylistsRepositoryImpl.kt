@@ -13,6 +13,7 @@ import com.example.playlistmaker.feature.media.domain.model.Playlist
 import com.example.playlistmaker.feature.media.domain.repository.PlaylistsRepository
 import com.example.playlistmaker.feature.search.domain.model.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.io.File
@@ -93,5 +94,26 @@ class PlaylistsRepositoryImpl(
             allTracks.find { it.trackId == id }
         }
         emit(filteredTracks)
+    }
+
+    override suspend fun removeTrackFromPlaylist(trackId: Long, playlist: Playlist) {
+        val updatedTrackIds = playlist.trackIds.filterNot { it == trackId }
+        val updatedPlaylist = playlist.copy(
+            trackIds = updatedTrackIds,
+            tracksCount = updatedTrackIds.size
+        )
+        playlistDao.updatePlaylist(playlistDbConvertor.map(updatedPlaylist))
+
+        removeTrackIfUnused(trackId)
+    }
+
+    private suspend fun removeTrackIfUnused(trackId: Long) {
+        val allPlaylists = playlistDao.getPlaylists().first()
+        val isUsed = allPlaylists.any { entity ->
+            playlistDbConvertor.map(entity).trackIds.contains(trackId)
+        }
+        if (!isUsed) {
+            playlistTrackDao.deleteTrackById(trackId)
+        }
     }
 }

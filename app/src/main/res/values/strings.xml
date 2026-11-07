@@ -64,4 +64,10 @@
     <string name="share">Поделиться</string>
     <string name="menu">Меню</string>
     <string name="minutes_format">%d минут</string>
+
+    <string name="delete_track_dialog_message">Хотите удалить трек?</string>
+    <string name="yes_button">ДА</string>
+    <string name="no_button">НЕТ</string>
+
+
 </resources>

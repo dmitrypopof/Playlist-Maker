@@ -63,8 +63,13 @@
         android:name="com.example.playlistmaker.feature.media.presentation.playlist.PlaylistFragment"
         android:label="fragment_playlist"
         tools:layout="@layout/fragment_playlist">
+
         <argument
-            android:name="playlistId"
+            android:name="playlist_id"
             app:argType="long" />
+
+        <action
+            android:id="@+id/action_playlistFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
 </navigation>

@@ -20,4 +20,6 @@ interface PlaylistsRepository {
     fun saveCoverToPrivateStorage(uri: Uri): String?
 
     fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>>
+
+    suspend fun removeTrackFromPlaylist(trackId: Long, playlist: Playlist)
 }
