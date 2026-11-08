@@ -20,7 +20,6 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/playlistNameText"
-        style="@style/TextStubStylePlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -30,6 +29,8 @@
         android:fontFamily="@font/ys_display_medium"
         android:maxLines="2"
         android:textSize="19sp"
+        android:textAllCaps="false"
+        android:textColor="@color/YP_Black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/playlistCoverImage"
@@ -37,7 +38,6 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/playlistDescriptionText"
-        style="@style/TextStubStylePlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -45,6 +45,8 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="14sp"
+        android:textAllCaps="false"
+        android:textColor="@color/YP_Black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,13 +55,14 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/playlistDurationText"
-        style="@style/TextStubStylePlaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textColor="@color/YP_Black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/playlistDescriptionText"
         tools:text="12 минут" />
@@ -76,12 +79,13 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/playlistTracksCountText"
-        style="@style/TextStubStylePlaylist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="12sp"
+        android:textAllCaps="false"
+        android:textColor="@color/YP_Black"
         app:layout_constraintBottom_toBottomOf="@id/playlistDurationText"
         app:layout_constraintStart_toEndOf="@id/separatorPoint"
         app:layout_constraintTop_toTopOf="@id/playlistDurationText"
