@@ -32,7 +32,7 @@ class PlaylistViewModel(
         loadPlaylist()
     }
 
-    private fun loadPlaylist() {
+    fun loadPlaylist() {
         viewModelScope.launch {
             val playlist = playlistsInteractor.getPlaylistById(playlistId)
 

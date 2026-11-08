@@ -20,12 +20,12 @@ import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewPlaylistFragment : Fragment() {
+open class NewPlaylistFragment : Fragment() {
 
-    private var _binding: FragmentNewPlaylistBinding? = null
-    private val binding get() = _binding!!
+    protected  var _binding: FragmentNewPlaylistBinding? = null
+    protected  val binding get() = _binding!!
 
-    private val viewModel: NewPlaylistViewModel by viewModel()
+    protected open val viewModel: NewPlaylistViewModel by viewModel()
 
     private val pickMedia = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
@@ -55,9 +55,15 @@ class NewPlaylistFragment : Fragment() {
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, backPressedCallback)
 
+        binding.screenTitle.text = getString(getScreenTitleRes())
+        binding.createButton.text = getString(getButtonTextRes())
+
         setupListeners()
         observeViewModel()
     }
+
+    protected open fun getScreenTitleRes(): Int = R.string.new_playlist_title
+    protected open fun getButtonTextRes(): Int = R.string.create_playlist_button
 
     private fun setupListeners() {
         binding.backButton.setOnClickListener {
@@ -87,7 +93,7 @@ class NewPlaylistFragment : Fragment() {
         }
     }
 
-    private fun handleBackPressed() {
+    protected open fun handleBackPressed() {
         if (viewModel.hasUnsavedData()) {
             showExitConfirmationDialog()
         } else {
@@ -129,11 +135,14 @@ class NewPlaylistFragment : Fragment() {
 
         viewModel.createdPlaylistEvent.observe(viewLifecycleOwner) { playlistName ->
             if (playlistName != null) {
-                showPlaylistCreatedMessage(playlistName)
+                onPlaylistSaved(playlistName)
                 viewModel.onCreatedEventHandled()
                 findNavController().navigateUp()
             }
         }
+    }
+    protected open fun onPlaylistSaved(playlistName: String) {
+        showPlaylistCreatedMessage(playlistName)
     }
 
     private fun showCover(uri: Uri?) {

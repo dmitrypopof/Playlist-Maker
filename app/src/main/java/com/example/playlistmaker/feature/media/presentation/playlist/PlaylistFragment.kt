@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistBinding
 import com.example.playlistmaker.feature.media.domain.model.Playlist
+import com.example.playlistmaker.feature.media.presentation.newplaylist.EditPlaylistFragment
 import com.example.playlistmaker.feature.player.presentation.AudioPlayerFragment
 import com.example.playlistmaker.feature.search.domain.model.Track
 import com.example.playlistmaker.feature.search.presentation.TrackAdapter
@@ -73,6 +74,11 @@ class PlaylistFragment : Fragment() {
         setupTracksAdapter()
         setupListeners()
         observeViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.loadPlaylist()
     }
 
     // Настройка Bottom Sheet со списком треков
@@ -150,6 +156,14 @@ class PlaylistFragment : Fragment() {
             viewModel.onShareClicked()
         }
 
+        menuBinding.menuEditInfoItem.setOnClickListener {
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            findNavController().navigate(
+                R.id.action_playlistFragment_to_editPlaylistFragment,
+                EditPlaylistFragment.createArgs(playlistId)
+            )
+        }
+
         menuBinding.menuDeletePlaylistItem.setOnClickListener {
             menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             showDeletePlaylistDialog()
@@ -203,7 +217,6 @@ class PlaylistFragment : Fragment() {
             appendLine(getString(R.string.tracks_count_format, tracks.size))
 
             tracks.forEachIndexed { index, track ->
-                // CHANGED: используем строковый ресурс share_track_format вместо ручной конкатенации
                 appendLine(
                     getString(
                         R.string.share_track_format,

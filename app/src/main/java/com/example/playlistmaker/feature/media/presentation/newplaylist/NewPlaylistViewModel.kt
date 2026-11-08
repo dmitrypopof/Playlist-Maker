@@ -9,42 +9,42 @@ import com.example.playlistmaker.feature.media.domain.model.Playlist
 import com.example.playlistmaker.feature.media.domain.usecase.PlaylistsInteractor
 import kotlinx.coroutines.launch
 
-class NewPlaylistViewModel(
-    private val playlistsInteractor: PlaylistsInteractor
+open class NewPlaylistViewModel(
+    protected val playlistsInteractor: PlaylistsInteractor
 ) : ViewModel() {
 
-    private var coverUri: Uri? = null
-    private var name: String = ""
-    private var description: String = ""
+    protected  var coverUri: Uri? = null
+    protected  var name: String = ""
+    protected  var description: String = ""
 
-    private val _isCreateButtonEnabled = MutableLiveData(false)
+    protected  val _isCreateButtonEnabled = MutableLiveData(false)
     val isCreateButtonEnabled: LiveData<Boolean> = _isCreateButtonEnabled
 
-    private val _coverPreview = MutableLiveData<Uri?>()
+    protected  val _coverPreview = MutableLiveData<Uri?>()
     val coverPreview: LiveData<Uri?> = _coverPreview
 
-    private val _createdPlaylistEvent = MutableLiveData<String?>()
+    protected  val _createdPlaylistEvent = MutableLiveData<String?>()
     val createdPlaylistEvent: LiveData<String?> = _createdPlaylistEvent
 
-    fun onNameChanged(newName: String) {
+    open fun onNameChanged(newName: String) {
         name = newName
         updateCreateButtonState()
     }
 
-    fun onDescriptionChanged(newDescription: String) {
+    open fun onDescriptionChanged(newDescription: String) {
         description = newDescription
     }
 
-    fun onCoverSelected(uri: Uri) {
+    open fun onCoverSelected(uri: Uri) {
         coverUri = uri
         _coverPreview.value = uri
     }
 
-    fun hasUnsavedData(): Boolean {
+    open fun hasUnsavedData(): Boolean {
         return coverUri != null || name.isNotBlank() || description.isNotBlank()
     }
 
-    fun createPlaylist() {
+    open fun createPlaylist() {
         val playlistName = name.trim()
         if (playlistName.isEmpty()) return
 
@@ -70,7 +70,7 @@ class NewPlaylistViewModel(
         _createdPlaylistEvent.value = null
     }
 
-    private fun updateCreateButtonState() {
+    protected open fun updateCreateButtonState() {
         _isCreateButtonEnabled.value = name.trim().isNotEmpty()
     }
 }

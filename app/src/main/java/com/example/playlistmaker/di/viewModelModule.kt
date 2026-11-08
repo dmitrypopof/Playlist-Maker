@@ -1,6 +1,7 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.feature.media.presentation.favorite.FavoriteTracksViewModel
+import com.example.playlistmaker.feature.media.presentation.newplaylist.EditPlaylistViewModel
 import com.example.playlistmaker.feature.media.presentation.newplaylist.NewPlaylistViewModel
 import com.example.playlistmaker.feature.media.presentation.playlist.PlaylistViewModel
 import com.example.playlistmaker.feature.media.presentation.playlists.PlaylistsViewModel
@@ -38,5 +39,9 @@ val viewModelModule = module {
 
     viewModel { (playlistId: Long) ->
         PlaylistViewModel(playlistId, get())
+    }
+
+    viewModel { (playlistId: Long) ->
+        EditPlaylistViewModel(playlistId, get())
     }
 }
