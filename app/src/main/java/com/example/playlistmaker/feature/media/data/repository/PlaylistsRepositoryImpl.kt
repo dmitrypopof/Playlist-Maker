@@ -107,6 +107,21 @@ class PlaylistsRepositoryImpl(
         removeTrackIfUnused(trackId)
     }
 
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        playlistDao.deletePlaylistById(playlist.playlistId)
+
+        val remainingPlaylists = playlistDao.getPlaylists().first()
+        val usedTrackIds = remainingPlaylists
+            .flatMap { playlistDbConvertor.map(it).trackIds }
+            .toHashSet()
+
+        playlist.trackIds.forEach { trackId ->
+            if (trackId !in usedTrackIds) {
+                playlistTrackDao.deleteTrackById(trackId)
+            }
+        }
+    }
+
     private suspend fun removeTrackIfUnused(trackId: Long) {
         val allPlaylists = playlistDao.getPlaylists().first()
         val isUsed = allPlaylists.any { entity ->

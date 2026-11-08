@@ -73,8 +73,15 @@
         android:contentDescription="@string/back"
         android:src="@drawable/ic_arrow_back" />
 
-    <!-- BottomSheet со списком треков плейлиста. Нельзя скрыть (behavior_hideable=false),
-         можно растянуть на весь экран перетаскиванием -->
+    <!-- затемнение контента при открытом меню плейлиста -->
+        <View
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:visibility="gone" />
+
+    <!-- BottomSheet со списком треков плейлиста -->
     <LinearLayout
         android:id="@+id/playlistTracksBottomSheet"
         android:layout_width="match_parent"
@@ -105,5 +112,10 @@
             tools:listitem="@layout/item_track" />
 
     </LinearLayout>
+
+    <!-- Bottom Sheet меню плейлиста (поверх всего, скрыт по умолчанию) -->
+    <include
+        android:id="@+id/playlistMenuBottomSheet"
+        layout="@layout/layout_playlist_menu_bottom_sheet" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

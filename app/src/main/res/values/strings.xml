@@ -69,5 +69,16 @@
     <string name="yes_button">ДА</string>
     <string name="no_button">НЕТ</string>
 
+    <!-- Экран Плейлист: шеринг и удаление плейлиста -->
+    <string name="share_empty_playlist_message">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="delete_playlist_dialog_title">Удалить плейлист</string>
+    <string name="delete_playlist_dialog_message">Хотите удалить плейлист?</string>
 
+    <!-- Пункты меню Bottom Sheet на экране Плейлист -->
+    <string name="menu_share">Поделиться</string>
+    <string name="menu_edit_info">Редактировать информацию</string>
+    <string name="menu_delete_playlist">Удалить плейлист</string>
+
+    <!-- Формат строки трека для шеринга: "1. Артист - Трек (3:45)" -->
+    <string name="share_track_format">%1$d. %2$s - %3$s (%4$s)</string>
 </resources>
