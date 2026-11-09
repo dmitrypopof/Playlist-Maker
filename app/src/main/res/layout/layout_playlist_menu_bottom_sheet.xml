@@ -5,6 +5,7 @@
     android:id="@+id/playlistMenuBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minHeight="280dp"
     style="@style/BottomSheetStyle"
     android:orientation="vertical"
     android:paddingBottom="24dp"
