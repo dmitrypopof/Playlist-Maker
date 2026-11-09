@@ -52,7 +52,7 @@ class PlaylistsRepositoryImpl(
     }
 
     override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {
-        val updatedTrackIds = playlist.trackIds + track.trackId
+        val updatedTrackIds = listOf(track.trackId) + playlist.trackIds
         val updatedPlaylist = playlist.copy(
             trackIds = updatedTrackIds,
             tracksCount = updatedTrackIds.size
