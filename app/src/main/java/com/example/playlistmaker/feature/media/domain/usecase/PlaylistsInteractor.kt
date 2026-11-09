@@ -17,4 +17,10 @@ interface PlaylistsInteractor {
     suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
 
     fun saveCoverToPrivateStorage(uri: Uri): String?
+
+    fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>>
+
+    suspend fun removeTrackFromPlaylist(trackId: Long, playlist: Playlist)
+
+    suspend fun deletePlaylist(playlist: Playlist)
 }

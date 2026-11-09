@@ -33,4 +33,16 @@ class PlaylistsInteractorImpl(
     override fun saveCoverToPrivateStorage(uri: Uri): String? {
         return repository.saveCoverToPrivateStorage(uri)
     }
+
+    override fun getTracksByIds(trackIds: List<Long>): Flow<List<Track>> {
+        return repository.getTracksByIds(trackIds)
+    }
+
+    override suspend fun removeTrackFromPlaylist(trackId: Long, playlist: Playlist) {
+        repository.removeTrackFromPlaylist(trackId, playlist)
+    }
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        repository.deletePlaylist(playlist)
+    }
 }

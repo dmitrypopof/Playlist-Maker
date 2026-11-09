@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/playlistMenuBottomSheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="280dp"
+    style="@style/BottomSheetStyle"
+    android:orientation="vertical"
+    android:paddingBottom="24dp"
+    app:behavior_hideable="true"
+    app:behavior_skipCollapsed="true"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <!-- Индикатор для перетаскивания -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/bottom_sheet_handle" />
+
+    <!-- Краткая информация о плейлисте: обложка, название, количество треков -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingHorizontal="16dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/menuPlaylistCoverImage"
+            android:layout_width="44dp"
+            android:layout_height="44dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_no_dowload_album_312x312"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/menuPlaylistNameText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_display_regular"
+            android:maxLines="1"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/menuPlaylistCoverImage"
+            app:layout_constraintTop_toTopOf="@id/menuPlaylistCoverImage"
+            tools:text="Best songs 2021" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/menuPlaylistTracksCountText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/ys_display_regular"
+            android:maxLines="1"
+            android:textColor="@color/YP_Text_Gray"
+            android:textSize="11sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/menuPlaylistCoverImage"
+            app:layout_constraintTop_toBottomOf="@id/menuPlaylistNameText"
+            app:layout_constraintBottom_toBottomOf="@id/menuPlaylistCoverImage"
+            tools:text="98 треков" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Пункт меню "Поделиться" -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/menuShareItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingHorizontal="16dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:textSize="16sp"
+        android:text="@string/menu_share" />
+
+    <!-- Пункт меню "Редактировать информацию" -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/menuEditInfoItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingHorizontal="16dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:textSize="16sp"
+        android:text="@string/menu_edit_info" />
+
+    <!-- Пункт меню "Удалить плейлист" -->
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/menuDeletePlaylistItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:paddingHorizontal="16dp"
+        android:fontFamily="@font/ys_display_regular"
+        android:textSize="16sp"
+        android:text="@string/menu_delete_playlist" />
+
+</LinearLayout>

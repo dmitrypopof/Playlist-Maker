@@ -23,6 +23,7 @@ class PlaylistsFragment : Fragment() {
 
     companion object {
         private const val SPAN_COUNT = 2
+        private const val ARG_PLAYLIST_ID = "playlist_id"
 
         fun newInstance(): PlaylistsFragment = PlaylistsFragment()
     }
@@ -88,7 +89,13 @@ class PlaylistsFragment : Fragment() {
     }
 
     private fun onPlaylistClicked(playlist: Playlist) {
-        // Переход на экран плейлиста будет реализован в следующем спринте
+        val args = Bundle().apply {
+            putLong(ARG_PLAYLIST_ID, playlist.playlistId)
+        }
+        findNavController().navigate(
+            R.id.action_mediaFragment_to_playlistFragment,
+            args
+        )
     }
 
     override fun onDestroyView() {
