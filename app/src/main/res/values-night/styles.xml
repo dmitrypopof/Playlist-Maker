@@ -198,6 +198,11 @@
         <item name="android:background">@drawable/bottom_sheet_bg_dark</item>
     </style>
 
+    <!-- Фон создать /изменить плейлист -->
+    <style name="editPlaylistStyle">
+        <item name="android:background">@drawable/bottom_sheet_bg_dark</item>
+    </style>
+
     <!-- Текст инпутов Создание плелиста  -->
     <style name="Widget.App.TextInputLayout.PlaylistName" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="hintTextColor">@color/white</item>
