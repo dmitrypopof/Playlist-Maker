@@ -287,6 +287,14 @@ class PlaylistFragment : Fragment() {
             header.playlistCoverImage.setImageResource(R.drawable.ic_no_dowload_album_312x312)
         }
 
+        if (tracks.isEmpty()) {
+            binding.noTracksPlaceholder.visibility = View.VISIBLE
+            binding.playlistTracksRecyclerView.visibility = View.GONE
+        } else {
+            binding.noTracksPlaceholder.visibility = View.GONE
+            binding.playlistTracksRecyclerView.visibility = View.VISIBLE
+        }
+
         tracksAdapter?.updateTracks(tracks)
 
         val menuBinding = binding.playlistMenuBottomSheet

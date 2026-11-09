@@ -84,4 +84,6 @@
 
     <string name="edit_playlist_title">Редактировать</string>
     <string name="save_playlist_button">Сохранить</string>
+
+    <string name="playlist_no_tracks_message">В этом плейлисте нет треков</string>
 </resources>

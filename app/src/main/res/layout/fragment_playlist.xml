@@ -98,6 +98,18 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bottom_sheet_handle" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/noTracksPlaceholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:paddingHorizontal="24dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:textSize="16sp"
+            android:text="@string/playlist_no_tracks_message"
+            android:visibility="gone" />
+
         <!-- Список треков плейлиста -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playlistTracksRecyclerView"
